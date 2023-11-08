@@ -12,7 +12,14 @@ public class Player implements KeyListener {
     private int health;
     
     private int speed = 5;
+    
+    boolean KeyUp = false; //키보드 입력 처리를 위한 변수
+    boolean KeyDown = false;
+    boolean KeyLeft = false;
+    boolean KeyRight = false;
 
+    
+    
     public Player(int x, int y, Image image, int initialHealth) {
         this.x = x;
         this.y = y;
@@ -41,27 +48,51 @@ public class Player implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		int keyCode = e.getKeyCode();
-
-        if (keyCode == KeyEvent.VK_LEFT) {
-            x -= speed;
-        } else if (keyCode == KeyEvent.VK_RIGHT) {
-            x += speed;
-        } else if (keyCode == KeyEvent.VK_UP) {
-            y -= speed;
-        } else if (keyCode == KeyEvent.VK_DOWN) {
-            y += speed;
-        }
-
-       // 화면 다시 그리기
+		switch(e.getKeyCode()){
+			case KeyEvent.VK_UP :
+				KeyUp = true;
+				break;
+			case KeyEvent.VK_DOWN :
+				KeyDown = true;
+				break;
+			case KeyEvent.VK_LEFT :
+				KeyLeft = true;
+				break;
+			case KeyEvent.VK_RIGHT :
+				KeyRight = true;
+				break;
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+		switch(e.getKeyCode()){
+			case KeyEvent.VK_UP :
+				KeyUp = false;
+				break;
+			case KeyEvent.VK_DOWN :
+				KeyDown = false;
+				break;
+			case KeyEvent.VK_LEFT :
+				KeyLeft = false;
+				break;
+			case KeyEvent.VK_RIGHT :
+				KeyRight = false;
+				break;
+		}
 	}
+	public void KeyProcess(){
+		//실제로 캐릭터 움직임 실현을 위해
+		//위에서 받아들인 키값을 바탕으로
+		//키 입력시마다 5만큼의 이동을 시킨다.
 
-    // 플레이어 체력 및 관련 메서드
+		if(KeyUp == true) y -= 5;
+		if(KeyDown == true) y += 5;
+		if(KeyLeft == true) x -= 5;
+		if(KeyRight == true) x += 5;
+		}
+
+
+ 
 }

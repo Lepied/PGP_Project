@@ -14,6 +14,8 @@ public class Main extends JFrame implements Runnable{
 	 private Player player;
 	 
 	
+	 Thread th;
+	
 	 
 	 public Main()
 	 {
@@ -25,6 +27,8 @@ public class Main extends JFrame implements Runnable{
 		 }
 		 player =  new Player(30,30,playerImage,100);
 		 addKeyListener(player);
+		 th = new Thread(this); 
+		 th.start();
 		 
 		 setTitle("Shooting Game");
 	     setSize(800, 600);
@@ -50,7 +54,16 @@ public class Main extends JFrame implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		 
+		try{ // 예외옵션 설정으로 에러 방지
+			while(true){ // while 문으로 무한 루프 시키기
+				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
+				repaint(); // 갱신된 x,y값으로 이미지 새로 그리기
+				Thread.sleep(20); // 20 milli sec 로 스레드 돌리기 
+			}
+		}catch (Exception e){}
+		
+
 		
 	}
 	
