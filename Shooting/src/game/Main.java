@@ -10,6 +10,10 @@ import javax.swing.SwingUtilities;
 
 public class Main extends JFrame implements Runnable{
 	 private Image playerImage;
+	 private Image playerBulletImage;
+	 private Image enemyImage;
+	 private Image enemyBulletImage;
+
 	 
 	 private Player player;
 	 
@@ -18,11 +22,7 @@ public class Main extends JFrame implements Runnable{
 	 public Main()
 	 {
 		 playerImage = Toolkit.getDefaultToolkit().getImage("C:\\Users\\gang0\\git\\PGP_Project\\Shooting\\resourses\\sprites\\f2.jpg");
-		 System.out.println(playerImage);
-		 if(playerImage == null)
-		 {
-			 System.out.println("왜 안되 씨발");
-		 }
+
 		 player =  new Player(30,30,playerImage,100);
 		 addKeyListener(player);
 		 
