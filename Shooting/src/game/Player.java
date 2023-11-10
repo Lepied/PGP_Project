@@ -5,35 +5,36 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Player implements KeyListener {
-    private int x;
-    private int y;
-    private Image image;
-    private int health;
-    
-    private int speed = 5;
+public class Player extends GameObject implements KeyListener {
     
     boolean KeyUp = false; //키보드 입력 처리를 위한 변수
     boolean KeyDown = false;
     boolean KeyLeft = false;
     boolean KeyRight = false;
 
+    int playerHP = 100;
+   
+    GameManager gameManager;
     
-    
-    public Player(int x, int y, Image image, int initialHealth) {
-        this.x = x;
-        this.y = y;
-        this.image = image;
-        this.health = initialHealth;
+    public Player() {
+        this.hp = playerHP;
+        this.posX = 100;
+        this.posY = 100;
+        this.width = 35;
+        this.height = 35;
+        this.img = tk.getImage("resourses/sprites/f2.jpg");
+      
+        
+        gameManager = GameManager.getInstance();
     }
 
     public void move(int dx, int dy) {
-        x += dx;
-        y += dy;
+    	posX += dx;
+    	posY += dy;
     }
 
     public void draw(Graphics g) {
-        g.drawImage(image, x, y, null);
+        g.drawImage(img, posX, posY, null);
     }
 
     public void shoot() {
@@ -82,15 +83,18 @@ public class Player implements KeyListener {
 				break;
 		}
 	}
-	public void KeyProcess(){
+	public void KeyProcess()
+		{
 		//실제로 캐릭터 움직임 실현을 위해
 		//위에서 받아들인 키값을 바탕으로
 		//키 입력시마다 5만큼의 이동을 시킨다.
-
-		if(KeyUp == true) y -= 5;
-		if(KeyDown == true) y += 5;
-		if(KeyLeft == true) x -= 5;
-		if(KeyRight == true) x += 5;
+		
+			if(KeyUp == true) posY -= 5;
+			if(KeyDown == true) posY += 5;
+			if(KeyLeft == true) posX -= 5;
+			if(KeyRight == true) posX += 5;
+		
+	
 		}
 
 
