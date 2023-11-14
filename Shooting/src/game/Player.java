@@ -11,6 +11,8 @@ public class Player extends GameObject implements KeyListener {
     boolean KeyDown = false;
     boolean KeyLeft = false;
     boolean KeyRight = false;
+    
+    boolean isAttack = false;
 
     int playerHP = 100;
    
@@ -50,18 +52,22 @@ public class Player extends GameObject implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch(e.getKeyCode()){
-			case KeyEvent.VK_UP :
+			case KeyEvent.VK_W :
 				KeyUp = true;
 				break;
-			case KeyEvent.VK_DOWN :
+			case KeyEvent.VK_S :
 				KeyDown = true;
 				break;
-			case KeyEvent.VK_LEFT :
+			case KeyEvent.VK_A :
 				KeyLeft = true;
 				break;
-			case KeyEvent.VK_RIGHT :
+			case KeyEvent.VK_D :
 				KeyRight = true;
 				break;
+			case KeyEvent.VK_SPACE :
+				isAttack = true;
+				break;
+				
 		}
 	}
 
@@ -69,17 +75,20 @@ public class Player extends GameObject implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		switch(e.getKeyCode()){
-			case KeyEvent.VK_UP :
+			case KeyEvent.VK_W :
 				KeyUp = false;
 				break;
-			case KeyEvent.VK_DOWN :
+			case KeyEvent.VK_S :
 				KeyDown = false;
 				break;
-			case KeyEvent.VK_LEFT :
+			case KeyEvent.VK_A :
 				KeyLeft = false;
 				break;
-			case KeyEvent.VK_RIGHT :
+			case KeyEvent.VK_D :
 				KeyRight = false;
+				break;
+			case KeyEvent.VK_SPACE :
+				isAttack = false;
 				break;
 		}
 	}
@@ -93,6 +102,15 @@ public class Player extends GameObject implements KeyListener {
 			if(KeyDown == true) posY += 5;
 			if(KeyLeft == true) posX -= 5;
 			if(KeyRight == true) posX += 5;
+			if(isAttack == true)
+			{
+				this.img = tk.getImage("resourses/sprites/2222.jpg");
+			}
+			else if(isAttack == false)
+			{
+				this.img = tk.getImage("resourses/sprites/f2.jpg");
+			}
+			
 		
 	
 		}

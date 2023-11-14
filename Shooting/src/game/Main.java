@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 
+import java.util.*;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -13,16 +16,31 @@ public class Main extends JFrame implements Runnable{
 	 private Image playerBulletImage;
 	 private Image enemyImage;
 	 private Image enemyBulletImage;
-
+	 
 	 
 	 private Player player;
 	 GameManager gameManager;
 	 
 	 Thread th;
-	
+	 Image buffImage; // 더블버퍼링
+	 Graphics buffg; // 더블버퍼링
 	 
+	 Toolkit tk = Toolkit.getDefaultToolkit();
+	 //임시 총알
+	 Image BulletImage;
+	 ArrayList Bullet_List = new ArrayList();
+	 
+	 Bullet bullet;
+	 //임시 총알
+	
+	 int x,y;
 	 public int frameWidth = 600;
 	 public int frameHeight = 800;
+	 
+	 ImageIcon bgImg = new ImageIcon("resourses/sprites/background1.png");
+	 Image backImg = bgImg.getImage();
+	 int backY =0;
+	 int back2Y = backImg.getHeight(null);
 
 	 
 	 public Main()
@@ -33,6 +51,9 @@ public class Main extends JFrame implements Runnable{
 		 addKeyListener(player);
 		 th = new Thread(this); 
 		 th.start();
+		 //총알 임시 이미지
+		 BulletImage = tk.getImage("");
+		 //총알 임시 이미지
 		 
 		 setTitle("Shooting Game");
 	     setSize(frameWidth, frameHeight);
@@ -43,19 +64,48 @@ public class Main extends JFrame implements Runnable{
 	     JPanel gamePanel = new JPanel() {
 	     @Override
 	         protected void paintComponent(Graphics g) {
+
 	    	 	super.paintComponent(g);
-	    	 	// 플레이어를 그립니다.
-	            player.draw(g);
-	            
-	            repaint();
+	    	 	drawDoubleBuffering();
+	    	 	g.drawImage(buffImage,0,0,this);
 
 	            // 그 외 게임 오브젝트를 그리는 로직을 추가하세요.
 	        }
 	    };
-	    add(gamePanel);
+	    add(gamePanel);       
 	}
-
-
+	public void start()
+	{
+		x= 100;
+		y= 100;
+		frameWidth = 600;
+		frameHeight = 800;
+		
+	}
+	 
+	private void drawDoubleBuffering()
+	{
+		if(buffImage == null)
+		{
+			buffImage =createImage(frameWidth, frameHeight);
+			if(buffImage == null)
+			{
+				System.out.println("더블버퍼실패");
+				return;
+			}
+			buffg = buffImage.getGraphics();
+		}
+		
+		buffg.clearRect(0,0,frameWidth,frameHeight);
+		
+		
+		//게임오브젝트 그리는 부분
+        buffg.drawImage(backImg, 0, backY, this);
+        buffg.drawImage(backImg, 0, back2Y, this);
+        player.draw(buffg);
+        
+	}
+	
 	@Override
 	public void run() {
 		 
@@ -80,9 +130,23 @@ public class Main extends JFrame implements Runnable{
 					System.out.println(player.posY +" 1111" + player.height);
 					player.posY = frameHeight - player.height-30;
 				}
-			
+				
+				backY--;
+				back2Y--;
+				backY= backY-2;
+				back2Y=back2Y-2;
+				
+				if(backY <-(backImg.getHeight(null)))
+				{
+					backY = backImg.getHeight(null);
+				}
+				if(back2Y <-(backImg.getHeight(null)))
+				{
+					back2Y = backImg.getHeight(null);
+				}
+				drawDoubleBuffering();
 				repaint(); // 갱신된 x,y값으로 이미지 새로 그리기
-				Thread.sleep(20); // 20 milli sec 로 스레드 돌리기 
+				Thread.sleep(15); // 20 milli sec 로 스레드 돌리기 
 			}
 		}catch (Exception e){}
 		
