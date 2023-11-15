@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class Main extends JFrame implements Runnable{
+public class GameMain extends JFrame implements Runnable{
 	 private Image playerImage;
 	 private Image playerBulletImage;
 	 private Image enemyImage;
@@ -26,13 +26,7 @@ public class Main extends JFrame implements Runnable{
 	 Graphics buffg; // 더블버퍼링
 	 
 	 Toolkit tk = Toolkit.getDefaultToolkit();
-	 //임시 총알
-	 Image BulletImage;
-	 ArrayList Bullet_List = new ArrayList();
-	 
-	 Bullet bullet;
-	 //임시 총알
-	
+
 	 int x,y;
 	 public int frameWidth = 600;
 	 public int frameHeight = 800;
@@ -43,7 +37,7 @@ public class Main extends JFrame implements Runnable{
 	 int back2Y = backImg.getHeight(null);
 
 	 
-	 public Main()
+	 public GameMain()
 	 {
 		 gameManager = GameManager.getInstance();
 		 
@@ -51,9 +45,7 @@ public class Main extends JFrame implements Runnable{
 		 addKeyListener(player);
 		 th = new Thread(this); 
 		 th.start();
-		 //총알 임시 이미지
-		 BulletImage = tk.getImage("");
-		 //총알 임시 이미지
+
 		 
 		 setTitle("Shooting Game");
 	     setSize(frameWidth, frameHeight);
@@ -90,7 +82,6 @@ public class Main extends JFrame implements Runnable{
 			buffImage =createImage(frameWidth, frameHeight);
 			if(buffImage == null)
 			{
-				System.out.println("더블버퍼실패");
 				return;
 			}
 			buffg = buffImage.getGraphics();
@@ -98,11 +89,11 @@ public class Main extends JFrame implements Runnable{
 		
 		buffg.clearRect(0,0,frameWidth,frameHeight);
 		
-		
 		//게임오브젝트 그리는 부분
         buffg.drawImage(backImg, 0, backY, this);
         buffg.drawImage(backImg, 0, back2Y, this);
         player.draw(buffg);
+        player.drawBullet(buffg);
         
 	}
 	
@@ -112,6 +103,7 @@ public class Main extends JFrame implements Runnable{
 		try{ // 예외옵션 설정으로 에러 방지
 			while(true){ // while 문으로 무한 루프 시키기
 				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
+				player.BulletProcess();
 				if(player.posX + player.width /2<0)
 				{
 					player.posX = 0 - player.width/2 ;
@@ -127,7 +119,6 @@ public class Main extends JFrame implements Runnable{
 				}
 				else if(player.posY + player.height >  frameHeight - 30)
 				{
-					System.out.println(player.posY +" 1111" + player.height);
 					player.posY = frameHeight - player.height-30;
 				}
 				
@@ -146,7 +137,7 @@ public class Main extends JFrame implements Runnable{
 				}
 				drawDoubleBuffering();
 				repaint(); // 갱신된 x,y값으로 이미지 새로 그리기
-				Thread.sleep(15); // 20 milli sec 로 스레드 돌리기 
+				Thread.sleep(15); // 15 milli sec 로 스레드 돌리기 
 			}
 		}catch (Exception e){}
 		
@@ -157,7 +148,7 @@ public class Main extends JFrame implements Runnable{
 	public static void main(String[] args)
 	{
 		 SwingUtilities.invokeLater(() -> {
-	         Main frame = new Main();
+	         GameMain frame = new GameMain();
 	         frame.setVisible(true);
 	         
 
@@ -177,5 +168,6 @@ public class Main extends JFrame implements Runnable{
 		
 		return isCrushed;
 	}
-	
+
+
 }
