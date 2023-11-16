@@ -31,14 +31,14 @@ public class Player extends GameObject implements KeyListener {
 	 
     public Player() {
         this.hp = playerHP;
-        this.posX = 100;
-        this.posY = 100;
+        this.posX = 300;
+        this.posY = 600;
         this.width = 35;
         this.height = 35;
         this.img = tk.getImage("resourses/sprites/f2.jpg");
       
         
-        gameManager = GameManager.getInstance();
+        
     }
 
     public void move(int dx, int dy) {
@@ -123,10 +123,10 @@ public class Player extends GameObject implements KeyListener {
 		//위에서 받아들인 키값을 바탕으로
 		//키 입력시마다 5만큼의 이동을 시킨다.
 		
-		if(KeyUp == true) posY -= 5;
-		if(KeyDown == true) posY += 5;
-		if(KeyLeft == true) posX -= 5;
-		if(KeyRight == true) posX += 5;
+		if(KeyUp == true) posY -= speed;
+		if(KeyDown == true) posY += speed;
+		if(KeyLeft == true) posX -= speed;
+		if(KeyRight == true) posX += speed;
 		if(isAttack == true)
 		{
 			this.img = tk.getImage("resourses/sprites/2222.jpg");
@@ -144,6 +144,7 @@ public class Player extends GameObject implements KeyListener {
 			bullet = new Bullet(posX,posY-65,5,1);
 			Bullet_List.add(bullet);
 		}
+		
 	}
  
 }

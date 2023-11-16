@@ -1,7 +1,9 @@
 package game;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 
 public class Bullet extends GameObject {
 	Point pos;
@@ -10,14 +12,14 @@ public class Bullet extends GameObject {
 	
 	Bullet(int x, int y, int speed, int type)
 	{
-	    this.width = 20;
-	    this.height = 45;
 		this.type = type;
 		this.speed = speed;
 		pos = new Point(x,y);
 		if(this.type == 1)
 		{
 			this.img = tk.getImage("resourses/sprites/EFX.png");
+		    this.width = 20;
+		    this.height = 45;
 		}
 	}
 	public void move()
@@ -30,6 +32,10 @@ public class Bullet extends GameObject {
 		{
 			pos.y-=10;
 		}
+	}
+	public void draw(Graphics g)
+	{
+		g.drawImage(img, posX, posY, null);
 	}
 
 

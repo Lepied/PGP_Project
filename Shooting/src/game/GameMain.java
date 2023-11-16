@@ -21,6 +21,10 @@ public class GameMain extends JFrame implements Runnable{
 	 private Player player;
 	 GameManager gameManager;
 	 
+	 Enemy en;
+	 
+	 private int gameCnt;
+	 
 	 Thread th;
 	 Image buffImage; // 더블버퍼링
 	 Graphics buffg; // 더블버퍼링
@@ -36,12 +40,13 @@ public class GameMain extends JFrame implements Runnable{
 	 int backY =0;
 	 int back2Y = backImg.getHeight(null);
 
+
 	 
 	 public GameMain()
 	 {
 		 gameManager = GameManager.getInstance();
 		 
-		 player =  new Player();
+		 player = new Player();
 		 addKeyListener(player);
 		 th = new Thread(this); 
 		 th.start();
@@ -61,7 +66,6 @@ public class GameMain extends JFrame implements Runnable{
 	    	 	drawDoubleBuffering();
 	    	 	g.drawImage(buffImage,0,0,this);
 
-	            // 그 외 게임 오브젝트를 그리는 로직을 추가하세요.
 	        }
 	    };
 	    add(gamePanel);       
@@ -94,7 +98,7 @@ public class GameMain extends JFrame implements Runnable{
         buffg.drawImage(backImg, 0, back2Y, this);
         player.draw(buffg);
         player.drawBullet(buffg);
-        
+        Draw_Enemy();
 	}
 	
 	@Override
@@ -104,6 +108,11 @@ public class GameMain extends JFrame implements Runnable{
 			while(true){ // while 문으로 무한 루프 시키기
 				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
 				player.BulletProcess();
+				EnemyProcess();
+				
+
+				
+				
 				if(player.posX + player.width /2<0)
 				{
 					player.posX = 0 - player.width/2 ;
@@ -138,6 +147,8 @@ public class GameMain extends JFrame implements Runnable{
 				drawDoubleBuffering();
 				repaint(); // 갱신된 x,y값으로 이미지 새로 그리기
 				Thread.sleep(15); // 15 milli sec 로 스레드 돌리기 
+				gameCnt++;
+			
 			}
 		}catch (Exception e){}
 		
@@ -155,18 +166,30 @@ public class GameMain extends JFrame implements Runnable{
 	        });
 	}
 	
-	
-	public boolean Crash(GameObject obj1, GameObject obj2)
+	public void EnemyProcess()
 	{
-		boolean isCrushed = false;
-		if(Math.abs((obj1.posX + obj1.width/2) - (obj2.posX + obj1.width/2)) < (obj2.width/2 + obj1.width/2) 
-				&& Math.abs((obj1.posY + obj1.height / 2) - (obj2.posY + obj2.height/2)) < (obj2.height/2 + obj1.height/2))
+		for(int  i =0; i<gameManager.getGameObjectList().size(); ++i)
 		{
-			isCrushed = true;
+			en = (Enemy)(gameManager.getGameObjectList().get(i));
+			en.move();
+			if(en.posY >800)
+			{
+				gameManager.getGameObjectList().remove(i);
+			}
+			
 		}
-		else isCrushed = false;
+		if(gameCnt%300 ==0) {
+			en = new E_Wybern();
+		}
 		
-		return isCrushed;
+	}
+	public void Draw_Enemy()
+	{
+		for(int  i =0; i<gameManager.getGameObjectList().size(); ++i)
+		{
+			en = (Enemy)(gameManager.getGameObjectList().get(i));
+			buffg.drawImage(en.img, en.posX,en.posY,this);
+		}
 	}
 
 
