@@ -63,6 +63,19 @@ public class GameManager {
 		
 		return isCrushed;
 	}
+	
+	public boolean isBulletCollision(Bullet obj1, GameObject obj2)
+	{
+		boolean isBulletCrushed = false;
+		if(Math.abs((obj1.pos.x + obj1.width/2) - (obj2.posX + obj1.width/2)) < (obj2.width/2 + obj1.width/2) 
+				&& Math.abs((obj1.pos.y + obj1.height / 2) - (obj2.posY + obj2.height/2)) < (obj2.height/2 + obj1.height/2))
+		{
+			isBulletCrushed = true;
+		}
+		else isBulletCrushed = false;
+		
+		return isBulletCrushed;
+	}
 	public void applyDamage(GameObject target, int damage)
 	{
 		target.hp = target.hp - damage;

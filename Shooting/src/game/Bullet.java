@@ -10,11 +10,11 @@ public class Bullet extends GameObject {
 	int speed;
 	int type;
 	
-	Bullet(int x, int y, int speed, int type)
+	Bullet(int posX, int posY, int speed, int type)
 	{
 		this.type = type;
 		this.speed = speed;
-		pos = new Point(x,y);
+		pos = new Point(posX,posY);
 		if(this.type == 1)
 		{
 			this.img = tk.getImage("resourses/sprites/EFX.png");

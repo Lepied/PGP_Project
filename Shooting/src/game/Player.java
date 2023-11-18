@@ -24,6 +24,8 @@ public class Player extends GameObject implements KeyListener {
 	 
 	 Bullet bullet;
 	 //임시 총알
+	Enemy en;
+	//임시 적
 	
     int x =100;
     int y =100;
@@ -53,18 +55,10 @@ public class Player extends GameObject implements KeyListener {
     {
     	for (int i=0; i<Bullet_List.size(); ++i)
     	{
-    
     		bullet =(Bullet)(Bullet_List.get(i));
     		g.drawImage(bullet.img, bullet.pos.x,bullet.pos.y+35,
     				bullet.pos.x+35,bullet.pos.y+95,15,15,35,60,null );
    
-    		bullet.move();
-    		
-    		if(bullet.pos.x >600)
-    		{
-    			System.out.println("총알삭제");
-    			Bullet_List.remove(i);
-    		}
     	}
     }
 
@@ -144,6 +138,32 @@ public class Player extends GameObject implements KeyListener {
 			bullet = new Bullet(posX,posY-65,5,1);
 			Bullet_List.add(bullet);
 		}
+		for(int i=0; i<Bullet_List.size();++i) 
+		{
+			bullet =(Bullet)(Bullet_List.get(i));
+			bullet.move();
+			
+			if(bullet.pos.y < 0)
+			{
+				System.out.println("총알삭제");
+				Bullet_List.remove(i);
+			}
+			for(int j=0; j<GameManager.getInstance().getGameObjectList().size(); ++j)
+			{  // 현재 모든 게임오브젝트가 충돌, 나중에 적만하게 분리 필요
+				en = (Enemy) GameManager.getInstance().getGameObjectList().get(j);
+				
+				if(GameManager.getInstance().isBulletCollision(bullet,en))
+				{
+					System.out.println("충돌");
+					Bullet_List.remove(i);
+					GameManager.getInstance().getGameObjectList().remove(j);
+				}
+			}
+		}
+			
+
+		
+		
 		
 	}
  

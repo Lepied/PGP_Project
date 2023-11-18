@@ -96,8 +96,10 @@ public class GameMain extends JFrame implements Runnable{
 		//게임오브젝트 그리는 부분
         buffg.drawImage(backImg, 0, backY, this);
         buffg.drawImage(backImg, 0, back2Y, this);
+        
         player.draw(buffg);
         player.drawBullet(buffg);
+        
         Draw_Enemy();
 	}
 	
@@ -144,7 +146,7 @@ public class GameMain extends JFrame implements Runnable{
 				{
 					back2Y = backImg.getHeight(null);
 				}
-				drawDoubleBuffering();
+				//drawDoubleBuffering();
 				repaint(); // 갱신된 x,y값으로 이미지 새로 그리기
 				Thread.sleep(15); // 15 milli sec 로 스레드 돌리기 
 				gameCnt++;
