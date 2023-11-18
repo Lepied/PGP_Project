@@ -13,6 +13,7 @@ public class GameManager {
 	
 	private List<GameObject> gameObjectList;
 	
+	private int playerDamage = 20;
 
 	
 	
@@ -79,6 +80,8 @@ public class GameManager {
 	public void applyDamage(GameObject target, int damage)
 	{
 		target.hp = target.hp - damage;
+		System.out.println("공격");
+		System.out.println(target.hp);
 		if(target.hp <=0)
 		{
 			removeGameObject(target);
@@ -104,6 +107,16 @@ public class GameManager {
 	public void setUpDamage(int damage)
 	{
 		this.playerUpgradeDamage = damage;
+	}
+	
+	public int getPlayerDamage()
+	{
+		return playerDamage;
+	}
+	
+	public void setPlayerDamage(int damage)
+	{
+		this.playerDamage = damage;
 	}
 	
 

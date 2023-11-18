@@ -40,13 +40,13 @@ public class GameMain extends JFrame implements Runnable{
 	 int backY =0;
 	 int back2Y = backImg.getHeight(null);
 
-
+	 //임시 플레이어 데미지
 	 
 	 public GameMain()
 	 {
 		 gameManager = GameManager.getInstance();
 		 
-		 player = new Player();
+		 player = new Player(gameManager.getPlayerDamage());
 		 addKeyListener(player);
 		 th = new Thread(this); 
 		 th.start();

@@ -16,7 +16,7 @@ public class Player extends GameObject implements KeyListener {
     boolean isAttack = false;
 
     int playerHP = 100;
-   
+    int playerDamage;
     GameManager gameManager;
     
 	 //임시 총알
@@ -31,7 +31,9 @@ public class Player extends GameObject implements KeyListener {
     int y =100;
 
 	 
-    public Player() {
+    public Player(int damage) {
+    	
+    	this.playerDamage = damage;
         this.hp = playerHP;
         this.posX = 300;
         this.posY = 600;
@@ -156,7 +158,8 @@ public class Player extends GameObject implements KeyListener {
 				{
 					System.out.println("충돌");
 					Bullet_List.remove(i);
-					GameManager.getInstance().getGameObjectList().remove(j);
+					GameManager.getInstance().applyDamage(en,playerDamage);
+					//GameManager.getInstance().getGameObjectList().remove(j);
 				}
 			}
 		}

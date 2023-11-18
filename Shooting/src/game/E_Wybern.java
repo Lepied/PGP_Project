@@ -8,7 +8,7 @@ public class E_Wybern extends Enemy{
 	{
 		
 		this.type = 1; // 일반 타입
-        this.hp = 50;
+        this.hp = 500;
         this.posX = 300;
         this.posY = 200;
         this.width = 35;
