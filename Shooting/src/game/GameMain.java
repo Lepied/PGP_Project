@@ -108,11 +108,10 @@ public class GameMain extends JFrame implements Runnable{
 		 
 		try{ // 예외옵션 설정으로 에러 방지
 			while(true){ // while 문으로 무한 루프 시키기
+				repaint();
 				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
 				player.BulletProcess();
 				EnemyProcess();
-				
-
 				
 				
 				if(player.posX + player.width /2<0)
@@ -146,10 +145,16 @@ public class GameMain extends JFrame implements Runnable{
 				{
 					back2Y = backImg.getHeight(null);
 				}
-				//drawDoubleBuffering();
 				repaint(); // 갱신된 x,y값으로 이미지 새로 그리기
 				Thread.sleep(15); // 15 milli sec 로 스레드 돌리기 
 				gameCnt++;
+				//게임 타이머 초기화 해서 게임 안터지게
+				if(gameCnt > 999999)
+				{
+					gameCnt = 0; 
+					System.out.println("초기화");
+				}
+				
 			
 			}
 		}catch (Exception e){}
@@ -181,7 +186,11 @@ public class GameMain extends JFrame implements Runnable{
 			
 		}
 		if(gameCnt%300 ==0) {
-			en = new E_Wybern();
+			en = new E_Wybern(1);
+			en = new E_Wybern(2);
+			en = new E_Wybern(3);
+			
+			
 		}
 		
 	}

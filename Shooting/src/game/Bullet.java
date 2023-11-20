@@ -19,7 +19,7 @@ public class Bullet extends GameObject {
 		{
 			this.img = tk.getImage("resourses/sprites/EFX.png");
 		    this.width = 20;
-		    this.height = 45;
+		    this.height = 30;
 		}
 	}
 	public void move()

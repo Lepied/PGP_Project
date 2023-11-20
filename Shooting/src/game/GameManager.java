@@ -7,6 +7,7 @@ public class GameManager {
 	
 	private static GameManager instance;
 	
+	private int Score;
 	private int playerCoin;
 	private int playerUpgradeDamage;
 	private int playerUpgradeMaxHp;

@@ -13,7 +13,7 @@ public class GameObject {
 	public int posY;
 	public int width;
 	public int height;
-	public int speed = 5;
+	public int speed;
 	public Image img;
 	public Toolkit tk = Toolkit.getDefaultToolkit();
 

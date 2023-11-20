@@ -5,24 +5,21 @@ import java.awt.Image;
 
 public class Enemy extends GameObject {
 	
-	public int x;
-	public int y;
 	public int type;  // 적의 타입, 엘리트인지 일반몹인지
 	public int bulletType; // 적의 공격타입, 산탄형, 단발형 등
+	public int spawnPoint;
 	
-	public Enemy()
+	
+	public Enemy(int spawnPoint)
 	{
 		super();
+		this.spawnPoint = spawnPoint;
 		GameManager.getInstance().addGameObject(this);
 	}
-	Enemy(int x, int y)
-	{
-		this.x =x;
-		this.y = y;
-	}
+	
 	
     public void move() {
-    	posY += 3;
+    	posY += speed;
     }
     
     public void draw(Graphics g) {
