@@ -20,5 +20,4 @@ public class StartPanel extends JPanel{
 		JLabel label = new JLabel("Press any button...");
 		add(label);
 	}
-	
 }

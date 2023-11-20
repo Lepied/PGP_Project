@@ -1,9 +1,7 @@
 package game;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;;
 
 public class MainPanel extends JPanel{
 	
@@ -18,4 +16,4 @@ public class MainPanel extends JPanel{
 		JLabel label = new JLabel("Here is main");
 		add(label);
 	}
-}
+} 
