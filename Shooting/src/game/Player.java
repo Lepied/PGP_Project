@@ -17,12 +17,15 @@ public class Player extends GameObject implements KeyListener {
 
     int playerHP = 100;
     int playerDamage;
+    int attackSpeed;
+    private long lastAttackTime; // 공격시간 저장 변수
+    
     GameManager gameManager;
     
 	 //임시 총알
-	 ArrayList Bullet_List = new ArrayList();
+	ArrayList Bullet_List = new ArrayList();
 	 
-	 Bullet bullet;
+	Bullet bullet;
 	 //임시 총알
 	Enemy en;
 	//임시 적
@@ -32,16 +35,17 @@ public class Player extends GameObject implements KeyListener {
 
 	 
     public Player(int damage) {
-    	
     	this.playerDamage = damage;
         this.hp = playerHP;
+        this.speed = 10;
         this.posX = 300;
         this.posY = 600;
         this.width = 35;
         this.height = 35;
+    	this.attackSpeed = 100;
         this.img = tk.getImage("resourses/sprites/f2.jpg");
       
-        
+        this.lastAttackTime = System.currentTimeMillis();
         
     }
 
@@ -135,10 +139,11 @@ public class Player extends GameObject implements KeyListener {
 	}
 	public void BulletProcess()
 	{
-		if(isAttack == true)
+		if(isAttack && System.currentTimeMillis() - lastAttackTime > attackSpeed)
 		{
 			bullet = new Bullet(posX,posY-65,5,1);
 			Bullet_List.add(bullet);
+			lastAttackTime = System.currentTimeMillis();
 		}
 		for(int i=0; i<Bullet_List.size();++i) 
 		{
