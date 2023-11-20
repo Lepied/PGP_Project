@@ -23,7 +23,7 @@ public class MainFrame extends JFrame{
 		setVisible(true);
 		
 		cardLayout = new CardLayout();
-		cardPanel = new JPanel(cardLayout);
+		cardPanel = new JPanel(cardLayout); 
 		createDeck();
 		
 		pack();
