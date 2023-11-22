@@ -14,6 +14,11 @@ public class GameManager {
 	
 	private List<GameObject> gameObjectList;
 	
+	private List<Item> itemList;
+	
+	private int itemPosX;
+	private int itemPosY;
+	
 	private int playerDamage = 20;
 
 	
@@ -21,6 +26,7 @@ public class GameManager {
 	private GameManager()
 	{//싱글톤 패턴
 		gameObjectList = new ArrayList<>();
+		itemList = new ArrayList<>();
 		playerCoin =0;
 		
 	} 
@@ -52,6 +58,20 @@ public class GameManager {
 		return gameObjectList;
 	}
 
+	
+	public void addItem(Item item)
+	{
+		itemList.add(item);
+	}
+	public void removeItem(Item item)
+	{
+		itemList.remove(item);
+	}
+	
+	public List<Item> getItemList()
+	{
+		return itemList;
+	}
 
 	public boolean isCollision(GameObject obj1, GameObject obj2)
 	{
@@ -86,6 +106,15 @@ public class GameManager {
 		if(target.hp <=0)
 		{
 			removeGameObject(target);
+			
+			double randomValue = Math.random(); // 0~1.0
+			if (randomValue < 0.1) { // 10%
+	            addItem(new Scroll(target.posX, target.posY));
+	        } else if (randomValue < 0.4) { // 30%
+	            addItem(new Bomb(target.posX, target.posY));
+	        } else { // 60%
+	            addItem(new Coin(target.posX, target.posY));
+	        }
 		}
 	}
 

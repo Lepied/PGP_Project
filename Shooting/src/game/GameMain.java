@@ -20,8 +20,10 @@ public class GameMain extends JFrame implements Runnable{
 	 
 	 private Player player;
 	 GameManager gameManager;
+	 Animator animator;
 	 
 	 Enemy en;
+	 Item item;
 	 
 	 private int gameCnt;
 	 
@@ -35,6 +37,8 @@ public class GameMain extends JFrame implements Runnable{
 	 public int frameWidth = 600;
 	 public int frameHeight = 800;
 	 
+	 int coinSel = 0; //스프라이트 애니메이션
+	 
 	 ImageIcon bgImg = new ImageIcon("resourses/sprites/background1.png");
 	 Image backImg = bgImg.getImage();
 	 int backY =0;
@@ -45,12 +49,14 @@ public class GameMain extends JFrame implements Runnable{
 	 public GameMain()
 	 {
 		 gameManager = GameManager.getInstance();
+		 animator = Animator.getInstance();
 		 
 		 player = new Player(gameManager.getPlayerDamage());
 		 addKeyListener(player);
 		 th = new Thread(this); 
 		 th.start();
 
+		
 		 
 		 setTitle("Shooting Game");
 	     setSize(frameWidth, frameHeight);
@@ -78,6 +84,8 @@ public class GameMain extends JFrame implements Runnable{
 		frameHeight = 800;
 		
 	}
+	
+
 	 
 	private void drawDoubleBuffering()
 	{
@@ -93,6 +101,7 @@ public class GameMain extends JFrame implements Runnable{
 		
 		buffg.clearRect(0,0,frameWidth,frameHeight);
 		
+		animator.setGraphics(buffg);
 		//게임오브젝트 그리는 부분
         buffg.drawImage(backImg, 0, backY, this);
         buffg.drawImage(backImg, 0, back2Y, this);
@@ -101,6 +110,7 @@ public class GameMain extends JFrame implements Runnable{
         player.drawBullet(buffg);
         
         Draw_Enemy();
+        Draw_Item();
 	}
 	
 	@Override
@@ -109,9 +119,11 @@ public class GameMain extends JFrame implements Runnable{
 		try{ // 예외옵션 설정으로 에러 방지
 			while(true){ // while 문으로 무한 루프 시키기
 				repaint();
+
 				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
 				player.BulletProcess();
 				EnemyProcess();
+				ItemProcess();
 				
 				
 				if(player.posX + player.width /2<0)
@@ -169,6 +181,7 @@ public class GameMain extends JFrame implements Runnable{
 	         GameMain frame = new GameMain();
 	         frame.setVisible(true);
 	         
+	         
 
 	        });
 	}
@@ -189,17 +202,73 @@ public class GameMain extends JFrame implements Runnable{
 			en = new E_Wybern(1);
 			en = new E_Wybern(2);
 			en = new E_Wybern(3);
-			
-			
+
 		}
 		
 	}
+	public void ItemProcess()
+	{
+		for(int  i =0; i<gameManager.getItemList().size(); ++i)
+		{
+			item = (Item)(gameManager.getItemList().get(i));
+			item.move();
+			if(item.posY >800)
+			{
+				gameManager.getItemList().remove(i);
+				Animator.getInstance().stopAnimation();
+			}
+
+			for(int j=0; j<gameManager.getItemList().size(); ++j)
+			{ 	
+				if(gameManager.isCollision(player, item))
+				{
+					System.out.println("충돌");
+					gameManager.getItemList().remove(i);
+					Animator.getInstance().stopAnimation();
+					switch(item.type)
+					{
+						case 1:
+							item.getCoin();
+							break;
+						case 2:
+							
+							break;
+						case 3:
+							
+							break;
+					}
+					//GameManager.getInstance().getGameObjectList().remove(j);
+				}
+			}
+		}
+	
+	}
+	
+	
 	public void Draw_Enemy()
 	{
 		for(int  i =0; i<gameManager.getGameObjectList().size(); ++i)
 		{
 			en = (Enemy)(gameManager.getGameObjectList().get(i));
 			buffg.drawImage(en.img, en.posX,en.posY,this);
+		}
+	}
+	public void Draw_Item()
+	{
+		for(int i =0; i<gameManager.getItemList().size(); ++i)
+		{
+			
+			item = (Item)(gameManager.getItemList().get(i));
+			if(item.type == 1)
+			{
+				 buffg.drawImage(item.img, item.posX,item.posY,
+						 item.posX+32,item.posY+32,coinSel*0,0,coinSel*32+32,32,this);
+			}
+			else
+			{
+				buffg.drawImage(item.img, item.posX,item.posY,this);
+			}
+			
 		}
 	}
 

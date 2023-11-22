@@ -156,7 +156,7 @@ public class Player extends GameObject implements KeyListener {
 				Bullet_List.remove(i);
 			}
 			for(int j=0; j<GameManager.getInstance().getGameObjectList().size(); ++j)
-			{  // 현재 모든 게임오브젝트가 충돌, 나중에 적만하게 분리 필요
+			{ 	
 				en = (Enemy) GameManager.getInstance().getGameObjectList().get(j);
 				
 				if(GameManager.getInstance().isBulletCollision(bullet,en))
