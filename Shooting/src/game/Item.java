@@ -7,7 +7,7 @@ public class Item extends GameObject{
 	public int type;
 	
 	private int tempCoin;
-	private int tempPower;
+	private int tempScroll;
 	private int tempBomb;
 	
 	private int frameIndex;
@@ -31,8 +31,25 @@ public class Item extends GameObject{
 	{
 		tempCoin = GameManager.getInstance().getCoin();
 		GameManager.getInstance().setCoin(tempCoin+1);
-		System.out.println(GameManager.getInstance().getCoin());
+		System.out.println("획득한 코인 수 : " +GameManager.getInstance().getCoin());
 	}
+	/*
+	public void getBomb()
+	{
+		if(GameManager.getInstance().getBomb()<3)
+		{
+			tempBomb = GameManager.getInstance().getBomb();
+			GameManager.getInstance().setBomb(tempBomb+1);
+			System.out.println(GameManager.getInstance().getBomb());
+		}
+	}
+	*/
+	public void getScroll()
+	{
+		//스크롤 먹으면 잠깐 게임 스레드 자체를 멈추고 UI를 띄운다음에 선택지를 부여, 해당 선택지에 해당되는 스탯 업그레이드 구현하기
+		System.out.println("스크롤 획득");
+	}
+	
 	
 
 	

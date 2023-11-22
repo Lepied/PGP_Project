@@ -215,29 +215,31 @@ public class GameMain extends JFrame implements Runnable{
 			if(item.posY >800)
 			{
 				gameManager.getItemList().remove(i);
-				Animator.getInstance().stopAnimation();
+
 			}
 
 			for(int j=0; j<gameManager.getItemList().size(); ++j)
 			{ 	
-				if(gameManager.isCollision(player, item))
+				if(gameManager.isCollision(player, item)) 
 				{
-					System.out.println("충돌");
-					gameManager.getItemList().remove(i);
-					Animator.getInstance().stopAnimation();
+					gameManager.getItemList().remove(i); //아이템이 특정 경우 / 아마도 스레드상 i와 j가 겹치거나 하는 순간, 아이템이 여러개 동시에 획득되는 버그 있음.
+
 					switch(item.type)
 					{
 						case 1:
 							item.getCoin();
 							break;
 						case 2:
-							
+							item.getScroll();
 							break;
 						case 3:
-							
+							if(player.bomb<3)
+							{
+								player.bomb++;
+							}
 							break;
 					}
-					//GameManager.getInstance().getGameObjectList().remove(j);
+					
 				}
 			}
 		}

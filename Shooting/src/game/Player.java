@@ -14,11 +14,17 @@ public class Player extends GameObject implements KeyListener {
     boolean KeyRight = false;
     
     boolean isAttack = false;
+    boolean isBomb = false;
 
     int playerHP = 100;
     int playerDamage;
     int attackSpeed;
+    int bombDelay;
+    
+    int bomb;
+    int bombDamage;
     private long lastAttackTime; // 공격시간 저장 변수
+    private long lastBombTime; // 폭탄 지연시간
     
     GameManager gameManager;
     
@@ -43,9 +49,15 @@ public class Player extends GameObject implements KeyListener {
         this.width = 35;
         this.height = 35;
     	this.attackSpeed = 100;
+  
+    	this.bomb = 0;
+    	this.bombDamage = 500;
+    	this.bombDelay = 100;
+    	
         this.img = tk.getImage("resourses/sprites/f2.jpg");
       
         this.lastAttackTime = System.currentTimeMillis();
+        this.lastBombTime = System.currentTimeMillis();
         
     }
 
@@ -92,7 +104,9 @@ public class Player extends GameObject implements KeyListener {
 			case KeyEvent.VK_SPACE :
 				isAttack = true;
 				break;
-				
+			case KeyEvent.VK_F :
+				isBomb = true;
+				break;
 		}
 	}
 
@@ -115,6 +129,7 @@ public class Player extends GameObject implements KeyListener {
 			case KeyEvent.VK_SPACE :
 				isAttack = false;
 				break;
+
 		}
 	}
 	public void KeyProcess()
@@ -127,6 +142,7 @@ public class Player extends GameObject implements KeyListener {
 		if(KeyDown == true) posY += speed;
 		if(KeyLeft == true) posX -= speed;
 		if(KeyRight == true) posX += speed;
+		
 		if(isAttack == true)
 		{
 			this.img = tk.getImage("resourses/sprites/2222.jpg");
@@ -135,8 +151,15 @@ public class Player extends GameObject implements KeyListener {
 		{
 			this.img = tk.getImage("resourses/sprites/f2.jpg");
 		}
+		
+		if(isBomb == true)
+		{
+			UseBomb();
+			isBomb = false;
+		}
 			
 	}
+	
 	public void BulletProcess()
 	{
 		if(isAttack && System.currentTimeMillis() - lastAttackTime > attackSpeed)
@@ -152,7 +175,6 @@ public class Player extends GameObject implements KeyListener {
 			
 			if(bullet.pos.y < 0)
 			{
-				System.out.println("총알삭제");
 				Bullet_List.remove(i);
 			}
 			for(int j=0; j<GameManager.getInstance().getGameObjectList().size(); ++j)
@@ -161,18 +183,39 @@ public class Player extends GameObject implements KeyListener {
 				
 				if(GameManager.getInstance().isBulletCollision(bullet,en))
 				{
-					System.out.println("충돌");
 					Bullet_List.remove(i);
 					GameManager.getInstance().applyDamage(en,playerDamage);
 					//GameManager.getInstance().getGameObjectList().remove(j);
 				}
 			}
 		}
-			
-
-		
-		
 		
 	}
- 
+	
+	public void UseBomb()
+	{
+		boolean tempBomb = false;
+
+		if(bomb>0 && System.currentTimeMillis() - lastBombTime > bombDelay)
+		{
+			tempBomb = true;
+			System.out.println("폭탄ㅍㅍㅍㅍㅍㅍ");
+
+			for(int i=0; i<GameManager.getInstance().getGameObjectList().size(); ++i)
+			{ 	
+				System.out.println(GameManager.getInstance().getGameObjectList().size());
+				en = (Enemy) GameManager.getInstance().getGameObjectList().get(i);
+				GameManager.getInstance().applyDamage(en,bombDamage);
+				i--;
+			}
+			
+		}
+		if(tempBomb)
+		{
+			bomb--;
+			tempBomb = false;
+		}
+		
+	
+	}
 }

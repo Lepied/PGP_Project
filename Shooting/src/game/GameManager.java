@@ -7,8 +7,11 @@ public class GameManager {
 	
 	private static GameManager instance;
 	
-	private int Score;
+	private int Score;     //스코어 또한 따로 저장용도, 게임이 끝나면 초기화 되야 함
 	private int playerCoin;
+	private int playerBomb;  // 폭탄 갯수자체는 게임이 끝나면 초기화 시켜야 함.
+	private int playerBombDamage;
+	private int playerBombType;
 	private int playerUpgradeDamage;
 	private int playerUpgradeMaxHp;
 	
@@ -101,8 +104,7 @@ public class GameManager {
 	public void applyDamage(GameObject target, int damage)
 	{
 		target.hp = target.hp - damage;
-		System.out.println("공격");
-		System.out.println(target.hp);
+		System.out.println("공격결과 : " + target.hp);
 		if(target.hp <=0)
 		{
 			removeGameObject(target);
@@ -127,6 +129,16 @@ public class GameManager {
 	public void setCoin(int playerCoin)
 	{
 		this.playerCoin = playerCoin;
+	}
+
+	public int getBomb()
+	{
+		return playerBomb;
+	}
+	
+	public void setBomb(int playerBomb)
+	{
+		this.playerBomb = playerBomb;
 	}
 	
 	public int getUpDamage()
