@@ -3,7 +3,8 @@ package game;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 import javax.swing.ImageIcon;
@@ -33,7 +34,7 @@ public class GameMain extends JFrame implements Runnable{
 	 List<Item> itemsToRemove = new ArrayList<>(); // 아이템 일시 제거를 위한 리스트
 
 	 
-	
+	 
 	 
 	 private boolean isScrollPanelVisible = false; // 스크롤 패널이 표시되어야 하는지 여부
 	 private ScrollPanel scrollPanel; // 스크롤 패널
@@ -42,7 +43,8 @@ public class GameMain extends JFrame implements Runnable{
 	 private int[] ScrollIndex;
 	 //ex(1,3,9)
 	 
-	 
+
+	 private int scrollType;
 	 private boolean scroll_1_onMouse = false;
 	 private boolean scroll_2_onMouse = false;
 	 private boolean scroll_3_onMouse = false;
@@ -68,6 +70,11 @@ public class GameMain extends JFrame implements Runnable{
 	 int backY =0;
 	 int back2Y = backImg.getHeight(null);
 
+	 
+	    
+	 SelectPanel SelectPanel_1 = new SelectPanel(345,300,190,260,1);
+	 SelectPanel SelectPanel_2 = new SelectPanel(540,300,190,260,2);
+	 SelectPanel SelectPanel_3 = new SelectPanel(735,300,190,260,3);
 	
 	 public GameMain()
 	 {
@@ -101,11 +108,47 @@ public class GameMain extends JFrame implements Runnable{
 
 	        }
 	    };
+	    gamePanel.addMouseMotionListener(new MouseAdapter()
+	    {
+	    	public void mouseMoved(MouseEvent e)
+	    	{
+	    		if(!isScrollPanelVisible)
+	    		{
+	    			System.out.println("GamePanel Mouse Moved : " + e.getX() + ", " + e.getY());
+	    		}
+	    	}
+	    });
+	    
+	    
+	    
 	    scrollPanel = new ScrollPanel();
 	    scrollPanel.setBounds(340,100,600,600);
 	    scrollPanel.setVisible(false); // 초기에는 보이지 않도록 설정
-	    add(scrollPanel);
+
+
+
+	    scrollPanel.addMouseMotionListener(new MouseAdapter() {
+	    	public void mouseMoved(MouseEvent e)
+	    	{
+	    		/*
+	    		if (isScrollPanelVisible) {
+	                // Handle mouse movement in ScrollPanel
+	                System.out.println("ScrollPanel Mouse Moved: " + e.getX() + ", " + e.getY());
+	                System.out.println("스크롤 1 :" + scroll_1_onMouse);
+	                System.out.println("스크롤 2 :" + scroll_2_onMouse);
+	                System.out.println("스크롤 3 :" + scroll_3_onMouse);
+	                
+	            }
+	            */
+	    	}
+	    	
+	    });
 	    
+	   add(SelectPanel_1);
+	   add(SelectPanel_2);
+	   add(SelectPanel_3); 
+	   add(scrollPanel);
+	
 	    
 
 	    gamePanel.setBounds(x, 0, panelWidth, panelHeight);
@@ -158,6 +201,51 @@ public class GameMain extends JFrame implements Runnable{
 				EnemyProcess();
 				ItemProcess();
 				
+				// 게임 루프 안에서 각 패널의 상태 확인 // 더 수정해야함
+		        if (SelectPanel_1.type == 1) {
+		        	isScrollGet = false;
+		        	isScrollPanelVisible = false;
+		        	scrollPanel.setVisible(false);
+		            SelectPanel_1.setVisible(false);
+		            SelectPanel_2.setVisible(false);
+		            SelectPanel_3.setVisible(false);
+		            Ability(ScrollIndex[0]);
+		        }
+		        else if (SelectPanel_2.type == 2) {
+		        	isScrollGet = false;
+		        	isScrollPanelVisible = false;
+		        	scrollPanel.setVisible(false);
+		            SelectPanel_1.setVisible(false);
+		            SelectPanel_2.setVisible(false);
+		            SelectPanel_3.setVisible(false);
+		            Ability(ScrollIndex[1]);
+		        } 
+		        else if (SelectPanel_3.type == 3) {
+		        	isScrollGet = false;
+		        	isScrollPanelVisible = false;
+		        	scrollPanel.setVisible(false);
+		            SelectPanel_1.setVisible(false);
+		            SelectPanel_2.setVisible(false);
+		            SelectPanel_3.setVisible(false);
+		            Ability(ScrollIndex[2]);
+		        }
+		        else
+		        {
+		        	
+		        }
+		        
+				
+		        // 게임 루프 안에서 각 패널의 상태 확인
+		        if (SelectPanel_1.isMouseEntered()) {
+		            // SelectPanel_1에 대한 처리
+		        }
+		        else if (SelectPanel_2.isMouseEntered()) {
+		            // SelectPanel_2에 대한 처리
+		        } 
+		        else if (SelectPanel_3.isMouseEntered()) {
+		            // SelectPanel_3에 대한 처리
+		        }
+		        
 				
 				if(player.posX + player.width /2<0)
 				{
@@ -176,8 +264,7 @@ public class GameMain extends JFrame implements Runnable{
 				{
 					player.posY = frameHeight - player.height-30;
 				}
-				//System.out.println("플레이어 X좌요 : "+player.posX+" "
-				//	+ " 플레이어 Y좌표 : "+player.posY);
+
 				backY--;
 				back2Y--;
 				backY= backY-2;
@@ -198,16 +285,8 @@ public class GameMain extends JFrame implements Runnable{
 				if(gameCnt > 999999)
 				{
 					gameCnt = 0; 
-					System.out.println("초기화");
+					System.out.println("게임 타이머 초기화");
 				}
-				
-				if(ScrollIndex !=null)
-				{
-					System.out.println("ScrollIndex: " + Arrays.toString(ScrollIndex));
-
-				}
-								
-
 			
 			}
 		}catch (Exception e){}
@@ -223,7 +302,7 @@ public class GameMain extends JFrame implements Runnable{
 	         frame.setVisible(true);
 	         
 	         
-
+	        
 	        });
 	}
 	
@@ -336,9 +415,14 @@ public class GameMain extends JFrame implements Runnable{
 							{
 								isScrollPanelVisible = true;
 								scrollPanel.setVisible(true);
+								SelectPanel_1.setVisible(true);
+								SelectPanel_2.setVisible(true);
+								SelectPanel_3.setVisible(true);
 				                scrollPanel.generateRandomImages(); // 랜덤 이미지 생성
 				                ScrollIndex = scrollPanel.returnScroll();
 				                
+
+				               
 							}
 							
 			                repaint(); // 화면 갱신
@@ -408,11 +492,13 @@ class ScrollPanel extends JPanel {
 		        "Ability 10"       
 		    };
 
+    
     public ScrollPanel() {
     	setOpaque(false);
         randomImages = new ArrayList<>();
         setPreferredSize(new Dimension(200, 200)); // 적절한 크기로 설정
         
+  
     }
 
     public void generateRandomImages() {
