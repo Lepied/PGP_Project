@@ -126,7 +126,7 @@ public class GameMain extends JFrame implements Runnable{
 	    scrollPanel.setVisible(false); // 초기에는 보이지 않도록 설정
 
 
-
+	    
 	    scrollPanel.addMouseMotionListener(new MouseAdapter() {
 	    	public void mouseMoved(MouseEvent e)
 	    	{
@@ -143,6 +143,25 @@ public class GameMain extends JFrame implements Runnable{
 	    	}
 	    	
 	    });
+	    
+	    SelectPanel_1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	scrollType = SelectPanel_1.type;
+            }
+        });
+	    SelectPanel_2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	scrollType = SelectPanel_1.type;
+            }
+        });
+	    SelectPanel_3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	scrollType = SelectPanel_1.type;
+            }
+        });
 	    
 	   add(SelectPanel_1);
 	   add(SelectPanel_2);
@@ -202,7 +221,7 @@ public class GameMain extends JFrame implements Runnable{
 				ItemProcess();
 				
 				// 게임 루프 안에서 각 패널의 상태 확인 // 더 수정해야함
-		        if (SelectPanel_1.type == 1) {
+		        if (scrollType == 1) {
 		        	isScrollGet = false;
 		        	isScrollPanelVisible = false;
 		        	scrollPanel.setVisible(false);
@@ -210,8 +229,9 @@ public class GameMain extends JFrame implements Runnable{
 		            SelectPanel_2.setVisible(false);
 		            SelectPanel_3.setVisible(false);
 		            Ability(ScrollIndex[0]);
+		            scrollType = 0;  //다시 초기화
 		        }
-		        else if (SelectPanel_2.type == 2) {
+		        else if (scrollType== 2) {
 		        	isScrollGet = false;
 		        	isScrollPanelVisible = false;
 		        	scrollPanel.setVisible(false);
@@ -219,8 +239,9 @@ public class GameMain extends JFrame implements Runnable{
 		            SelectPanel_2.setVisible(false);
 		            SelectPanel_3.setVisible(false);
 		            Ability(ScrollIndex[1]);
+		            scrollType = 0;  //다시 초기화
 		        } 
-		        else if (SelectPanel_3.type == 3) {
+		        else if (scrollType== 3) {
 		        	isScrollGet = false;
 		        	isScrollPanelVisible = false;
 		        	scrollPanel.setVisible(false);
@@ -228,11 +249,9 @@ public class GameMain extends JFrame implements Runnable{
 		            SelectPanel_2.setVisible(false);
 		            SelectPanel_3.setVisible(false);
 		            Ability(ScrollIndex[2]);
+		            scrollType = 0;  //다시 초기화
 		        }
-		        else
-		        {
-		        	
-		        }
+
 		        
 				
 		        // 게임 루프 안에서 각 패널의 상태 확인
