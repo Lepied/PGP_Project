@@ -24,6 +24,7 @@ public class GameMain extends JFrame implements Runnable{
 	 
 	 Enemy en;
 	 Item item;
+	 List<Item> itemsToRemove = new ArrayList<>(); // 아이템 일시 제거를 위한 리스트
 	 
 	 private int gameCnt;
 	 
@@ -34,7 +35,7 @@ public class GameMain extends JFrame implements Runnable{
 	 Toolkit tk = Toolkit.getDefaultToolkit();
 
 	 int x,y;
-	 public int frameWidth = 600;
+	 public int frameWidth = 1280;
 	 public int frameHeight = 800;
 	 
 	 int coinSel = 0; //스프라이트 애니메이션
@@ -44,8 +45,7 @@ public class GameMain extends JFrame implements Runnable{
 	 int backY =0;
 	 int back2Y = backImg.getHeight(null);
 
-	 //임시 플레이어 데미지
-	 
+	
 	 public GameMain()
 	 {
 		 gameManager = GameManager.getInstance();
@@ -62,6 +62,10 @@ public class GameMain extends JFrame implements Runnable{
 	     setSize(frameWidth, frameHeight);
 	     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	     setLocationRelativeTo(null);
+	     
+		 int panelWidth = 600;
+		 int panelHeight = 800;
+		 int x = (frameWidth - panelWidth)/2;
 
 	     // 직접 JPanel을 생성하고 JFrame에 추가
 	     JPanel gamePanel = new JPanel() {
@@ -70,19 +74,18 @@ public class GameMain extends JFrame implements Runnable{
 
 	    	 	super.paintComponent(g);
 	    	 	drawDoubleBuffering();
-	    	 	g.drawImage(buffImage,0,0,this);
+	    	 	g.drawImage(buffImage,x,0,this);
 
 	        }
 	    };
+
+	    gamePanel.setBounds(x, 0, panelWidth, panelHeight);
 	    add(gamePanel);       
 	}
 	public void start()
 	{
 		x= 100;
 		y= 100;
-		frameWidth = 600;
-		frameHeight = 800;
-		
 	}
 	
 
@@ -130,9 +133,9 @@ public class GameMain extends JFrame implements Runnable{
 				{
 					player.posX = 0 - player.width/2 ;
 				}
-				else if(player.posX + player.width > frameWidth )
+				else if(player.posX + player.width > (frameWidth+x)/2-20 )
 				{
-					player.posX =  frameWidth - player.width;
+					player.posX = (frameWidth+x)/2 - player.width-20;
 				}
 				
 				if(player.posY + player.height / 2 < 0)
@@ -143,7 +146,8 @@ public class GameMain extends JFrame implements Runnable{
 				{
 					player.posY = frameHeight - player.height-30;
 				}
-				
+				//System.out.println("플레이어 X좌요 : "+player.posX+" "
+				//	+ " 플레이어 Y좌표 : "+player.posY);
 				backY--;
 				back2Y--;
 				backY= backY-2;
@@ -194,6 +198,7 @@ public class GameMain extends JFrame implements Runnable{
 			en.move();
 			if(en.posY >800)
 			{
+			
 				gameManager.getGameObjectList().remove(i);
 			}
 			
@@ -206,15 +211,17 @@ public class GameMain extends JFrame implements Runnable{
 		}
 		
 	}
+	
 	public void ItemProcess()
 	{
+	
 		for(int  i =0; i<gameManager.getItemList().size(); ++i)
 		{
 			item = (Item)(gameManager.getItemList().get(i));
 			item.move();
 			if(item.posY >800)
 			{
-				gameManager.getItemList().remove(i);
+				itemsToRemove.add(item);
 
 			}
 
@@ -222,7 +229,8 @@ public class GameMain extends JFrame implements Runnable{
 			{ 	
 				if(gameManager.isCollision(player, item)) 
 				{
-					gameManager.getItemList().remove(i); //아이템이 특정 경우 / 아마도 스레드상 i와 j가 겹치거나 하는 순간, 아이템이 여러개 동시에 획득되는 버그 있음.
+					itemsToRemove.add(item);
+					
 
 					switch(item.type)
 					{
@@ -243,8 +251,11 @@ public class GameMain extends JFrame implements Runnable{
 				}
 			}
 		}
+		gameManager.getItemList().removeAll(itemsToRemove);
+		itemsToRemove.clear();
 	
 	}
+	
 	
 	
 	public void Draw_Enemy()
