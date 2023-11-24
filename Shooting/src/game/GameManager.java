@@ -19,6 +19,8 @@ public class GameManager {
 	
 	private List<Item> itemList;
 	
+	private int scrollNum;
+	
 	private int itemPosX;
 	private int itemPosY;
 	
@@ -159,6 +161,17 @@ public class GameManager {
 	public void setPlayerDamage(int damage)
 	{
 		this.playerDamage = damage;
+	}
+	
+	
+	public int getScrollNum()
+	{
+		return scrollNum;
+	}
+	
+	public void setScrollNum(int scrollNum)
+	{
+		this.scrollNum = scrollNum;
 	}
 	
 

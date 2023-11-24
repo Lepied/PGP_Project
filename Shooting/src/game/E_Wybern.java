@@ -8,7 +8,7 @@ public class E_Wybern extends Enemy{
 	{
 		super(spawnPoint);
 		this.type = 1; // 일반 타입
-        this.hp = 200;
+        this.hp = 40;
         this.width = 35; //충돌관리 위한 이미지 너비 높이등
         this.height = 35;
         this.speed = 1;

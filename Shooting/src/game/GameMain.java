@@ -11,6 +11,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class GameMain extends JFrame implements Runnable{
 	 private Image playerImage;
 	 private Image playerBulletImage;
@@ -25,7 +31,24 @@ public class GameMain extends JFrame implements Runnable{
 	 Enemy en;
 	 Item item;
 	 List<Item> itemsToRemove = new ArrayList<>(); // 아이템 일시 제거를 위한 리스트
+
 	 
+	
+	 
+	 private boolean isScrollPanelVisible = false; // 스크롤 패널이 표시되어야 하는지 여부
+	 private ScrollPanel scrollPanel; // 스크롤 패널
+	 private boolean isScrollGet =false; 
+	 
+	 private int[] ScrollIndex;
+	 //ex(1,3,9)
+	 
+	 
+	 private boolean scroll_1_onMouse = false;
+	 private boolean scroll_2_onMouse = false;
+	 private boolean scroll_3_onMouse = false;
+	 
+	 
+
 	 private int gameCnt;
 	 
 	 Thread th;
@@ -78,6 +101,12 @@ public class GameMain extends JFrame implements Runnable{
 
 	        }
 	    };
+	    scrollPanel = new ScrollPanel();
+	    scrollPanel.setBounds(340,100,600,600);
+	    scrollPanel.setVisible(false); // 초기에는 보이지 않도록 설정
+	    add(scrollPanel);
+	    
+	    
 
 	    gamePanel.setBounds(x, 0, panelWidth, panelHeight);
 	    add(gamePanel);       
@@ -89,6 +118,7 @@ public class GameMain extends JFrame implements Runnable{
 	}
 	
 
+ 
 	 
 	private void drawDoubleBuffering()
 	{
@@ -171,6 +201,13 @@ public class GameMain extends JFrame implements Runnable{
 					System.out.println("초기화");
 				}
 				
+				if(ScrollIndex !=null)
+				{
+					System.out.println("ScrollIndex: " + Arrays.toString(ScrollIndex));
+
+				}
+								
+
 			
 			}
 		}catch (Exception e){}
@@ -189,6 +226,61 @@ public class GameMain extends JFrame implements Runnable{
 
 	        });
 	}
+	
+	
+	public void Ability(int ability) //능력리스트
+	{
+		switch(ability)
+		{
+			case 0: //플레이어데미지 강화
+				player.playerDamage = player.playerDamage + 10;
+				System.out.println("능력 0");
+				break;
+				
+			case 1: //플레이어 공격 속도 강화
+				if(player.attackSpeed > 30)
+				{
+					player.attackSpeed = player.attackSpeed - 10;
+				}
+				System.out.println("능력 1");
+				break;
+				
+			case 2: 
+				System.out.println("능력 2");
+				break;
+				
+			case 3:
+				System.out.println("능력 3");
+				break;
+				
+			case 4:
+				System.out.println("능력 4");
+				break;
+				
+			case 5:
+				System.out.println("능력 5");
+				break;
+				
+			case 6:
+				System.out.println("능력 6");
+				break;
+				
+			case 7:
+				System.out.println("능력 7");
+				break;
+				
+			case 8:
+				System.out.println("능력 8");
+				break;
+				
+			case 9:
+				System.out.println("능력 9");
+				break;
+				
+		
+		}
+	}
+
 	
 	public void EnemyProcess()
 	{
@@ -239,6 +331,17 @@ public class GameMain extends JFrame implements Runnable{
 							break;
 						case 2:
 							item.getScroll();
+							isScrollGet = true;
+							if(isScrollGet && !isScrollPanelVisible)
+							{
+								isScrollPanelVisible = true;
+								scrollPanel.setVisible(true);
+				                scrollPanel.generateRandomImages(); // 랜덤 이미지 생성
+				                ScrollIndex = scrollPanel.returnScroll();
+				                
+							}
+							
+			                repaint(); // 화면 갱신
 							break;
 						case 3:
 							if(player.bomb<3)
@@ -285,5 +388,84 @@ public class GameMain extends JFrame implements Runnable{
 		}
 	}
 
+}
+
+
+class ScrollPanel extends JPanel {
+    private List<Image> randomImages;
+    private int[] selectedIndexes = new int[3]; // 3칸짜리 배열 추가
+	public String[] scrollAbilities = { 
+		    	"Ability 0",
+		        "Ability 1",
+		        "Ability 2",
+		        "Ability 3",
+		        "Ability 4",
+		        "Ability 5",
+		        "Ability 6",
+		        "Ability 7",
+		        "Ability 8",
+		        "Ability 9",
+		        "Ability 10"       
+		    };
+
+    public ScrollPanel() {
+    	setOpaque(false);
+        randomImages = new ArrayList<>();
+        setPreferredSize(new Dimension(200, 200)); // 적절한 크기로 설정
+        
+    }
+
+    public void generateRandomImages() {
+    	SwingUtilities.invokeLater(() -> {
+        // 랜덤으로 이미지 선택 및 리스트에 추가
+    	
+    	randomImages.clear();
+        Random random = new Random();
+        
+        Set<Integer> usedIndexes = new HashSet<>(); // 중복을 방지하기 위한 Set
+        for (int i = 0; i < 3; i++) {
+            int randomIndex;
+            
+            do {
+                randomIndex = random.nextInt(11); //능력의 갯수만큼 이미지도 만들기
+            } while (usedIndexes.contains(randomIndex)); // 중복 체크
+
+            usedIndexes.add(randomIndex); // 사용된 인덱스 저장
+
+            selectedIndexes[i] = randomIndex; // 선택한 인덱스를 배열에 저장
+           
+            ImageIcon imageIcon = new ImageIcon("resourses/scrolls/CardShadow" + randomIndex + ".png");
+            Image image = imageIcon.getImage();
+            randomImages.add(image);
+            
+            String ability = scrollAbilities[randomIndex];
+            System.out.println("Scroll " + (i + 1) + ": " + ability);
+
+            
+            //이미지를 그린 순서대로 해야함
+            //세칸짜리 변수를 만들어두고 맨왼쪽 칸에 마우스가 위치하면 1번활성화, 가운데는 2번, 오른쪽은 3번활성화 해두고
+            //1번활성화 되어있을때는 첫번째 변수만 
+
+        }
+        repaint();
+        System.out.println("Selected Indexes: " + Arrays.toString(selectedIndexes));
+    	});
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // 리스트에 있는 이미지를 그림
+        int x = 15;
+        int y = 200;
+        for (Image image : randomImages) {
+            g.drawImage(image, x, y, this);
+            x += 190; // 이미지 사이의 간격 조절
+        }
+    }
+    public int[] returnScroll()
+    {
+    	return selectedIndexes;
+    }
 
 }

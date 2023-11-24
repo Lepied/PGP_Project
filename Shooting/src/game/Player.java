@@ -48,7 +48,7 @@ public class Player extends GameObject implements KeyListener {
         this.posY = 600;
         this.width = 35;
         this.height = 35;
-    	this.attackSpeed = 100;
+    	this.attackSpeed = 300;
   
     	this.bomb = 0;
     	this.bombDamage = 500;
