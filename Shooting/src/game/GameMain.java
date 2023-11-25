@@ -60,6 +60,7 @@ public class GameMain extends JFrame implements Runnable{
 	 Toolkit tk = Toolkit.getDefaultToolkit();
 
 	 int x,y;
+	 private int mouseX, mouseY; // 마우스의 좌표
 	 public int frameWidth = 1280;
 	 public int frameHeight = 800;
 	 
@@ -114,7 +115,12 @@ public class GameMain extends JFrame implements Runnable{
 	    	{
 	    		if(!isScrollPanelVisible)
 	    		{
+	    			mouseX = e.getX();
+	    			mouseY = e.getY();
 	    			System.out.println("GamePanel Mouse Moved : " + e.getX() + ", " + e.getY());
+	    			updateDirection();
+	    			
+	    			
 	    		}
 	    	}
 	    });
@@ -378,6 +384,19 @@ public class GameMain extends JFrame implements Runnable{
 		
 		}
 	}
+
+	private void updateDirection() { //교수님한테 여쭤보기
+        // 현재 객체의 좌표에서 마우스의 좌표를 기반으로 방향을 계산하고 설정
+		
+		//double angle = Math.atan2(mouseY - player.posY, mouseX - player.posX);
+		 double angle = Math.atan2((mouseY - player.posY) * 2, (mouseX - player.posX) * 2);
+        // 각도를 라디안에서 각도로 변환
+
+        //System.out.println("객체의 라디안: " + angle);
+        double degrees = Math.toDegrees(angle);
+        //System.out.println("마우스와 객체 간의 각도: " + degrees);
+        player.setAngle(angle);
+    }
 
 	
 	public void EnemyProcess()

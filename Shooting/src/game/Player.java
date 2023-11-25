@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 public class Player extends GameObject implements KeyListener {
@@ -15,6 +17,7 @@ public class Player extends GameObject implements KeyListener {
     
     boolean isAttack = false;
     boolean isBomb = false;
+    boolean isKeySlow =false;
 
     int playerHP = 100;
     int playerDamage;
@@ -39,7 +42,10 @@ public class Player extends GameObject implements KeyListener {
     int x =100;
     int y =100;
 
-	 
+    
+    private int mouseX, mouseY;
+	private double angle = 0;
+    
     public Player(int damage) {
     	this.playerDamage = damage;
         this.hp = playerHP;
@@ -58,8 +64,19 @@ public class Player extends GameObject implements KeyListener {
       
         this.lastAttackTime = System.currentTimeMillis();
         this.lastBombTime = System.currentTimeMillis();
-        
+
+       
     }
+    
+    public void setAngle(double angle)
+    {
+    	this.angle =angle;
+    }
+    public double getAngle()
+    {
+    	return angle;
+    }
+    
 
     public void move(int dx, int dy) {
     	posX += dx;
@@ -67,7 +84,13 @@ public class Player extends GameObject implements KeyListener {
     }
 
     public void draw(Graphics g) {
+  
         g.drawImage(img, posX, posY, null);
+      	if(isKeySlow)
+    	{
+    		g.fillRoundRect(posX+width/2-5, posY+height/2-5, 10, 10, 3, 3);
+    		g.setColor(Color.RED);
+    	}
     }
     public void drawBullet(Graphics g)
     {
@@ -107,6 +130,9 @@ public class Player extends GameObject implements KeyListener {
 			case KeyEvent.VK_F :
 				isBomb = true;
 				break;
+			case KeyEvent.VK_SHIFT:
+				isKeySlow = true;
+				break;
 		}
 	}
 
@@ -129,6 +155,9 @@ public class Player extends GameObject implements KeyListener {
 			case KeyEvent.VK_SPACE :
 				isAttack = false;
 				break;
+			case KeyEvent.VK_SHIFT:
+				isKeySlow = false;
+				break;
 
 		}
 	}
@@ -138,10 +167,21 @@ public class Player extends GameObject implements KeyListener {
 		//위에서 받아들인 키값을 바탕으로
 		//키 입력시마다 5만큼의 이동을 시킨다.
 		
-		if(KeyUp == true) posY -= speed;
-		if(KeyDown == true) posY += speed;
-		if(KeyLeft == true) posX -= speed;
-		if(KeyRight == true) posX += speed;
+		if(isKeySlow)
+		{
+			if(KeyUp == true) posY -= speed/2;
+			if(KeyDown == true) posY += speed/2;
+			if(KeyLeft == true) posX -= speed/2;
+			if(KeyRight == true) posX += speed/2;
+		}
+		else 
+		{
+			if(KeyUp == true) posY -= speed;
+			if(KeyDown == true) posY += speed;
+			if(KeyLeft == true) posX -= speed;
+			if(KeyRight == true) posX += speed;
+		}
+
 		
 		if(isAttack == true)
 		{
@@ -164,7 +204,7 @@ public class Player extends GameObject implements KeyListener {
 	{
 		if(isAttack && System.currentTimeMillis() - lastAttackTime > attackSpeed)
 		{
-			bullet = new Bullet(posX,posY-65,5,1);
+			bullet = new Bullet(posX,posY-65,5,1,angle);
 			Bullet_List.add(bullet);
 			lastAttackTime = System.currentTimeMillis();
 		}
@@ -218,4 +258,8 @@ public class Player extends GameObject implements KeyListener {
 		
 	
 	}
+
+
+
+
 }

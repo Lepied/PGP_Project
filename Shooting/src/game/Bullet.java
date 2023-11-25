@@ -10,11 +10,14 @@ public class Bullet extends GameObject {
 	int speed;
 	int type;
 	
-	Bullet(int posX, int posY, int speed, int type)
+	private double direction;
+	
+	Bullet(int posX, int posY, int speed, int type, double direction)
 	{
 		this.type = type;
 		this.speed = speed;
 		pos = new Point(posX,posY);
+		this.direction = direction;
 		if(this.type == 1)
 		{
 			this.img = tk.getImage("resourses/sprites/EFX.png");
@@ -24,6 +27,13 @@ public class Bullet extends GameObject {
 	}
 	public void move()
 	{
+		
+		//일단 위로만 가게 냅두기. 정안되면 평소엔 위로, 
+		//특정 총알 모드일때는 마우스위치로 날아가고, 도착하면 사라지게
+		
+		//pos.x += (double)(speed * Math.cos(direction));
+		//pos.y += (double)(speed * Math.sin(direction));
+
 		if(type == 1)
 		{
 			pos.y-=10;
@@ -32,6 +42,7 @@ public class Bullet extends GameObject {
 		{
 			pos.y-=10;
 		}
+
 	}
 	public void draw(Graphics g)
 	{
