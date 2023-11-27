@@ -7,6 +7,7 @@ public class GameManager {
 	
 	private static GameManager instance;
 	
+	Player player;
 	private int Score;     //스코어 또한 따로 저장용도, 게임이 끝나면 초기화 되야 함
 	private int playerCoin;
 	private int playerBomb;  // 폭탄 갯수자체는 게임이 끝나면 초기화 시켜야 함.
@@ -48,20 +49,29 @@ public class GameManager {
 		}
 		return instance;
 	}
-	
-	public void addGameObject(GameObject gameObject)
+	public void setPlayer(Player player)
 	{
-		gameObjectList.add(gameObject);
+		this.player = player;
 	}
-	public void removeGameObject(GameObject gameObject)
+	public Player getPlayer()
 	{
-		gameObjectList.remove(gameObject);
+		return player;
+	}
+	public void addEnemy(Enemy enemy)
+	{
+		gameObjectList.add(enemy);
+	}
+	public void removeEnemy(Enemy enemy)
+	{
+		gameObjectList.remove(enemy);
 	}
 	
 	public List<GameObject> getGameObjectList()
 	{
 		return gameObjectList;
 	}
+	
+
 
 	
 	public void addItem(Item item)
@@ -103,13 +113,26 @@ public class GameManager {
 		
 		return isBulletCrushed;
 	}
-	public void applyDamage(GameObject target, int damage)
+	
+	public boolean isEnBulletCollision(EnemyBullet obj1, GameObject obj2)
+	{
+		boolean isEnBulletCrushed = false;
+		if(Math.abs((obj1.pos.x + obj1.width/2) - (obj2.posX + obj1.width/2)) < (obj2.width/2 + obj1.width/2) 
+				&& Math.abs((obj1.pos.y + obj1.height / 2) - (obj2.posY + obj2.height/2)) < (obj2.height/2 + obj1.height/2))
+		{
+			isEnBulletCrushed = true;
+		}
+		else isEnBulletCrushed = false;
+		
+		return isEnBulletCrushed;
+	}
+	public void applyDamage(Enemy target, int damage)
 	{
 		target.hp = target.hp - damage;
 		System.out.println("공격결과 : " + target.hp);
 		if(target.hp <=0)
 		{
-			removeGameObject(target);
+			removeEnemy(target);
 			
 			double randomValue = Math.random(); // 0~1.0
 			if (randomValue < 0.1) { // 10%

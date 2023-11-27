@@ -5,19 +5,19 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 
-public class Bullet extends GameObject {
+public class EnemyBullet extends GameObject {
 	Point pos;
 	int speed;
 	int type;
 	
 	private double direction;
 	
-	Bullet(int posX, int posY, int speed, int type, double direction)
+	EnemyBullet(int posX, int posY, int speed, int type)
 	{
 		this.type = type;
 		this.speed = speed;
 		pos = new Point(posX,posY);
-		this.direction = direction;
+		//this.direction = direction;
 		if(this.type == 1)
 		{
 			this.img = tk.getImage("resourses/sprites/EFX.png");
@@ -28,21 +28,17 @@ public class Bullet extends GameObject {
 	public void move()
 	{
 		
-		//일단 위로만 가게 냅두기. 정안되면 평소엔 위로, 
-		//특정 총알 모드일때는 마우스위치로 날아가고, 도착하면 사라지게
-		
-		pos.x += (double)(speed * Math.cos(direction));
-		pos.y -= (double)(speed * Math.sin(direction));
-		/*
+		//pos.x += (double)(speed * Math.cos(direction));
+		//pos.y += (double)(speed * Math.sin(direction));
+
 		if(type == 1)
 		{
-			pos.y-=10;
+			pos.y+=3;
 		}
 		else if(type == 2)
 		{
-			pos.y-=10;
+			pos.y+=3;
 		}
-		*/
 
 	}
 	public void draw(Graphics g)

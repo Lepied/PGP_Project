@@ -13,6 +13,7 @@ public class E_Wybern extends Enemy{
         this.height = 35;
         this.speed = 1;
         this.img = tk.getImage("resourses/sprites/f2.jpg");
+        this.attackSpeed = 5000;
         
         if (spawnPoint == 1) {
             this.posX = 300;

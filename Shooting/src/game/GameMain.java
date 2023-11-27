@@ -32,7 +32,9 @@ public class GameMain extends JFrame implements Runnable{
 	 Enemy en;
 	 Item item;
 	 List<Item> itemsToRemove = new ArrayList<>(); // 아이템 일시 제거를 위한 리스트
-
+	 
+	 EnemyBullet enBullet;
+	 ArrayList Enemy_Bullet_List = new ArrayList(); //적 총알 리스트
 	 
 	 
 	 
@@ -81,8 +83,10 @@ public class GameMain extends JFrame implements Runnable{
 	 {
 		 gameManager = GameManager.getInstance();
 		 animator = Animator.getInstance();
-		 
 		 player = new Player(gameManager.getPlayerDamage());
+	     gameManager.setPlayer(player);
+		 
+		 
 		 addKeyListener(player);
 		 th = new Thread(this); 
 		 th.start();
@@ -115,7 +119,7 @@ public class GameMain extends JFrame implements Runnable{
 	    	{
 	    		if(!isScrollPanelVisible)
 	    		{
-	    			mouseX = e.getX();
+	    			mouseX = e.getX()-x;
 	    			mouseY = e.getY();
 	    			System.out.println("GamePanel Mouse Moved : " + e.getX() + ", " + e.getY());
 	    			updateDirection();
@@ -154,18 +158,21 @@ public class GameMain extends JFrame implements Runnable{
             @Override
             public void mouseClicked(MouseEvent e) {
             	scrollType = SelectPanel_1.type;
+            	System.out.println("1번 선택됨");
             }
         });
 	    SelectPanel_2.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
             	scrollType = SelectPanel_1.type;
+            	System.out.println("2번 선택됨");
             }
         });
 	    SelectPanel_3.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
             	scrollType = SelectPanel_1.type;
+            	System.out.println("3번 선택됨");
             }
         });
 	    
@@ -210,6 +217,8 @@ public class GameMain extends JFrame implements Runnable{
         player.draw(buffg);
         player.drawBullet(buffg);
         
+
+       
         Draw_Enemy();
         Draw_Item();
 	}
@@ -225,6 +234,7 @@ public class GameMain extends JFrame implements Runnable{
 				player.BulletProcess();
 				EnemyProcess();
 				ItemProcess();
+			
 				
 				// 게임 루프 안에서 각 패널의 상태 확인 // 더 수정해야함
 		        if (scrollType == 1) {
@@ -388,11 +398,12 @@ public class GameMain extends JFrame implements Runnable{
 	private void updateDirection() { //교수님한테 여쭤보기
         // 현재 객체의 좌표에서 마우스의 좌표를 기반으로 방향을 계산하고 설정
 		
-		//double angle = Math.atan2(mouseY - player.posY, mouseX - player.posX);
-		 double angle = Math.atan2((mouseY - player.posY) * 2, (mouseX - player.posX) * 2);
+		double angle = Math.atan2(player.posY - mouseY, mouseX - player.posX);
+		//double angle = Math.atan2(player.posY - mouseY, mouseX - player.posX);
+		//double angle = Math.atan2((mouseY - player.posY) * 2, (mouseX - player.posX) * 2);
         // 각도를 라디안에서 각도로 변환
 
-        //System.out.println("객체의 라디안: " + angle);
+        System.out.println("객체의 라디안: " + angle);
         double degrees = Math.toDegrees(angle);
         //System.out.println("마우스와 객체 간의 각도: " + degrees);
         player.setAngle(angle);
@@ -405,6 +416,9 @@ public class GameMain extends JFrame implements Runnable{
 		{
 			en = (Enemy)(gameManager.getGameObjectList().get(i));
 			en.move();
+			en.BulletProcess();
+	        
+	        
 			if(en.posY >800)
 			{
 			
@@ -489,8 +503,19 @@ public class GameMain extends JFrame implements Runnable{
 		{
 			en = (Enemy)(gameManager.getGameObjectList().get(i));
 			buffg.drawImage(en.img, en.posX,en.posY,this);
+			en.Draw_EnemyBullet(buffg);
 		}
 	}
+    public void Draw_EnemyBullet()
+    {
+    	for(int  i=0; i<gameManager.getGameObjectList().size(); ++i)	
+    	{
+    		    en = (Enemy)(gameManager.getGameObjectList().get(i));
+        		en.Draw_EnemyBullet(buffg);
+    	}
+   
+    }
+	
 	public void Draw_Item()
 	{
 		for(int i =0; i<gameManager.getItemList().size(); ++i)

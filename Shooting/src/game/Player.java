@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
 public class Player extends GameObject implements KeyListener {
@@ -47,6 +48,7 @@ public class Player extends GameObject implements KeyListener {
 	private double angle = 0;
     
     public Player(int damage) {
+
     	this.playerDamage = damage;
         this.hp = playerHP;
         this.speed = 10;
@@ -213,10 +215,14 @@ public class Player extends GameObject implements KeyListener {
 			bullet =(Bullet)(Bullet_List.get(i));
 			bullet.move();
 			
+			
+			//화면 밖으로 나가면 제거
 			if(bullet.pos.y < 0)
 			{
 				Bullet_List.remove(i);
 			}
+			
+			
 			for(int j=0; j<GameManager.getInstance().getGameObjectList().size(); ++j)
 			{ 	
 				en = (Enemy) GameManager.getInstance().getGameObjectList().get(j);
