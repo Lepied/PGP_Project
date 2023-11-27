@@ -1,6 +1,8 @@
-package game;
+package Unit;
 
 import java.awt.Graphics;
+
+import game.Enemy;
 
 public class E_Wybern extends Enemy{
 

@@ -8,12 +8,16 @@ import javax.swing.JPanel;
 public class SelectPanel extends JPanel {
     private boolean isMouseEntered = false;
     public int type;
-    public SelectPanel(int x, int y, int width, int height, int num) {
+    
+    private GameMain gameMain;
+    
+    public SelectPanel(int x, int y, int width, int height, int num, GameMain gameMain) {
         setBounds(x, y, width, height);
         setVisible(false);
         setOpaque(false);
         
         this.type = num;
+        this.gameMain = gameMain;
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -29,6 +33,7 @@ public class SelectPanel extends JPanel {
             
             public void mouseClicked(MouseEvent e) {
                 handleMouseClick();
+              
             }
         });
     }
@@ -39,6 +44,9 @@ public class SelectPanel extends JPanel {
     
     public void handleMouseClick() {
         System.out.println("패널이 클릭되었습니다");
-        // 패널을 클릭했을 때 수행할 동작을 여기에 추가
+        if(gameMain != null)
+        {
+        	gameMain.resumeGame();
+        }
     }
 }
