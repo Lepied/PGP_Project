@@ -29,6 +29,8 @@ public class GameMain extends JFrame implements Runnable{
 	 GameManager gameManager;
 	 Animator animator;
 	 
+	 boolean canCh1BossSpawn= true; //게임타이머관리용 보스소환가능한상태?
+	 
 	 Enemy en;
 	 Item item;
 	 List<Item> itemsToRemove = new ArrayList<>(); // 아이템 일시 제거를 위한 리스트
@@ -426,13 +428,21 @@ public class GameMain extends JFrame implements Runnable{
 			}
 			
 		}
-		if(gameCnt%300 ==0) {
+		if(canCh1BossSpawn == true &&    gameCnt<1000 && gameCnt%300 ==0) {
 			en = new E_Wybern(1);
 			en = new E_Wybern(2);
 			en = new E_Wybern(3);
+			
 
 		}
 		
+		if(gameCnt>1200 && canCh1BossSpawn)
+		{
+			canCh1BossSpawn = false;
+			en = new Ch1Boss(2);
+			gameCnt = 0; // 게임카운트 초기화해서 보스전돌입
+		}
+
 	}
 	
 	public void ItemProcess()

@@ -25,7 +25,17 @@ public class Enemy extends GameObject {
 	
 	
     public void move() {
-    	posY += speed;
+    	if(this.type == 1)
+    	{
+        	posY += speed;
+    	}
+    	if(this.type == 3)
+    	{
+    		if(posY <100)
+    		{
+    			posY +=speed;
+    		}
+    	}
     }
     
     public void draw(Graphics g) {
