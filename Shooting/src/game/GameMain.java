@@ -12,6 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import Unit.Ch1Boss;
+import Unit.E_Wybern;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -24,10 +27,12 @@ public class GameMain extends JFrame implements Runnable{
 	 private Image enemyImage;
 	 private Image enemyBulletImage;
 	 
-	 
+	 private boolean paused = false;
 	 private Player player;
 	 GameManager gameManager;
 	 Animator animator;
+	 
+	 boolean canCh1BossSpawn= true; //게임타이머관리용 보스소환가능한상태?
 	 
 	 Enemy en;
 	 Item item;
@@ -75,9 +80,9 @@ public class GameMain extends JFrame implements Runnable{
 
 	 
 	    
-	 SelectPanel SelectPanel_1 = new SelectPanel(345,300,190,260,1);
-	 SelectPanel SelectPanel_2 = new SelectPanel(540,300,190,260,2);
-	 SelectPanel SelectPanel_3 = new SelectPanel(735,300,190,260,3);
+	 SelectPanel SelectPanel_1 = new SelectPanel(345,300,190,260,1,this);
+	 SelectPanel SelectPanel_2 = new SelectPanel(540,300,190,260,2,this);
+	 SelectPanel SelectPanel_3 = new SelectPanel(735,300,190,260,3,this);
 	
 	 public GameMain()
 	 {
@@ -121,7 +126,6 @@ public class GameMain extends JFrame implements Runnable{
 	    		{
 	    			mouseX = e.getX()-x;
 	    			mouseY = e.getY();
-	    			System.out.println("GamePanel Mouse Moved : " + e.getX() + ", " + e.getY());
 	    			updateDirection();
 	    			
 	    			
@@ -228,6 +232,13 @@ public class GameMain extends JFrame implements Runnable{
 		 
 		try{ // 예외옵션 설정으로 에러 방지
 			while(true){ // while 문으로 무한 루프 시키기
+				synchronized(this)
+				{
+					while(paused)
+					{
+						wait();
+					}
+				}
 				repaint();
 
 				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
@@ -245,6 +256,7 @@ public class GameMain extends JFrame implements Runnable{
 		            SelectPanel_2.setVisible(false);
 		            SelectPanel_3.setVisible(false);
 		            Ability(ScrollIndex[0]);
+		            resumeGame();
 		            scrollType = 0;  //다시 초기화
 		        }
 		        else if (scrollType== 2) {
@@ -255,6 +267,7 @@ public class GameMain extends JFrame implements Runnable{
 		            SelectPanel_2.setVisible(false);
 		            SelectPanel_3.setVisible(false);
 		            Ability(ScrollIndex[1]);
+		            resumeGame();
 		            scrollType = 0;  //다시 초기화
 		        } 
 		        else if (scrollType== 3) {
@@ -265,6 +278,7 @@ public class GameMain extends JFrame implements Runnable{
 		            SelectPanel_2.setVisible(false);
 		            SelectPanel_3.setVisible(false);
 		            Ability(ScrollIndex[2]);
+		            resumeGame();
 		            scrollType = 0;  //다시 초기화
 		        }
 
@@ -395,17 +409,10 @@ public class GameMain extends JFrame implements Runnable{
 		}
 	}
 
-	private void updateDirection() { //교수님한테 여쭤보기
-        // 현재 객체의 좌표에서 마우스의 좌표를 기반으로 방향을 계산하고 설정
+	private void updateDirection() {
 		
 		double angle = Math.atan2(player.posY - mouseY, mouseX - player.posX);
-		//double angle = Math.atan2(player.posY - mouseY, mouseX - player.posX);
-		//double angle = Math.atan2((mouseY - player.posY) * 2, (mouseX - player.posX) * 2);
-        // 각도를 라디안에서 각도로 변환
 
-        System.out.println("객체의 라디안: " + angle);
-        double degrees = Math.toDegrees(angle);
-        //System.out.println("마우스와 객체 간의 각도: " + degrees);
         player.setAngle(angle);
     }
 
@@ -426,13 +433,21 @@ public class GameMain extends JFrame implements Runnable{
 			}
 			
 		}
-		if(gameCnt%300 ==0) {
+		if(canCh1BossSpawn == true &&    gameCnt<1000 && gameCnt%300 ==0) {
 			en = new E_Wybern(1);
 			en = new E_Wybern(2);
 			en = new E_Wybern(3);
+			
 
 		}
 		
+		if(gameCnt>1200 && canCh1BossSpawn)
+		{
+			canCh1BossSpawn = false;
+			en = new Ch1Boss(2);
+			gameCnt = 0; // 게임카운트 초기화해서 보스전돌입
+		}
+
 	}
 	
 	public void ItemProcess()
@@ -465,6 +480,7 @@ public class GameMain extends JFrame implements Runnable{
 							isScrollGet = true;
 							if(isScrollGet && !isScrollPanelVisible)
 							{
+								pauseGame();
 								isScrollPanelVisible = true;
 								scrollPanel.setVisible(true);
 								SelectPanel_1.setVisible(true);
@@ -535,6 +551,15 @@ public class GameMain extends JFrame implements Runnable{
 		}
 	}
 
+	public synchronized void pauseGame() 
+	{
+		paused = true;
+	}
+	public synchronized void resumeGame()
+	{
+		paused = false;
+		notify();
+	}
 }
 
 
