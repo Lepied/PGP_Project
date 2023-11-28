@@ -33,6 +33,7 @@ public class GameMain extends JFrame implements Runnable{
 	 Animator animator;
 	 
 	 boolean canCh1BossSpawn= true; //게임타이머관리용 보스소환가능한상태?
+
 	 
 	 Enemy en;
 	 Item item;
@@ -45,6 +46,8 @@ public class GameMain extends JFrame implements Runnable{
 	 
 	 private boolean isScrollPanelVisible = false; // 스크롤 패널이 표시되어야 하는지 여부
 	 private ScrollPanel scrollPanel; // 스크롤 패널
+	 public BossUI Ch1BossUI; 
+	 
 	 private boolean isScrollGet =false; 
 	 
 	 private int[] ScrollIndex;
@@ -83,6 +86,8 @@ public class GameMain extends JFrame implements Runnable{
 	 SelectPanel SelectPanel_1 = new SelectPanel(345,300,190,260,1,this);
 	 SelectPanel SelectPanel_2 = new SelectPanel(540,300,190,260,2,this);
 	 SelectPanel SelectPanel_3 = new SelectPanel(735,300,190,260,3,this);
+	 
+
 	
 	 public GameMain()
 	 {
@@ -139,7 +144,7 @@ public class GameMain extends JFrame implements Runnable{
 	    scrollPanel.setBounds(340,100,600,600);
 	    scrollPanel.setVisible(false); // 초기에는 보이지 않도록 설정
 
-
+	    			
 	    
 	    scrollPanel.addMouseMotionListener(new MouseAdapter() {
 	    	public void mouseMoved(MouseEvent e)
@@ -180,10 +185,15 @@ public class GameMain extends JFrame implements Runnable{
             }
         });
 	    
+	   Ch1BossUI = new BossUI(340,0,600,50,this); 
+	    
 	   add(SelectPanel_1);
 	   add(SelectPanel_2);
 	   add(SelectPanel_3); 
 	   add(scrollPanel);
+	   
+	   
+	   add(Ch1BossUI);
 	
 	    
 
@@ -242,10 +252,10 @@ public class GameMain extends JFrame implements Runnable{
 				repaint();
 
 				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
-				player.BulletProcess();
-				EnemyProcess();
-				ItemProcess();
-			
+				player.BulletProcess(); //플레이어 총알
+				EnemyProcess(); //적 매커니즘, 스폰 등
+				ItemProcess(); // 아이템 매커니즘
+				VisibleBossUI(); // 보스 UI 보이기
 				
 				// 게임 루프 안에서 각 패널의 상태 확인 // 더 수정해야함
 		        if (scrollType == 1) {
@@ -422,8 +432,14 @@ public class GameMain extends JFrame implements Runnable{
 		for(int  i =0; i<gameManager.getGameObjectList().size(); ++i)
 		{
 			en = (Enemy)(gameManager.getGameObjectList().get(i));
+			if(en.type==3)
+			{
+				gameManager.isBossNow =true;
+				Ch1BossUI.updateHealth(en.hp, en.maxHealth);
+			}
 			en.move();
 			en.BulletProcess();
+
 	        
 	        
 			if(en.posY >800)
@@ -433,6 +449,7 @@ public class GameMain extends JFrame implements Runnable{
 			}
 			
 		}
+		/*
 		if(canCh1BossSpawn == true &&    gameCnt<1000 && gameCnt%300 ==0) {
 			en = new E_Wybern(1);
 			en = new E_Wybern(2);
@@ -440,14 +457,30 @@ public class GameMain extends JFrame implements Runnable{
 			
 
 		}
+		*/
 		
-		if(gameCnt>1200 && canCh1BossSpawn)
+		if(gameCnt>200 && canCh1BossSpawn)
 		{
+			
 			canCh1BossSpawn = false;
 			en = new Ch1Boss(2);
 			gameCnt = 0; // 게임카운트 초기화해서 보스전돌입
 		}
 
+	}
+	public void VisibleBossUI()
+	{
+		SwingUtilities.invokeLater(() -> {
+		if(!GameManager.getInstance().isBossNow)
+		{
+			Ch1BossUI.setVisible(false);
+		}
+		
+		if(GameManager.getInstance().isBossNow)
+		{				
+			Ch1BossUI.setVisible(true);
+		}
+		});
 	}
 	
 	public void ItemProcess()

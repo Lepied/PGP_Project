@@ -26,6 +26,8 @@ public class GameManager {
 	private int itemPosY;
 	
 	private int playerDamage = 20;
+	
+	public boolean isBossNow= false;
 
 	
 	
@@ -132,7 +134,13 @@ public class GameManager {
 		System.out.println("공격결과 : " + target.hp);
 		if(target.hp <=0)
 		{
+			if(target.type == 3)
+			{
+				isBossNow = false;
+				System.out.println("보스전종료");
+			}
 			removeEnemy(target);
+			
 			
 			double randomValue = Math.random(); // 0~1.0
 			if (randomValue < 0.1) { // 10%

@@ -6,11 +6,14 @@ import java.util.ArrayList;
 
 public class Enemy extends GameObject {
 	
+	public int maxHealth; // 변하지 않는 최대체력
 	public int type;  // 적의 타입, 엘리트인지 일반몹인지
 	public int bulletType; // 적의 공격타입, 산탄형, 단발형 등
 	public int spawnPoint;
 	public int attackSpeed; //공격딜레이
 	private long lastAttackTime; // 공격시간 저장 변수
+	
+	
 	
 	EnemyBullet enBullet;
 	Player player; // 임시 플레이어
@@ -21,6 +24,7 @@ public class Enemy extends GameObject {
 		super();
 		this.spawnPoint = spawnPoint;
 		GameManager.getInstance().addEnemy(this);
+
 	}
 	
 	
