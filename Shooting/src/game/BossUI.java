@@ -1,8 +1,10 @@
 package game;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 
 
@@ -16,7 +18,7 @@ public class BossUI extends JPanel {
 	
 	
     public BossUI(int x, int y, int width, int height, GameMain gameMain) {
-        setBounds(x, y, width, height);
+        setBounds(x, y, width, height+10);
         setVisible(false);
         setOpaque(false);
         
@@ -29,8 +31,8 @@ public class BossUI extends JPanel {
         		super.paintComponent(g);
         		ImageIcon backgroundIcon = new ImageIcon("resourses/sprites/Healthbar.png");
         		Image backgroundImg = backgroundIcon.getImage();
-
-        		g.drawImage(backgroundImg,0,0, getWidth(), getHeight(),this);
+                
+        		g.drawImage(backgroundImg,0,-5, getWidth(), getHeight()+5,this);
         	}
         	
         };
@@ -43,12 +45,18 @@ public class BossUI extends JPanel {
         ImageIcon fillIcon = new ImageIcon("resourses/sprites/Healthbar_HP.png");
         Image fillImg = fillIcon.getImage();
         healthBar.setUI(new ProgressBarUI(null,fillImg));
-        healthBar.setPreferredSize(new Dimension(500, 40 ));
+        healthBar.setPreferredSize(new Dimension(500, 25 ));    
         healthBar.setBackground(new Color(0, 0, 0, 0));
+        healthBar.setBorderPainted(false);
+
 
         
+
         add(bgPanel);
-        add(healthBar);
+        bgPanel.add(healthBar);
+        
+ 
+       
 
     }
     

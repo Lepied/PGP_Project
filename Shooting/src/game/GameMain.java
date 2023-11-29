@@ -185,7 +185,7 @@ public class GameMain extends JFrame implements Runnable{
             }
         });
 	    
-	   Ch1BossUI = new BossUI(340,0,600,50,this); 
+	   Ch1BossUI = new BossUI(340,-5,600,50,this); 
 	    
 	   add(SelectPanel_1);
 	   add(SelectPanel_2);
