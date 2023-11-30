@@ -30,7 +30,13 @@ public class Player extends GameObject implements KeyListener {
     private long lastAttackTime; // 공격시간 저장 변수
     private long lastBombTime; // 폭탄 지연시간
     
+    private Timer animationTimer;
+    private int currentFrame  = 0;
+    private int totalFrames = 8;
+    private ImageIcon[] playerSprites ;
     GameManager gameManager;
+    
+
     
 	 //임시 총알
 	ArrayList Bullet_List = new ArrayList();
@@ -67,11 +73,18 @@ public class Player extends GameObject implements KeyListener {
     	this.bombDamage = 500;
     	this.bombDelay = 100;
     	
-        this.img = tk.getImage("resourses/sprites/f2.jpg");
+    	playerSprites = new ImageIcon[totalFrames];
+    	for(int i = 0; i<totalFrames; i++)
+    	{
+    		playerSprites[i] = new ImageIcon("resourses/sprites/Player/PlayableCharacter-Sheet"+(i+1)+".png");
+    	}
+        //this.img = tk.getImage("resourses/sprites/Player/PlayableCharacter-Sheet1.png");
+    	animationTimer = new Timer(100,e->updateAnimation());
+    	animationTimer.start();
       
         this.lastAttackTime = System.currentTimeMillis();
         this.lastBombTime = System.currentTimeMillis();
-
+ 
        
     }
     
@@ -95,8 +108,9 @@ public class Player extends GameObject implements KeyListener {
         g.drawImage(img, posX, posY, null);
       	if(isKeySlow)
     	{
-    		g.fillRoundRect(posX+width/2-5, posY+height/2-5, 10, 10, 3, 3);
-    		g.setColor(Color.RED);
+      		
+    		g.drawRoundRect(posX+width/2-5, posY+height/2-5, 10, 10, 3, 3);
+    		g.setColor(Color.red);
     	}
     }
     public void drawBullet(Graphics g)
@@ -189,7 +203,7 @@ public class Player extends GameObject implements KeyListener {
 			if(KeyRight == true) posX += speed;
 		}
 
-		
+		/*
 		if(isAttack == true)
 		{
 			this.img = tk.getImage("resourses/sprites/2222.jpg");
@@ -198,6 +212,7 @@ public class Player extends GameObject implements KeyListener {
 		{
 			this.img = tk.getImage("resourses/sprites/f2.jpg");
 		}
+		*/
 		
 		if(isBomb == true)
 		{
@@ -206,6 +221,11 @@ public class Player extends GameObject implements KeyListener {
 		}
 			
 	}
+    private void updateAnimation() {
+        currentFrame = (currentFrame + 1) % totalFrames;
+        this.img = playerSprites[currentFrame].getImage();
+
+    }
 	
 	public void BulletProcess()
 	{
