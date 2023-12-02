@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -10,7 +11,7 @@ public class EnemyBullet extends GameObject {
 	int speed;
 	int type;
 	
-	private double direction;
+	double direction;
 	
 	EnemyBullet(int posX, int posY, int speed, int type, int angle)
 	{
@@ -21,7 +22,7 @@ public class EnemyBullet extends GameObject {
 		this.direction = Math.toRadians(angle);
 		if(this.type == 1)
 		{
-			this.img = tk.getImage("resourses/sprites/EFX.png");
+			this.img = tk.getImage("resourses/sprites/Fireball.png");
 		    this.width = 20;
 		    this.height = 30;
 		}
@@ -46,7 +47,14 @@ public class EnemyBullet extends GameObject {
 	}
 	public void draw(Graphics g)
 	{
-		g.drawImage(img, posX, posY, null);
+	    Graphics2D g2d = (Graphics2D) g.create();
+
+	    // 이미지를 각도에 따라 회전
+	    g2d.rotate(direction, pos.x + width / 2, pos.y + height / 2);
+
+	    g2d.drawImage(img, pos.x, pos.y, width, height, null);
+
+	    g2d.dispose();
 	}
 
 

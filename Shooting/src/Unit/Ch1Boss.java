@@ -21,6 +21,7 @@ public class Ch1Boss extends Enemy{
         this.bulletType = 3;
         this.posX = 300;
         this.posY = 10;
+        this.Pattern = 1;
 	}
 
     public void draw(Graphics g) {

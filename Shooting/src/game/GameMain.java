@@ -47,6 +47,8 @@ public class GameMain extends JFrame implements Runnable{
 	 private boolean isScrollPanelVisible = false; // 스크롤 패널이 표시되어야 하는지 여부
 	 private ScrollPanel scrollPanel; // 스크롤 패널
 	 public BossUI Ch1BossUI; 
+	 private Image scrollBgImage = new ImageIcon("resourses/sprites/ScrollBG.png").getImage();
+  
 	 
 	 private boolean isScrollGet =false; 
 	 
@@ -83,9 +85,9 @@ public class GameMain extends JFrame implements Runnable{
 
 	 
 	    
-	 SelectPanel SelectPanel_1 = new SelectPanel(345,300,190,260,1,this);
-	 SelectPanel SelectPanel_2 = new SelectPanel(540,300,190,260,2,this);
-	 SelectPanel SelectPanel_3 = new SelectPanel(735,300,190,260,3,this);
+	 SelectPanel SelectPanel_1 = new SelectPanel(385,300,160,260,1,this);
+	 SelectPanel SelectPanel_2 = new SelectPanel(555,300,160,260,2,this);
+	 SelectPanel SelectPanel_3 = new SelectPanel(735,300,160,260,3,this);
 	 
 
 	
@@ -398,7 +400,7 @@ public class GameMain extends JFrame implements Runnable{
 		{
 			case 0: //플레이어데미지 강화
 				player.playerDamage = player.playerDamage + 10;
-				System.out.println("능력 0");
+				System.out.println("플레이어 데미지 증가");
 				break;
 				
 			case 1: //플레이어 공격 속도 강화
@@ -406,15 +408,20 @@ public class GameMain extends JFrame implements Runnable{
 				{
 					player.attackSpeed = player.attackSpeed - 10;
 				}
-				System.out.println("능력 1");
+				System.out.println("플레이어 공격속도 업");
 				break;
 				
 			case 2: 
-				System.out.println("능력 2");
+				if(player.lineShot<2)
+				{
+					player.lineShot = player.lineShot + 1;
+				}
+				System.out.println("플레이어 직선 공격 추가");
 				break;
 				
 			case 3:
-				System.out.println("능력 3");
+				gameManager.setCoin(gameManager.getCoin()+10);
+				System.out.println("코인 더미");
 				break;
 				
 			case 4:
@@ -475,8 +482,9 @@ public class GameMain extends JFrame implements Runnable{
 			}
 			
 		}
+	
 		/*
-		if(canCh1BossSpawn == true &&    gameCnt<1000 && gameCnt%300 ==0) {
+		if(canCh1BossSpawn == true && gameCnt<3000 && gameCnt%300 ==0) {
 			en = new E_Wybern(1);
 			en = new E_Wybern(2);
 			en = new E_Wybern(3);
@@ -638,20 +646,20 @@ class ScrollPanel extends JPanel {
 		        "Ability 9",
 		        "Ability 10"       
 		    };
-
+	private Image bgImage;
     
     public ScrollPanel() {
     	setOpaque(false);
         randomImages = new ArrayList<>();
-        setPreferredSize(new Dimension(200, 200)); // 적절한 크기로 설정
-        
-  
+        bgImage = new ImageIcon("resourses/sprites/ScrollBG.png").getImage();
     }
 
     public void generateRandomImages() {
     	SwingUtilities.invokeLater(() -> {
         // 랜덤으로 이미지 선택 및 리스트에 추가
     	
+    	
+    		
     	randomImages.clear();
         Random random = new Random();
         
@@ -688,12 +696,14 @@ class ScrollPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+        g.drawImage(bgImage, 0, 100, getWidth(), 450, this);
         // 리스트에 있는 이미지를 그림
-        int x = 15;
+        int x = 45;
         int y = 200;
         for (Image image : randomImages) {
             g.drawImage(image, x, y, this);
-            x += 190; // 이미지 사이의 간격 조절
+            x += 170; // 이미지 사이의 간격 조절
         }
     }
     public int[] returnScroll()

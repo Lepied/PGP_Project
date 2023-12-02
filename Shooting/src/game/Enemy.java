@@ -3,6 +3,7 @@ package game;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
+import java.awt.Graphics2D;
 
 public class Enemy extends GameObject {
 	
@@ -16,7 +17,8 @@ public class Enemy extends GameObject {
 	private int bulletCount = 5; //발사할 총알의 개수
 	private int bulletAngle = 10; //발사할 총알의 각도
 	
-	private int Pattern;
+	public int Pattern;
+	public int repeatCnt;
 	private boolean isPatternNow = false;
 	
 	EnemyBullet enBullet;
@@ -57,35 +59,64 @@ public class Enemy extends GameObject {
     
     public void Draw_EnemyBullet(Graphics g)
     {
+    	
     	for (int i=0; i<Enemy_Bullet_List.size(); ++i)
     	{
     		enBullet =Enemy_Bullet_List.get(i);
-    		g.drawImage(enBullet.img, enBullet.pos.x, enBullet.pos.y+25,
-    				enBullet.pos.x+25,enBullet.pos.y+55,903,113,919,142,null);
+    		double angle = enBullet.direction+5;
+    		System.out.println(angle);
+
+            Graphics2D g2d = (Graphics2D) g.create();
+            g2d.rotate(angle, enBullet.pos.x + enBullet.width / 2, enBullet.pos.y + enBullet.height / 2); // 이미지를 각도만큼 회전
+            g2d.drawImage(enBullet.img, enBullet.pos.x, enBullet.pos.y,
+                    enBullet.width, enBullet.height, null);
+
+
+            g2d.dispose();
+    		
    
     	}
     }
     
     public void BulletProcess() //총알 패턴들 모임
 	{
+		player = (Player) GameManager.getInstance().getPlayer();
+		double deltaX = player.posX - this.posX;
+	    double deltaY = player.posY - (this.posY + 35); // 총알 시작 위치에 대한 조정
+	    double startAngle = Math.atan2(deltaY, deltaX);
     	if(this.bulletType ==3)  //플레이어 방향으로 산탄
     	{
-    		player = (Player) GameManager.getInstance().getPlayer();
-    		double deltaX = player.posX - this.posX;
-    	    double deltaY = player.posY - (this.posY + 35); // 총알 시작 위치에 대한 조정
-    	    double startAngle = Math.atan2(deltaY, deltaX);
-    		if (System.currentTimeMillis() - lastAttackTime > attackSpeed) {
-                // 패턴: 부채꼴 모양으로 총알 발사
-                for (int i = 0; i < bulletCount; ++i) {
-                    int angle = i * bulletAngle - (bulletCount - 1) * bulletAngle / 2;
-                    int finalAngle = (int) Math.toDegrees(startAngle) + angle;
+    		switch(this.Pattern)
+    		{
+    		case 0:// 패턴: 부채꼴 모양으로 총알 발사
+        		if (System.currentTimeMillis() - lastAttackTime > attackSpeed) {
                     
-                    enBullet = new EnemyBullet(this.posX, this.posY + 35, 5, 1, finalAngle);
-                    Enemy_Bullet_List.add(enBullet);
-                }
+                    for (int i = 0; i < bulletCount; ++i) {
+                        int angle = i * bulletAngle - (bulletCount - 1) * bulletAngle / 2;
+                        int finalAngle = (int) Math.toDegrees(startAngle) + angle;
+                        
+                        enBullet = new EnemyBullet(this.posX, this.posY + 35, 5, 1, finalAngle);
+                        Enemy_Bullet_List.add(enBullet);
+                    }
 
-                lastAttackTime = System.currentTimeMillis();
-            }
+                    lastAttackTime = System.currentTimeMillis();
+                }
+    			break;
+    		case 1: // 원형 모양으로 발사
+    			   if (System.currentTimeMillis() - lastAttackTime > attackSpeed) {
+    			        // 패턴: 원형 모양으로 총알 발사
+    			        for (int i = 0; i < 60; ++i) { //100판
+    			            int finalAngle = (int) Math.toDegrees(startAngle) + i * (360 / 60);
+
+    			            enBullet = new EnemyBullet(this.posX, this.posY + 35, 5, 1, finalAngle);
+    			            Enemy_Bullet_List.add(enBullet);
+    			        }
+
+    			        lastAttackTime = System.currentTimeMillis();
+    			    }
+    			break;
+    		}
+
     	}
     	
     	else //아래방향으로 직진
@@ -108,7 +139,7 @@ public class Enemy extends GameObject {
 			
 			
 			//화면 밖으로 나가면 제거
-			if(enBullet.pos.y < 0 || enBullet.pos.y >800 ||enBullet.pos.x <0 || enBullet.pos.x>650)
+			if(enBullet.pos.y < 0 || enBullet.pos.y >800 ||enBullet.pos.x <0 || enBullet.pos.x>600)
 			{
 				Enemy_Bullet_List.remove(i);
 				System.out.println("총알제거");
