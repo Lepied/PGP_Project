@@ -18,8 +18,12 @@ public class Enemy extends GameObject {
 	private int bulletAngle = 10; //발사할 총알의 각도
 	
 	public int Pattern;
-	public int repeatCnt;
+	
 	private boolean isPatternNow = false;
+	private int patternCnt = 0;
+
+
+
 	
 	EnemyBullet enBullet;
 	Player player; // 임시 플레이어
@@ -63,7 +67,7 @@ public class Enemy extends GameObject {
     	for (int i=0; i<Enemy_Bullet_List.size(); ++i)
     	{
     		enBullet =Enemy_Bullet_List.get(i);
-    		double angle = enBullet.direction+5;
+    		double angle = enBullet.direction+4.8;
     		System.out.println(angle);
 
             Graphics2D g2d = (Graphics2D) g.create();
@@ -100,20 +104,47 @@ public class Enemy extends GameObject {
                     }
 
                     lastAttackTime = System.currentTimeMillis();
+ 			        if(patternCnt > 2)
+			        {
+			        	patternCnt = 0;
+			        	this.Pattern = 1;
+			        }
                 }
     			break;
     		case 1: // 원형 모양으로 발사
-    			   if (System.currentTimeMillis() - lastAttackTime > attackSpeed) {
+    				
+    			   if (System.currentTimeMillis() - lastAttackTime > 100) {
+    				    int tempAngle=0;
     			        // 패턴: 원형 모양으로 총알 발사
     			        for (int i = 0; i < 60; ++i) { //100판
     			            int finalAngle = (int) Math.toDegrees(startAngle) + i * (360 / 60);
 
-    			            enBullet = new EnemyBullet(this.posX, this.posY + 35, 5, 1, finalAngle);
+    			            enBullet = new EnemyBullet(this.posX, this.posY + 35, 5, 1, finalAngle+tempAngle);
     			            Enemy_Bullet_List.add(enBullet);
+    			            tempAngle = tempAngle +45;
     			        }
-
+    			        patternCnt++;
     			        lastAttackTime = System.currentTimeMillis();
+    			        if(patternCnt > 20)
+    			        {
+    			        	patternCnt =0;
+    			        	this.Pattern =0;
+    			        }
     			    }
+    			break;
+    		case 2: //다시 부채꼴
+				if (System.currentTimeMillis() - lastAttackTime > attackSpeed) {
+
+					for (int i = 0; i < bulletCount; ++i) {
+						int angle = i * bulletAngle - (bulletCount - 1) * bulletAngle / 2;
+						int finalAngle = (int) Math.toDegrees(startAngle) + angle;
+
+						enBullet = new EnemyBullet(this.posX, this.posY + 35, 5, 1, finalAngle);
+						Enemy_Bullet_List.add(enBullet);
+					}
+
+					lastAttackTime = System.currentTimeMillis();
+                }
     			break;
     		}
 
