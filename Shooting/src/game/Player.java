@@ -19,8 +19,10 @@ public class Player extends GameObject implements KeyListener {
     boolean isAttack = false;
     boolean isBomb = false;
     boolean isKeySlow =false;
+    
+    boolean isDamaged = false; //맞았을때
 
-    int playerHP = 100;
+    int playerHP = 3;
     int playerDamage;
     int attackSpeed;
     int bombDelay;
@@ -55,6 +57,8 @@ public class Player extends GameObject implements KeyListener {
 	
 	public int lineShot ;
 	public int diaShot;
+	public boolean isImmortal;
+
     
     public Player(int damage) {
 
@@ -105,7 +109,19 @@ public class Player extends GameObject implements KeyListener {
 
     public void draw(Graphics g) {
   
-        g.drawImage(img, posX, posY, null);
+    	 if (isDamaged) 
+    	 {
+    	     Graphics2D g2d = (Graphics2D) g;
+    	     float alpha = 0.5f; // 원하는 투명도 값 (0.0f: 완전 투명, 1.0f: 완전 불투명)
+    	     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+    	     g2d.drawImage(img, posX, posY, null);
+    	     g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f)); // 투명도를 원래 상태로 복원
+    	 }
+    	 else
+    	 {
+    		 g.drawImage(img, posX, posY, null);    	
+    	 }
+    	        	
       	if(isKeySlow)
     	{
       		
@@ -203,16 +219,6 @@ public class Player extends GameObject implements KeyListener {
 			if(KeyRight == true) posX += speed;
 		}
 
-		/*
-		if(isAttack == true)
-		{
-			this.img = tk.getImage("resourses/sprites/2222.jpg");
-		}
-		else if(isAttack == false)
-		{
-			this.img = tk.getImage("resourses/sprites/f2.jpg");
-		}
-		*/
 		
 		if(isBomb == true)
 		{

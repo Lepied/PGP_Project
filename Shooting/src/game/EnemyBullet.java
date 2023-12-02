@@ -12,12 +12,13 @@ public class EnemyBullet extends GameObject {
 	
 	private double direction;
 	
-	EnemyBullet(int posX, int posY, int speed, int type)
+	EnemyBullet(int posX, int posY, int speed, int type, int angle)
 	{
 		this.type = type;
 		this.speed = speed;
 		pos = new Point(posX,posY);
 		//this.direction = direction;
+		this.direction = Math.toRadians(angle);
 		if(this.type == 1)
 		{
 			this.img = tk.getImage("resourses/sprites/EFX.png");
@@ -28,9 +29,10 @@ public class EnemyBullet extends GameObject {
 	public void move()
 	{
 		
-		//pos.x += (double)(speed * Math.cos(direction));
-		//pos.y += (double)(speed * Math.sin(direction));
+		pos.x += (double)(speed * Math.cos(direction));
+		pos.y += (double)(speed * Math.sin(direction));
 
+		/*
 		if(type == 1)
 		{
 			pos.y+=3;
@@ -39,6 +41,7 @@ public class EnemyBullet extends GameObject {
 		{
 			pos.y+=3;
 		}
+		*/
 
 	}
 	public void draw(Graphics g)

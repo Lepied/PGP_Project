@@ -18,6 +18,7 @@ public class Ch1Boss extends Enemy{
         this.img = tk.getImage("resourses/sprites/DragonUpscale.png");
         this.attackSpeed = 5000;
         
+        this.bulletType = 3;
         this.posX = 300;
         this.posY = 10;
 	}

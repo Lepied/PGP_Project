@@ -59,7 +59,7 @@ public class GameMain extends JFrame implements Runnable{
 	 private boolean scroll_2_onMouse = false;
 	 private boolean scroll_3_onMouse = false;
 	 
-	 
+	 private long immortalTime = 100; //플레이어 무적
 
 	 private int gameCnt;
 	 
@@ -250,7 +250,25 @@ public class GameMain extends JFrame implements Runnable{
 					}
 				}
 				repaint();
-
+				//플레이어 무적시간 부여하기
+				if(player.isDamaged)
+				{
+					if (!player.isImmortal) { 
+				        immortalTime = System.currentTimeMillis();
+				        player.isImmortal = true; 
+					}
+					long currentTime = System.currentTimeMillis();
+					System.out.println("무적 경과 시간: " + (currentTime - immortalTime));
+					if(currentTime - immortalTime >1000)
+					{
+						System.out.println("무적해제");
+						player.isDamaged = false;
+						player.isImmortal = false; // 추가된 부분: 무적 상태 해제
+					}
+					
+				}
+		
+				
 				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
 				player.BulletProcess(); //플레이어 총알
 				EnemyProcess(); //적 매커니즘, 스폰 등
@@ -341,6 +359,8 @@ public class GameMain extends JFrame implements Runnable{
 				Thread.sleep(15); // 15 milli sec 로 스레드 돌리기 
 				gameCnt++;
 				//게임 타이머 초기화 해서 게임 안터지게
+				
+				GameOver();
 				if(gameCnt > 999999)
 				{
 					gameCnt = 0; 
@@ -365,7 +385,13 @@ public class GameMain extends JFrame implements Runnable{
 	        });
 	}
 	
-	
+	public void GameOver()
+	{
+		if(player.hp == 0)
+		{
+			System.out.println("게임오버");
+		}
+	}
 	public void Ability(int ability) //능력리스트
 	{
 		switch(ability)

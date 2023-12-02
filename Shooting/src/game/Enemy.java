@@ -13,7 +13,11 @@ public class Enemy extends GameObject {
 	public int attackSpeed; //공격딜레이
 	private long lastAttackTime; // 공격시간 저장 변수
 	
+	private int bulletCount = 5; //발사할 총알의 개수
+	private int bulletAngle = 10; //발사할 총알의 각도
 	
+	private int Pattern;
+	private boolean isPatternNow = false;
 	
 	EnemyBullet enBullet;
 	Player player; // 임시 플레이어
@@ -62,16 +66,41 @@ public class Enemy extends GameObject {
     	}
     }
     
-    public void BulletProcess()
+    public void BulletProcess() //총알 패턴들 모임
 	{
-		if(System.currentTimeMillis() - lastAttackTime > attackSpeed)
-		{
-			enBullet = new EnemyBullet(this.posX,this.posY+35,5,1);
-			Enemy_Bullet_List.add(enBullet);
-			lastAttackTime = System.currentTimeMillis();
-			System.out.println("적 총알 발사");
+    	if(this.bulletType ==3)  //플레이어 방향으로 산탄
+    	{
+    		player = (Player) GameManager.getInstance().getPlayer();
+    		double deltaX = player.posX - this.posX;
+    	    double deltaY = player.posY - (this.posY + 35); // 총알 시작 위치에 대한 조정
+    	    double startAngle = Math.atan2(deltaY, deltaX);
+    		if (System.currentTimeMillis() - lastAttackTime > attackSpeed) {
+                // 패턴: 부채꼴 모양으로 총알 발사
+                for (int i = 0; i < bulletCount; ++i) {
+                    int angle = i * bulletAngle - (bulletCount - 1) * bulletAngle / 2;
+                    int finalAngle = (int) Math.toDegrees(startAngle) + angle;
+                    
+                    enBullet = new EnemyBullet(this.posX, this.posY + 35, 5, 1, finalAngle);
+                    Enemy_Bullet_List.add(enBullet);
+                }
 
-		}
+                lastAttackTime = System.currentTimeMillis();
+            }
+    	}
+    	
+    	else //아래방향으로 직진
+    	{
+    		if(System.currentTimeMillis() - lastAttackTime > attackSpeed)
+    		{
+    			enBullet = new EnemyBullet(this.posX,this.posY+35,5,1,90); //각도는 90도
+    			Enemy_Bullet_List.add(enBullet);
+    			lastAttackTime = System.currentTimeMillis();
+
+
+    		}
+    	}
+		
+    	//모든 총알 움직이게하기, 화면밖으로 나가면 제거시키기, 플레이어 피격 판정 두기
 		for(int i=0; i<Enemy_Bullet_List.size();++i) 
 		{
 			enBullet =(EnemyBullet)(Enemy_Bullet_List.get(i));
@@ -79,18 +108,21 @@ public class Enemy extends GameObject {
 			
 			
 			//화면 밖으로 나가면 제거
-			if(enBullet.pos.y < 0 || enBullet.pos.y >800)
+			if(enBullet.pos.y < 0 || enBullet.pos.y >800 ||enBullet.pos.x <0 || enBullet.pos.x>650)
 			{
 				Enemy_Bullet_List.remove(i);
 				System.out.println("총알제거");
 			}
 			
+			//플레이어 피격
 			player = (Player) GameManager.getInstance().getPlayer();
 			
-			if(GameManager.getInstance().isEnBulletCollision(enBullet,player))
+			if(player.isDamaged==false && GameManager.getInstance().isEnBulletCollision(enBullet,player))
 			{
 				System.out.println("플레이어 피격됨");
+				player.isDamaged = true;
 				Enemy_Bullet_List.remove(i);
+				player.hp--;
 			}
 		}
 		
