@@ -68,7 +68,7 @@ public class Enemy extends GameObject {
     	{
     		enBullet =Enemy_Bullet_List.get(i);
     		double angle = enBullet.direction+4.8;
-    		System.out.println(angle);
+    	
 
             Graphics2D g2d = (Graphics2D) g.create();
             g2d.rotate(angle, enBullet.pos.x + enBullet.width / 2, enBullet.pos.y + enBullet.height / 2); // 이미지를 각도만큼 회전
@@ -102,10 +102,11 @@ public class Enemy extends GameObject {
                         enBullet = new EnemyBullet(this.posX, this.posY + 35, 5, 1, finalAngle);
                         Enemy_Bullet_List.add(enBullet);
                     }
-
+                    patternCnt++;
                     lastAttackTime = System.currentTimeMillis();
  			        if(patternCnt > 2)
 			        {
+ 			        
 			        	patternCnt = 0;
 			        	this.Pattern = 1;
 			        }
@@ -128,7 +129,7 @@ public class Enemy extends GameObject {
     			        if(patternCnt > 20)
     			        {
     			        	patternCnt =0;
-    			        	this.Pattern =0;
+    			        	this.Pattern =2;
     			        }
     			    }
     			break;
@@ -139,11 +140,24 @@ public class Enemy extends GameObject {
 						int angle = i * bulletAngle - (bulletCount - 1) * bulletAngle / 2;
 						int finalAngle = (int) Math.toDegrees(startAngle) + angle;
 
-						enBullet = new EnemyBullet(this.posX, this.posY + 35, 5, 1, finalAngle);
+						enBullet = new EnemyBullet(this.posX+100, this.posY + 35, 5, 1, finalAngle);
 						Enemy_Bullet_List.add(enBullet);
 					}
 
+					for (int i = 0; i < bulletCount; ++i) {
+						int angle = i * bulletAngle - (bulletCount - 1) * bulletAngle / 2;
+						int finalAngle = (int) Math.toDegrees(startAngle) + angle;
+
+						enBullet = new EnemyBullet(this.posX-10, this.posY + 35, 5, 1, finalAngle);
+						Enemy_Bullet_List.add(enBullet);
+					}
+					patternCnt++;
 					lastAttackTime = System.currentTimeMillis();
+			        if(patternCnt > 3)
+			        {
+			        	patternCnt =0;
+			        	this.Pattern =0;
+			        }
                 }
     			break;
     		}

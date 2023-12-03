@@ -114,14 +114,41 @@ public class GameMain extends JFrame implements Runnable{
 		 int panelHeight = 800;
 		 int x = (frameWidth - panelWidth)/2;
 
-	     // 직접 JPanel을 생성하고 JFrame에 추가
+		 JPanel LeftUIPanel = new JPanel()
+			{
+				@Override
+				protected void paintComponent(Graphics g) {
+					super.paintComponent(g);
+			        Image backgroundImage = new ImageIcon("resourses/sprites/UI_BG.png").getImage();
+			        setOpaque(false); 
+
+			        g.drawImage(backgroundImage,0,0,x,panelHeight, this);
+
+				}
+			};
+		 JPanel RightUIPanel = new JPanel()
+			{
+				@Override
+				protected void paintComponent(Graphics g) {
+					super.paintComponent(g);
+					Image backgroundImage = new ImageIcon("resourses/sprites/UI_BG.png").getImage();
+					setOpaque(false); 
+			       g.drawImage(backgroundImage,0,0,340,panelHeight, this);
+
+				}
+			};
+		 
+	     
 	     JPanel gamePanel = new JPanel() {
 	     @Override
 	         protected void paintComponent(Graphics g) {
 
 	    	 	super.paintComponent(g);
 	    	 	drawDoubleBuffering();
+	    	 	setOpaque(false); 
 	    	 	g.drawImage(buffImage,x,0,this);
+	    	 	
+
 
 	        }
 	    };
@@ -139,7 +166,14 @@ public class GameMain extends JFrame implements Runnable{
 	    		}
 	    	}
 	    });
+	   
+	    LeftUIPanel.setBounds(0,0,x,panelHeight);
+	    RightUIPanel.setBounds(x+panelWidth,0,340,panelHeight);
+	    LeftUIPanel.setVisible(true);
+	    RightUIPanel.setVisible(true);
 	    
+
+
 	    
 	    
 	    scrollPanel = new ScrollPanel();
@@ -153,12 +187,6 @@ public class GameMain extends JFrame implements Runnable{
 	    	{
 	    		/*
 	    		if (isScrollPanelVisible) {
-	                // Handle mouse movement in ScrollPanel
-	                System.out.println("ScrollPanel Mouse Moved: " + e.getX() + ", " + e.getY());
-	                System.out.println("스크롤 1 :" + scroll_1_onMouse);
-	                System.out.println("스크롤 2 :" + scroll_2_onMouse);
-	                System.out.println("스크롤 3 :" + scroll_3_onMouse);
-	                
 	            }
 	            */
 	    	}
@@ -189,18 +217,20 @@ public class GameMain extends JFrame implements Runnable{
 	    
 	   Ch1BossUI = new BossUI(340,-5,600,50,this); 
 	    
+
+	   gamePanel.setBounds(x, 0, panelWidth, panelHeight);
+	   
+	   add(LeftUIPanel);
+	   add(RightUIPanel);
 	   add(SelectPanel_1);
 	   add(SelectPanel_2);
 	   add(SelectPanel_3); 
 	   add(scrollPanel);
-	   
-	   
 	   add(Ch1BossUI);
-	
-	    
 
-	    gamePanel.setBounds(x, 0, panelWidth, panelHeight);
-	    add(gamePanel);       
+	   add(gamePanel);
+	    
+	  
 	}
 	public void start()
 	{
@@ -215,7 +245,7 @@ public class GameMain extends JFrame implements Runnable{
 	{
 		if(buffImage == null)
 		{
-			buffImage =createImage(frameWidth, frameHeight);
+			buffImage =createImage(600, frameHeight);
 			if(buffImage == null)
 			{
 				return;
@@ -223,7 +253,7 @@ public class GameMain extends JFrame implements Runnable{
 			buffg = buffImage.getGraphics();
 		}
 		
-		buffg.clearRect(0,0,frameWidth,frameHeight);
+		buffg.clearRect(0,0,600,frameHeight);
 		
 		animator.setGraphics(buffg);
 		//게임오브젝트 그리는 부분
@@ -589,15 +619,7 @@ public class GameMain extends JFrame implements Runnable{
 			en.Draw_EnemyBullet(buffg);
 		}
 	}
-    public void Draw_EnemyBullet()
-    {
-    	for(int  i=0; i<gameManager.getGameObjectList().size(); ++i)	
-    	{
-    		    en = (Enemy)(gameManager.getGameObjectList().get(i));
-        		en.Draw_EnemyBullet(buffg);
-    	}
-   
-    }
+
 	
 	public void Draw_Item()
 	{

@@ -16,12 +16,12 @@ public class Ch1Boss extends Enemy{
         this.height = 100;
         this.speed = 1;
         this.img = tk.getImage("resourses/sprites/DragonUpscale.png");
-        this.attackSpeed = 5000;
+        this.attackSpeed = 3000;
         
         this.bulletType = 3;
         this.posX = 300;
         this.posY = 10;
-        this.Pattern = 1;
+        this.Pattern = 0;
 	}
 
     public void draw(Graphics g) {
