@@ -1,10 +1,13 @@
 package game;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import javax.swing.ImageIcon;
@@ -20,6 +23,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class GameMain extends JFrame implements Runnable{
 	 private Image playerImage;
@@ -34,7 +38,7 @@ public class GameMain extends JFrame implements Runnable{
 	 
 	 boolean canCh1BossSpawn= true; //게임타이머관리용 보스소환가능한상태?
 
-	 
+	 NPC npc;
 	 Enemy en;
 	 Item item;
 	 List<Item> itemsToRemove = new ArrayList<>(); // 아이템 일시 제거를 위한 리스트
@@ -42,7 +46,7 @@ public class GameMain extends JFrame implements Runnable{
 	 EnemyBullet enBullet;
 	 ArrayList Enemy_Bullet_List = new ArrayList(); //적 총알 리스트
 	 
-	 
+	 private Font customFont;
 	 
 	 private boolean isScrollPanelVisible = false; // 스크롤 패널이 표시되어야 하는지 여부
 	 private ScrollPanel scrollPanel; // 스크롤 패널
@@ -89,6 +93,8 @@ public class GameMain extends JFrame implements Runnable{
 	 SelectPanel SelectPanel_2 = new SelectPanel(555,300,160,260,2,this);
 	 SelectPanel SelectPanel_3 = new SelectPanel(735,300,160,260,3,this);
 	 
+	 private boolean canSpawnNPC = true;
+	 
 
 	
 	 public GameMain()
@@ -102,6 +108,13 @@ public class GameMain extends JFrame implements Runnable{
 		 addKeyListener(player);
 		 th = new Thread(this); 
 		 th.start();
+		 
+	        try {
+	            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resourses/MapleStory Bold.ttf")).deriveFont(14f);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	           
+	        }
 
 		
 		 
@@ -133,8 +146,34 @@ public class GameMain extends JFrame implements Runnable{
 					super.paintComponent(g);
 					Image backgroundImage = new ImageIcon("resourses/sprites/UI_BG.png").getImage();
 					setOpaque(false); 
-			       g.drawImage(backgroundImage,0,0,340,panelHeight, this);
-
+					g.drawImage(backgroundImage,0,0,340,panelHeight, this);
+			       
+					
+					String hpText = "생명";
+			        g.setFont(customFont);
+			        g.setColor(Color.WHITE);
+			        g.drawString(hpText, 100, 280);
+			        int heartSize = 30;
+			        int heartsCount = player.hp;
+			        for (int i = 0; i < heartsCount; i++) {
+			            Image heartImage = new ImageIcon("resourses/sprites/Fireball.png").getImage();
+			            g.drawImage(heartImage, 100 + i * (heartSize + 5), 300, heartSize, heartSize, this);
+			        }
+			    	String bombText = "폭탄";
+			        g.setFont(customFont);
+			        g.setColor(Color.WHITE);
+			        g.drawString(bombText, 100, 380);   
+			        int bombSize = 30;
+			        int bombsCount = player.bomb;
+			        for (int i = 0; i < bombsCount; i++) {
+			            Image bombImage = new ImageIcon("resourses/sprites/bomb.png").getImage();
+			            g.drawImage(bombImage, 100 + i * (bombSize + 5), 400, bombSize, bombSize, this);
+			        }
+			        
+			        String scoreText = "Score: " + gameManager.getScore();
+			        g.setFont(customFont);
+			        g.setColor(Color.WHITE);
+			        g.drawString(scoreText, 10, 100);
 				}
 			};
 		 
@@ -267,6 +306,7 @@ public class GameMain extends JFrame implements Runnable{
        
         Draw_Enemy();
         Draw_Item();
+        Draw_NPC();
 	}
 	
 	@Override
@@ -504,13 +544,18 @@ public class GameMain extends JFrame implements Runnable{
 			en.BulletProcess();
 
 	        
-	        
+			
 			if(en.posY >800)
 			{
 			
 				gameManager.getGameObjectList().remove(i);
 			}
 			
+		}
+		if(gameCnt>100 &&canSpawnNPC)
+		{
+			npc = new NPC();
+			canSpawnNPC = false;
 		}
 	
 		/*
@@ -607,6 +652,15 @@ public class GameMain extends JFrame implements Runnable{
 		itemsToRemove.clear();
 	
 	}
+	public void NPC_Process()
+	{
+		npc.move();
+		if(item.posY >800)
+		{
+			npc = null;
+		}
+		
+	}
 	
 	
 	
@@ -638,6 +692,11 @@ public class GameMain extends JFrame implements Runnable{
 			}
 			
 		}
+	}
+	public void Draw_NPC()
+	{
+		if(npc != null)
+		buffg.drawImage(npc.img,npc.posX,npc.posY,this);
 	}
 
 	public synchronized void pauseGame() 

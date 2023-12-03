@@ -160,6 +160,26 @@ public class Enemy extends GameObject {
 			        }
                 }
     			break;
+    		case 3: //원형탄막에 플레이어 유도탄
+    			
+ 			   if (System.currentTimeMillis() - lastAttackTime > 100) {
+ 				    int tempAngle=0;
+ 			        // 패턴: 원형 모양으로 총알 발사
+ 			        for (int i = 0; i < 60; ++i) { //100판
+ 			            int finalAngle = (int) Math.toDegrees(startAngle) + i * (360 / 60);
+
+ 			            enBullet = new EnemyBullet(this.posX, this.posY + 35, 5, 1, finalAngle+tempAngle);
+ 			            Enemy_Bullet_List.add(enBullet);
+ 			            tempAngle = tempAngle +45;
+ 			        }
+ 			        patternCnt++;
+ 			        lastAttackTime = System.currentTimeMillis();
+ 			        if(patternCnt > 20)
+ 			        {
+ 			        	patternCnt =0;
+ 			        	this.Pattern =2;
+ 			        }
+ 			    }
     		}
 
     	}
