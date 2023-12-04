@@ -9,7 +9,8 @@ public class MainFrame extends JFrame implements Runnable{
 	private JFrame frame;
 	private CardLayout cardLayout;
 	private JPanel cardPanel;
-	
+	private GameMain gameMain;
+
 	Thread thread;
 	
 	public int x = 960;
@@ -26,14 +27,15 @@ public class MainFrame extends JFrame implements Runnable{
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		
+
 		cardLayout = new CardLayout();
-		cardPanel = new JPanel(cardLayout); 
-		createDeck(); 
+		cardPanel = new JPanel(cardLayout);
+		add(cardPanel);
+		createDeck();
 		
 		pack();
-	}
-
+	}	
+	
 	@Override
 	public void run() {
 		try {
@@ -45,15 +47,15 @@ public class MainFrame extends JFrame implements Runnable{
 		}
 	}
 	
-	//카드레이아웃 덱 생성(각 패널 저장)
+	// 카드레이아웃 덱 생성(각 패널 저장)
 	private void createDeck() {
-		MainPanel mainPanel = new MainPanel();
 		StartPanel startPanel = new StartPanel();
+		MainPanel mainPanel = new MainPanel(this);		
+		PowerUpPanel powerUpPanel = new PowerUpPanel(this);
 		
 		cardPanel.add(startPanel, "start");
 		cardPanel.add(mainPanel, "main");
-		
-		add(cardPanel);
+		cardPanel.add(powerUpPanel,"powerUp");
 		
 		//아무 버튼이나 누르시오
 		startPanel.addKeyListener(new KeyListener() {
@@ -62,12 +64,24 @@ public class MainFrame extends JFrame implements Runnable{
 			public void keyPressed(KeyEvent e) {
 				int i = e.getKeyChar();
 				System.out.print(i);
-				cardLayout.show(cardPanel, "main");
+				changePanel("main");
 			}
 
 			public void keyReleased(KeyEvent e) {}
 			
 		});
+	}
+	
+	// 패널 변경
+	public void changePanel(String panel) {
+		cardLayout.show(cardPanel, panel);
+		
+	}
+	
+	public void gameStart() {
+		this.setVisible(false);
+		gameMain = new GameMain();
+		gameMain.setVisible(true);
 	}
 	
 	//메인
