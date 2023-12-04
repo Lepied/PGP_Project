@@ -70,7 +70,7 @@ public class Player extends GameObject implements KeyListener {
         this.width = 35;
         this.height = 35;
     	this.attackSpeed = 300;
-    	this.lineShot = 3;
+    	this.lineShot = 1;
     	this.diaShot = 1;
   
     	this.bomb = 0;

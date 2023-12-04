@@ -39,6 +39,7 @@ public class GameManager {
 	{//싱글톤 패턴
 		gameObjectList = new ArrayList<>();
 		itemList = new ArrayList<>();
+		npcList = new ArrayList<>();
 		playerCoin =0;
 		
 	} 
@@ -163,13 +164,11 @@ public class GameManager {
 	public void applyDamage(Enemy target, int damage)
 	{
 		target.hp = target.hp - damage;
-		System.out.println("공격결과 : " + target.hp);
 		if(target.hp <=0)
 		{
 			if(target.type == 3)
 			{
 				isBossNow = false;
-				System.out.println("보스전종료");
 			}
 			removeEnemy(target);
 			

@@ -345,8 +345,9 @@ public class GameMain extends JFrame implements Runnable{
 				player.BulletProcess(); //플레이어 총알
 				EnemyProcess(); //적 매커니즘, 스폰 등
 				ItemProcess(); // 아이템 매커니즘
+				NPCProcess(); //NPC 매커니즘
 				VisibleBossUI(); // 보스 UI 보이기
-				NPCProcess();
+			
 				
 				// 게임 루프 안에서 각 패널의 상태 확인 // 더 수정해야함
 		        if (scrollType == 1) {
@@ -620,7 +621,6 @@ public class GameMain extends JFrame implements Runnable{
 							item.getCoin();
 							break;
 						case 2:
-							item.getScroll();
 							isScrollGet = true;
 							if(isScrollGet && !isScrollPanelVisible)
 							{
@@ -631,9 +631,7 @@ public class GameMain extends JFrame implements Runnable{
 								SelectPanel_2.setVisible(true);
 								SelectPanel_3.setVisible(true);
 				                scrollPanel.generateRandomImages(); // 랜덤 이미지 생성
-				                ScrollIndex = scrollPanel.returnScroll();
-				                
-
+				                ScrollIndex = scrollPanel.returnScroll();            
 				               
 							}
 							
@@ -660,7 +658,7 @@ public class GameMain extends JFrame implements Runnable{
 		{
 			npc = (NPC)(gameManager.getNPCList().get(i));
 			npc.move();
-			if(en.posY >800)
+			if(npc.posY >800)
 			{
 				gameManager.getNPCList().remove(i);
 			}
@@ -708,8 +706,13 @@ public class GameMain extends JFrame implements Runnable{
 	}
 	public void Draw_NPC()
 	{
-		if(npc != null)
-		buffg.drawImage(npc.img,npc.posX,npc.posY,this);
+		for(int i =0; i<gameManager.getNPCList().size(); ++i)
+		{
+			
+			npc = (NPC)(gameManager.getNPCList().get(i));
+			buffg.drawImage(npc.img,npc.posX,npc.posY,this);
+		}
+		
 	}
 
 	public synchronized void pauseGame() 

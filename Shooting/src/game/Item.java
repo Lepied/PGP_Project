@@ -31,13 +31,6 @@ public class Item extends GameObject{
 	{
 		tempCoin = GameManager.getInstance().getCoin();
 		GameManager.getInstance().setCoin(tempCoin+1);
-		System.out.println("획득한 코인 수 : " +GameManager.getInstance().getCoin());
-	}
-	
-	public void getScroll()
-	{
-		//스크롤 먹으면 잠깐 게임 스레드 자체를 멈추고 UI를 띄운다음에 선택지를 부여, 해당 선택지에 해당되는 스탯 업그레이드 구현하기
-		System.out.println("스크롤 획득");
 	}
 	
 	

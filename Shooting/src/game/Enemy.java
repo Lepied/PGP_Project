@@ -207,7 +207,6 @@ public class Enemy extends GameObject {
 			if(enBullet.pos.y < 0 || enBullet.pos.y >800 ||enBullet.pos.x <0 || enBullet.pos.x>600)
 			{
 				Enemy_Bullet_List.remove(i);
-				System.out.println("총알제거");
 			}
 			
 			//플레이어 피격
@@ -215,7 +214,6 @@ public class Enemy extends GameObject {
 			
 			if(player.isDamaged==false && GameManager.getInstance().isEnBulletCollision(enBullet,player))
 			{
-				System.out.println("플레이어 피격됨");
 				player.isDamaged = true;
 				Enemy_Bullet_List.remove(i);
 				player.hp--;
