@@ -21,7 +21,7 @@ public class StartPanel extends JPanel{
 		this.setPreferredSize(new Dimension(960, 540));
 		this.setBackground(Color.WHITE);
 		this.setDoubleBuffered(true);
-//		this.bg = new ImageIcon("resourses/sprites/startBackground.png").getImage();
+		this.bg = new ImageIcon("resourses/sprites/background.jpg").getImage();
 		createText();
 
 		this.setFocusable(true);
@@ -36,7 +36,9 @@ public class StartPanel extends JPanel{
 	    label.setFont(customFont);
 
         // 텍스트 색상 설정
+	    label.setOpaque(true); 
         label.setForeground(Color.BLACK);
+        label.setBackground(Color.WHITE);
         
 
         // 위치와 크기 설정
@@ -49,8 +51,8 @@ public class StartPanel extends JPanel{
 		add(label);
 	}
 	
-//	public void paintComponent(Graphics g){
-//		g.drawImage(bg, 0, 0, 960, 540, null);
-//	}
+	public void paintComponent(Graphics g){
+		g.drawImage(bg, 0, 0, 960, 540, null);
+	}
 	
 }
