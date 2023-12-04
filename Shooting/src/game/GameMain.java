@@ -82,7 +82,7 @@ public class GameMain extends JFrame implements Runnable{
 	 
 	 int coinSel = 0; //스프라이트 애니메이션
 	 
-	 ImageIcon bgImg = new ImageIcon("resourses/sprites/background1.png");
+	 ImageIcon bgImg = new ImageIcon("resourses/sprites/background.png");
 	 Image backImg = bgImg.getImage();
 	 int backY =0;
 	 int back2Y = backImg.getHeight(null);
@@ -166,11 +166,11 @@ public class GameMain extends JFrame implements Runnable{
 			        int bombSize = 30;
 			        int bombsCount = player.bomb;
 			        for (int i = 0; i < bombsCount; i++) {
-			            Image bombImage = new ImageIcon("resourses/sprites/bomb.png").getImage();
+			            Image bombImage = new ImageIcon("resourses/sprites/Fireball.png").getImage();
 			            g.drawImage(bombImage, 100 + i * (bombSize + 5), 400, bombSize, bombSize, this);
 			        }
 			        
-			        String scoreText = "Score: " + gameManager.getScore();
+			        String scoreText = "점수: " + gameManager.getScore();
 			        g.setFont(customFont);
 			        g.setColor(Color.WHITE);
 			        g.drawString(scoreText, 10, 100);
@@ -346,6 +346,7 @@ public class GameMain extends JFrame implements Runnable{
 				EnemyProcess(); //적 매커니즘, 스폰 등
 				ItemProcess(); // 아이템 매커니즘
 				VisibleBossUI(); // 보스 UI 보이기
+				NPCProcess();
 				
 				// 게임 루프 안에서 각 패널의 상태 확인 // 더 수정해야함
 		        if (scrollType == 1) {
@@ -414,18 +415,18 @@ public class GameMain extends JFrame implements Runnable{
 					player.posY = frameHeight - player.height-30;
 				}
 
-				backY--;
-				back2Y--;
-				backY= backY-2;
-				back2Y=back2Y-2;
+				backY++;
+				back2Y++;
+				backY= backY+2;
+				back2Y=back2Y+2;
 				
-				if(backY <-(backImg.getHeight(null)))
+				if(backY > (backImg.getHeight(null)))
 				{
-					backY = backImg.getHeight(null);
+					backY = back2Y - backImg.getHeight(null);
 				}
-				if(back2Y <-(backImg.getHeight(null)))
+				if(back2Y > (backImg.getHeight(null)))
 				{
-					back2Y = backImg.getHeight(null);
+					back2Y = backY-backImg.getHeight(null);
 				}
 				repaint(); // 갱신된 x,y값으로 이미지 새로 그리기
 				Thread.sleep(15); // 15 milli sec 로 스레드 돌리기 
@@ -552,13 +553,8 @@ public class GameMain extends JFrame implements Runnable{
 			}
 			
 		}
-		if(gameCnt>100 &&canSpawnNPC)
-		{
-			npc = new NPC();
-			canSpawnNPC = false;
-		}
 	
-		/*
+		
 		if(canCh1BossSpawn == true && gameCnt<3000 && gameCnt%300 ==0) {
 			en = new E_Wybern(1);
 			en = new E_Wybern(2);
@@ -566,8 +562,13 @@ public class GameMain extends JFrame implements Runnable{
 			
 
 		}
-		*/
+		if(gameCnt>1000 &&canSpawnNPC)
+		{
+			npc = new NPC();
+			canSpawnNPC = false;
+		}
 		
+		/*
 		if(gameCnt>200 && canCh1BossSpawn)
 		{
 			
@@ -575,6 +576,7 @@ public class GameMain extends JFrame implements Runnable{
 			en = new Ch1Boss(2);
 			gameCnt = 0; // 게임카운트 초기화해서 보스전돌입
 		}
+		*/
 
 	}
 	public void VisibleBossUI()
@@ -652,13 +654,24 @@ public class GameMain extends JFrame implements Runnable{
 		itemsToRemove.clear();
 	
 	}
-	public void NPC_Process()
+	public void NPCProcess()
 	{
-		npc.move();
-		if(item.posY >800)
+		for(int  i =0; i<gameManager.getNPCList().size(); ++i)
 		{
-			npc = null;
+			npc = (NPC)(gameManager.getNPCList().get(i));
+			npc.move();
+			if(en.posY >800)
+			{
+				gameManager.getNPCList().remove(i);
+			}
+			if(gameManager.isNPCCollision(npc, player))
+			{
+				pauseGame();
+			}
+			
+			
 		}
+	
 		
 	}
 	

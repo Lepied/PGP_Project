@@ -70,7 +70,7 @@ public class Player extends GameObject implements KeyListener {
         this.width = 35;
         this.height = 35;
     	this.attackSpeed = 300;
-    	this.lineShot = 1;
+    	this.lineShot = 3;
     	this.diaShot = 1;
   
     	this.bomb = 0;
@@ -248,6 +248,14 @@ public class Player extends GameObject implements KeyListener {
 				for(int i=0; i<lineShot; ++i)
 				{
 					bullet = new Bullet(posX-10+i*20,posY-65,5,1,angle);
+					Bullet_List.add(bullet);
+				}
+			}
+			else
+			{
+				for(int i=0; i<lineShot; ++i)
+				{
+					bullet = new Bullet(posX-30+i*20,posY-65,5,1,angle);
 					Bullet_List.add(bullet);
 				}
 			}

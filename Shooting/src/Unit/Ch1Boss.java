@@ -9,9 +9,9 @@ public class Ch1Boss extends Enemy{
 
 	public Ch1Boss(int spawnPoint) {
 		super(spawnPoint);
-		this.maxHealth=500; //변하지 않는 최대체력
+		this.maxHealth=10000; //변하지 않는 최대체력
 		this.type = 3; // 보스 타입
-        this.hp = 500; //현재 체력
+        this.hp = 10000; //현재 체력
         this.width = 1000; //충돌관리 위한 이미지 너비 높이등
         this.height = 100;
         this.speed = 1;

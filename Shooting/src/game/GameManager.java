@@ -20,6 +20,8 @@ public class GameManager {
 	
 	private List<Item> itemList;
 	
+	private List<NPC> npcList;
+	
 	
 	private int scrollNum;
 	
@@ -75,6 +77,20 @@ public class GameManager {
 		return gameObjectList;
 	}
 	
+	
+	public void addNPC(NPC npc)
+	{
+		npcList.add(npc);
+	}
+	public void removeNPC(NPC npc)
+	{
+		npcList.remove(npc);
+	}
+	
+	public List<NPC> getNPCList()
+	{
+		return npcList;
+	}
 
 
 	
@@ -131,7 +147,7 @@ public class GameManager {
 		return isEnBulletCrushed;
 	}
 	
-	public boolean isCollision(NPC npc, GameObject obj2)
+	public boolean isNPCCollision(NPC npc, GameObject obj2)
 	{
 		boolean isNPCMeet = false;
 		if(Math.abs((npc.posX + npc.width/2) - (obj2.posX + npc.width/2)) < (obj2.width/2 + npc.width/2) 
