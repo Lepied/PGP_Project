@@ -29,9 +29,19 @@ public class PowerUpPanel extends JPanel implements Runnable{
 		this.setPreferredSize(new Dimension(X, Y));
 		this.setBackground(Color.WHITE);
 		this.setDoubleBuffered(true);
-		createText();
 		
-		btn("main", "Back", 0, 0, 100, 100);
+		JLabel coinDisplay = new SetText("coin: ", 100, 100, 100, 100, "Elephant");
+		add(coinDisplay);
+		coinDisplay.setText("ee");
+		
+		JLabel back = new CreateBtn("Back", 0, 0, 100, 100);
+		back.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+            	main.changePanel("main");
+            }
+		 });
+		add(back);
 //		btn("start", startBtn, 20, Y/2 , 300, 100);
 //		btn("powerUp", powerUpBtn, 20, Y/2 + 120 , 300, 100);
 
@@ -39,6 +49,16 @@ public class PowerUpPanel extends JPanel implements Runnable{
 	
 	public void createText() {
 		JLabel label = new JLabel("power");
+		label.setForeground(Color.BLACK);
+		label.setBounds(X/2 - 500/2, 50, 500, 100);
+		Font customFont = new Font("Elephant", Font.BOLD, 50);
+		label.setFont(customFont);
+        label.setHorizontalAlignment(JLabel.CENTER);
+		add(label);
+	}
+	
+	public void coinDisplay() {
+		JLabel label = new JLabel();
 		label.setForeground(Color.BLACK);
 		label.setBounds(X/2 - 500/2, 50, 500, 100);
 		Font customFont = new Font("Elephant", Font.BOLD, 50);

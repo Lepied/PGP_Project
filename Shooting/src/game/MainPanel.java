@@ -31,8 +31,23 @@ public class MainPanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		createText();
 		
-		btn("start", startBtn, 20, Y/2 , 300, 100);
-		btn("powerUp", powerUpBtn, 20, Y/2 + 120 , 300, 100);
+		JLabel start = new CreateBtn(startBtn, 20, Y/2 , 300, 100);
+		start.addMouseListener(new MouseAdapter() {
+			@Override
+	        public void mouseClicked(MouseEvent e) {
+	        	main.gameStart();
+	        }
+		 }); 
+		add(start);
+		
+		JLabel powerUp = new CreateBtn(powerUpBtn, 20, Y/2 + 120 , 300, 100);
+		powerUp.addMouseListener(new MouseAdapter() {
+			@Override
+	        public void mouseClicked(MouseEvent e) {
+				main.changePanel("powerUp");
+	        }
+		 }); 
+		add(powerUp);
 		
 	}
 	
@@ -45,38 +60,6 @@ public class MainPanel extends JPanel implements Runnable{
 		label.setFont(customFont);
         label.setHorizontalAlignment(JLabel.CENTER);
 		add(label);
-	}
-	
-	//버튼 생성
-	public void btn(String btnId, ImageIcon image, int x, int y, int width, int height) {
-		JLabel label = new JLabel(image, JLabel.CENTER);
-		label.setBounds(x, y, width, height);
-		label.setOpaque(false);
-
-		Border border = new LineBorder(Color.BLACK, 2);
-        label.setBorder(border);
-
-			
-		label.addMouseListener(new MouseAdapter() {
-			@Override
-        	public void mouseEntered(MouseEvent e) {
-            }
-
-            public void mouseExited(MouseEvent e) {
-            }
-            
-            public void mouseClicked(MouseEvent e) {
-            	if(btnId.equals("start")) {
-            		main.gameStart();
-            	}
-            	else {
-            		main.changePanel(btnId);
-            	}
-	
-            }
-		 });
-		 
-		 add(label);
 	}
 	
 	//이미지 크기 조정
