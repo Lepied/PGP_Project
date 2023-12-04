@@ -1,10 +1,13 @@
 package game;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import javax.swing.ImageIcon;
@@ -20,6 +23,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class GameMain extends JFrame implements Runnable{
 	 private Image playerImage;
@@ -33,7 +37,8 @@ public class GameMain extends JFrame implements Runnable{
 	 Animator animator;
 	 
 	 boolean canCh1BossSpawn= true; //게임타이머관리용 보스소환가능한상태?
-	 
+
+	 NPC npc;
 	 Enemy en;
 	 Item item;
 	 List<Item> itemsToRemove = new ArrayList<>(); // 아이템 일시 제거를 위한 리스트
@@ -41,10 +46,14 @@ public class GameMain extends JFrame implements Runnable{
 	 EnemyBullet enBullet;
 	 ArrayList Enemy_Bullet_List = new ArrayList(); //적 총알 리스트
 	 
-	 
+	 private Font customFont;
 	 
 	 private boolean isScrollPanelVisible = false; // 스크롤 패널이 표시되어야 하는지 여부
 	 private ScrollPanel scrollPanel; // 스크롤 패널
+	 public BossUI Ch1BossUI; 
+	 private Image scrollBgImage = new ImageIcon("resourses/sprites/ScrollBG.png").getImage();
+  
+	 
 	 private boolean isScrollGet =false; 
 	 
 	 private int[] ScrollIndex;
@@ -56,7 +65,7 @@ public class GameMain extends JFrame implements Runnable{
 	 private boolean scroll_2_onMouse = false;
 	 private boolean scroll_3_onMouse = false;
 	 
-	 
+	 private long immortalTime = 100; //플레이어 무적
 
 	 private int gameCnt;
 	 
@@ -80,9 +89,13 @@ public class GameMain extends JFrame implements Runnable{
 
 	 
 	    
-	 SelectPanel SelectPanel_1 = new SelectPanel(345,300,190,260,1,this);
-	 SelectPanel SelectPanel_2 = new SelectPanel(540,300,190,260,2,this);
-	 SelectPanel SelectPanel_3 = new SelectPanel(735,300,190,260,3,this);
+	 SelectPanel SelectPanel_1 = new SelectPanel(385,300,160,260,1,this);
+	 SelectPanel SelectPanel_2 = new SelectPanel(555,300,160,260,2,this);
+	 SelectPanel SelectPanel_3 = new SelectPanel(735,300,160,260,3,this);
+	 
+	 private boolean canSpawnNPC = true;
+	 
+
 	
 	 public GameMain()
 	 {
@@ -95,6 +108,13 @@ public class GameMain extends JFrame implements Runnable{
 		 addKeyListener(player);
 		 th = new Thread(this); 
 		 th.start();
+		 
+	        try {
+	            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resourses/MapleStory Bold.ttf")).deriveFont(14f);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	           
+	        }
 
 		
 		 
@@ -107,14 +127,67 @@ public class GameMain extends JFrame implements Runnable{
 		 int panelHeight = 800;
 		 int x = (frameWidth - panelWidth)/2;
 
-	     // 직접 JPanel을 생성하고 JFrame에 추가
+		 JPanel LeftUIPanel = new JPanel()
+			{
+				@Override
+				protected void paintComponent(Graphics g) {
+					super.paintComponent(g);
+			        Image backgroundImage = new ImageIcon("resourses/sprites/UI_BG.png").getImage();
+			        setOpaque(false); 
+
+			        g.drawImage(backgroundImage,0,0,x,panelHeight, this);
+
+				}
+			};
+		 JPanel RightUIPanel = new JPanel()
+			{
+				@Override
+				protected void paintComponent(Graphics g) {
+					super.paintComponent(g);
+					Image backgroundImage = new ImageIcon("resourses/sprites/UI_BG.png").getImage();
+					setOpaque(false); 
+					g.drawImage(backgroundImage,0,0,340,panelHeight, this);
+			       
+					
+					String hpText = "생명";
+			        g.setFont(customFont);
+			        g.setColor(Color.WHITE);
+			        g.drawString(hpText, 100, 280);
+			        int heartSize = 30;
+			        int heartsCount = player.hp;
+			        for (int i = 0; i < heartsCount; i++) {
+			            Image heartImage = new ImageIcon("resourses/sprites/Fireball.png").getImage();
+			            g.drawImage(heartImage, 100 + i * (heartSize + 5), 300, heartSize, heartSize, this);
+			        }
+			    	String bombText = "폭탄";
+			        g.setFont(customFont);
+			        g.setColor(Color.WHITE);
+			        g.drawString(bombText, 100, 380);   
+			        int bombSize = 30;
+			        int bombsCount = player.bomb;
+			        for (int i = 0; i < bombsCount; i++) {
+			            Image bombImage = new ImageIcon("resourses/sprites/bomb.png").getImage();
+			            g.drawImage(bombImage, 100 + i * (bombSize + 5), 400, bombSize, bombSize, this);
+			        }
+			        
+			        String scoreText = "Score: " + gameManager.getScore();
+			        g.setFont(customFont);
+			        g.setColor(Color.WHITE);
+			        g.drawString(scoreText, 10, 100);
+				}
+			};
+		 
+	     
 	     JPanel gamePanel = new JPanel() {
 	     @Override
 	         protected void paintComponent(Graphics g) {
 
 	    	 	super.paintComponent(g);
 	    	 	drawDoubleBuffering();
+	    	 	setOpaque(false); 
 	    	 	g.drawImage(buffImage,x,0,this);
+	    	 	
+
 
 	        }
 	    };
@@ -132,26 +205,27 @@ public class GameMain extends JFrame implements Runnable{
 	    		}
 	    	}
 	    });
+	   
+	    LeftUIPanel.setBounds(0,0,x,panelHeight);
+	    RightUIPanel.setBounds(x+panelWidth,0,340,panelHeight);
+	    LeftUIPanel.setVisible(true);
+	    RightUIPanel.setVisible(true);
 	    
+
+
 	    
 	    
 	    scrollPanel = new ScrollPanel();
 	    scrollPanel.setBounds(340,100,600,600);
 	    scrollPanel.setVisible(false); // 초기에는 보이지 않도록 설정
 
-
+	    			
 	    
 	    scrollPanel.addMouseMotionListener(new MouseAdapter() {
 	    	public void mouseMoved(MouseEvent e)
 	    	{
 	    		/*
 	    		if (isScrollPanelVisible) {
-	                // Handle mouse movement in ScrollPanel
-	                System.out.println("ScrollPanel Mouse Moved: " + e.getX() + ", " + e.getY());
-	                System.out.println("스크롤 1 :" + scroll_1_onMouse);
-	                System.out.println("스크롤 2 :" + scroll_2_onMouse);
-	                System.out.println("스크롤 3 :" + scroll_3_onMouse);
-	                
 	            }
 	            */
 	    	}
@@ -180,15 +254,22 @@ public class GameMain extends JFrame implements Runnable{
             }
         });
 	    
+	   Ch1BossUI = new BossUI(340,-5,600,50,this); 
+	    
+
+	   gamePanel.setBounds(x, 0, panelWidth, panelHeight);
+	   
+	   add(LeftUIPanel);
+	   add(RightUIPanel);
 	   add(SelectPanel_1);
 	   add(SelectPanel_2);
 	   add(SelectPanel_3); 
 	   add(scrollPanel);
-	
-	    
+	   add(Ch1BossUI);
 
-	    gamePanel.setBounds(x, 0, panelWidth, panelHeight);
-	    add(gamePanel);       
+	   add(gamePanel);
+	    
+	  
 	}
 	public void start()
 	{
@@ -203,7 +284,7 @@ public class GameMain extends JFrame implements Runnable{
 	{
 		if(buffImage == null)
 		{
-			buffImage =createImage(frameWidth, frameHeight);
+			buffImage =createImage(600, frameHeight);
 			if(buffImage == null)
 			{
 				return;
@@ -211,7 +292,7 @@ public class GameMain extends JFrame implements Runnable{
 			buffg = buffImage.getGraphics();
 		}
 		
-		buffg.clearRect(0,0,frameWidth,frameHeight);
+		buffg.clearRect(0,0,600,frameHeight);
 		
 		animator.setGraphics(buffg);
 		//게임오브젝트 그리는 부분
@@ -225,6 +306,7 @@ public class GameMain extends JFrame implements Runnable{
        
         Draw_Enemy();
         Draw_Item();
+        Draw_NPC();
 	}
 	
 	@Override
@@ -240,12 +322,30 @@ public class GameMain extends JFrame implements Runnable{
 					}
 				}
 				repaint();
-
+				//플레이어 무적시간 부여하기
+				if(player.isDamaged)
+				{
+					if (!player.isImmortal) { 
+				        immortalTime = System.currentTimeMillis();
+				        player.isImmortal = true; 
+					}
+					long currentTime = System.currentTimeMillis();
+					System.out.println("무적 경과 시간: " + (currentTime - immortalTime));
+					if(currentTime - immortalTime >1000)
+					{
+						System.out.println("무적해제");
+						player.isDamaged = false;
+						player.isImmortal = false; // 추가된 부분: 무적 상태 해제
+					}
+					
+				}
+		
+				
 				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
-				player.BulletProcess();
-				EnemyProcess();
-				ItemProcess();
-			
+				player.BulletProcess(); //플레이어 총알
+				EnemyProcess(); //적 매커니즘, 스폰 등
+				ItemProcess(); // 아이템 매커니즘
+				VisibleBossUI(); // 보스 UI 보이기
 				
 				// 게임 루프 안에서 각 패널의 상태 확인 // 더 수정해야함
 		        if (scrollType == 1) {
@@ -331,6 +431,8 @@ public class GameMain extends JFrame implements Runnable{
 				Thread.sleep(15); // 15 milli sec 로 스레드 돌리기 
 				gameCnt++;
 				//게임 타이머 초기화 해서 게임 안터지게
+				
+				GameOver();
 				if(gameCnt > 999999)
 				{
 					gameCnt = 0; 
@@ -355,14 +457,20 @@ public class GameMain extends JFrame implements Runnable{
 	        });
 	}
 	
-	
+	public void GameOver()
+	{
+		if(player.hp == 0)
+		{
+			System.out.println("게임오버");
+		}
+	}
 	public void Ability(int ability) //능력리스트
 	{
 		switch(ability)
 		{
 			case 0: //플레이어데미지 강화
 				player.playerDamage = player.playerDamage + 10;
-				System.out.println("능력 0");
+				System.out.println("플레이어 데미지 증가");
 				break;
 				
 			case 1: //플레이어 공격 속도 강화
@@ -370,15 +478,20 @@ public class GameMain extends JFrame implements Runnable{
 				{
 					player.attackSpeed = player.attackSpeed - 10;
 				}
-				System.out.println("능력 1");
+				System.out.println("플레이어 공격속도 업");
 				break;
 				
 			case 2: 
-				System.out.println("능력 2");
+				if(player.lineShot<2)
+				{
+					player.lineShot = player.lineShot + 1;
+				}
+				System.out.println("플레이어 직선 공격 추가");
 				break;
 				
 			case 3:
-				System.out.println("능력 3");
+				gameManager.setCoin(gameManager.getCoin()+10);
+				System.out.println("코인 더미");
 				break;
 				
 			case 4:
@@ -422,10 +535,16 @@ public class GameMain extends JFrame implements Runnable{
 		for(int  i =0; i<gameManager.getGameObjectList().size(); ++i)
 		{
 			en = (Enemy)(gameManager.getGameObjectList().get(i));
+			if(en.type==3)
+			{
+				gameManager.isBossNow =true;
+				Ch1BossUI.updateHealth(en.hp, en.maxHealth);
+			}
 			en.move();
 			en.BulletProcess();
+
 	        
-	        
+			
 			if(en.posY >800)
 			{
 			
@@ -433,21 +552,44 @@ public class GameMain extends JFrame implements Runnable{
 			}
 			
 		}
-		if(canCh1BossSpawn == true &&    gameCnt<1000 && gameCnt%300 ==0) {
+		if(gameCnt>100 &&canSpawnNPC)
+		{
+			npc = new NPC();
+			canSpawnNPC = false;
+		}
+	
+		/*
+		if(canCh1BossSpawn == true && gameCnt<3000 && gameCnt%300 ==0) {
 			en = new E_Wybern(1);
 			en = new E_Wybern(2);
 			en = new E_Wybern(3);
 			
 
 		}
+		*/
 		
-		if(gameCnt>1200 && canCh1BossSpawn)
+		if(gameCnt>200 && canCh1BossSpawn)
 		{
+			
 			canCh1BossSpawn = false;
 			en = new Ch1Boss(2);
 			gameCnt = 0; // 게임카운트 초기화해서 보스전돌입
 		}
 
+	}
+	public void VisibleBossUI()
+	{
+		SwingUtilities.invokeLater(() -> {
+		if(!GameManager.getInstance().isBossNow)
+		{
+			Ch1BossUI.setVisible(false);
+		}
+		
+		if(GameManager.getInstance().isBossNow)
+		{				
+			Ch1BossUI.setVisible(true);
+		}
+		});
 	}
 	
 	public void ItemProcess()
@@ -510,6 +652,15 @@ public class GameMain extends JFrame implements Runnable{
 		itemsToRemove.clear();
 	
 	}
+	public void NPC_Process()
+	{
+		npc.move();
+		if(item.posY >800)
+		{
+			npc = null;
+		}
+		
+	}
 	
 	
 	
@@ -522,15 +673,7 @@ public class GameMain extends JFrame implements Runnable{
 			en.Draw_EnemyBullet(buffg);
 		}
 	}
-    public void Draw_EnemyBullet()
-    {
-    	for(int  i=0; i<gameManager.getGameObjectList().size(); ++i)	
-    	{
-    		    en = (Enemy)(gameManager.getGameObjectList().get(i));
-        		en.Draw_EnemyBullet(buffg);
-    	}
-   
-    }
+
 	
 	public void Draw_Item()
 	{
@@ -549,6 +692,11 @@ public class GameMain extends JFrame implements Runnable{
 			}
 			
 		}
+	}
+	public void Draw_NPC()
+	{
+		if(npc != null)
+		buffg.drawImage(npc.img,npc.posX,npc.posY,this);
 	}
 
 	public synchronized void pauseGame() 
@@ -579,20 +727,20 @@ class ScrollPanel extends JPanel {
 		        "Ability 9",
 		        "Ability 10"       
 		    };
-
+	private Image bgImage;
     
     public ScrollPanel() {
     	setOpaque(false);
         randomImages = new ArrayList<>();
-        setPreferredSize(new Dimension(200, 200)); // 적절한 크기로 설정
-        
-  
+        bgImage = new ImageIcon("resourses/sprites/ScrollBG.png").getImage();
     }
 
     public void generateRandomImages() {
     	SwingUtilities.invokeLater(() -> {
         // 랜덤으로 이미지 선택 및 리스트에 추가
     	
+    	
+    		
     	randomImages.clear();
         Random random = new Random();
         
@@ -629,12 +777,14 @@ class ScrollPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+        g.drawImage(bgImage, 0, 100, getWidth(), 450, this);
         // 리스트에 있는 이미지를 그림
-        int x = 15;
+        int x = 45;
         int y = 200;
         for (Image image : randomImages) {
             g.drawImage(image, x, y, this);
-            x += 190; // 이미지 사이의 간격 조절
+            x += 170; // 이미지 사이의 간격 조절
         }
     }
     public int[] returnScroll()

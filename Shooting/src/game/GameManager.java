@@ -20,12 +20,16 @@ public class GameManager {
 	
 	private List<Item> itemList;
 	
+	
 	private int scrollNum;
 	
 	private int itemPosX;
 	private int itemPosY;
 	
 	private int playerDamage = 20;
+	
+	public boolean isBossNow = false;
+	public boolean isNPCNow = false;
 
 	
 	
@@ -126,13 +130,33 @@ public class GameManager {
 		
 		return isEnBulletCrushed;
 	}
+	
+	public boolean isCollision(NPC npc, GameObject obj2)
+	{
+		boolean isNPCMeet = false;
+		if(Math.abs((npc.posX + npc.width/2) - (obj2.posX + npc.width/2)) < (obj2.width/2 + npc.width/2) 
+				&& Math.abs((npc.posY + npc.height / 2) - (obj2.posY + obj2.height/2)) < (obj2.height/2 + npc.height/2))
+		{
+			isNPCMeet = true;
+		}
+		else isNPCMeet = false;
+		
+		return isNPCMeet;
+	}
+	
 	public void applyDamage(Enemy target, int damage)
 	{
 		target.hp = target.hp - damage;
 		System.out.println("공격결과 : " + target.hp);
 		if(target.hp <=0)
 		{
+			if(target.type == 3)
+			{
+				isBossNow = false;
+				System.out.println("보스전종료");
+			}
 			removeEnemy(target);
+			
 			
 			double randomValue = Math.random(); // 0~1.0
 			if (randomValue < 0.1) { // 10%
@@ -143,6 +167,17 @@ public class GameManager {
 	            addItem(new Coin(target.posX, target.posY));
 	        }
 		}
+	}
+
+	
+	public int getScore()
+	{
+		return Score;
+	}
+	
+	public void setScore(int Score)
+	{
+		this.Score = Score;
 	}
 
 	
