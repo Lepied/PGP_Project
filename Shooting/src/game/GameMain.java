@@ -75,7 +75,7 @@ public class GameMain extends JFrame implements Runnable{
 	 
 	 Toolkit tk = Toolkit.getDefaultToolkit();
 
-	 int x,y;
+	 int x,y; 
 	 private int mouseX, mouseY; // 마우스의 좌표
 	 public int frameWidth = 1280;
 	 public int frameHeight = 800;
