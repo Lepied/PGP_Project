@@ -55,7 +55,7 @@ public class Player extends GameObject implements KeyListener {
     private int mouseX, mouseY;
 	private double angle = 0;
 	
-	public int lineShot ;
+	public int lineShot;
 	public int diaShot;
 	public boolean isImmortal;
 
@@ -238,27 +238,35 @@ public class Player extends GameObject implements KeyListener {
 		if(isAttack && System.currentTimeMillis() - lastAttackTime > attackSpeed)
 		{
 			//직선 총알개수 * 대각 총알개수 (대각 총알은 직선 총알이 그냥 대각으로 더나가는거.)
-			if(lineShot == 1)
+			switch(lineShot)
 			{
+			case 1:
 				bullet = new Bullet(posX,posY-65,5,1,angle);
 				Bullet_List.add(bullet);	
-			}
-			if(lineShot == 2)
-			{
+				break;
+			case 2:
 				for(int i=0; i<lineShot; ++i)
 				{
 					bullet = new Bullet(posX-10+i*20,posY-65,5,1,angle);
 					Bullet_List.add(bullet);
 				}
-			}
-			else
-			{
+				break;
+			case 3:
 				for(int i=0; i<lineShot; ++i)
 				{
 					bullet = new Bullet(posX-30+i*20,posY-65,5,1,angle);
 					Bullet_List.add(bullet);
 				}
+				break;
+			default:
+				for(int i=0; i<lineShot; ++i)
+				{
+					bullet = new Bullet(posX-30+i*20,posY-65,5,1,angle);
+					Bullet_List.add(bullet);
+				}
+				break;
 			}
+
 			lastAttackTime = System.currentTimeMillis();
 		}
 		for(int i=0; i<Bullet_List.size();++i) 

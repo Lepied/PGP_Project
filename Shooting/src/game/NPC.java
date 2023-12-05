@@ -7,6 +7,7 @@ public class NPC extends GameObject{
 	public NPC()
 	{
 		super();
+		this.posX = 200;
 		this.width = 60;
 		this.height = 60;
 		this.img = tk.getImage("resourses/sprites/NPC_lowQ.png");
