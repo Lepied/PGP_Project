@@ -20,6 +20,8 @@ public class GameManager {
 	
 	private List<Item> itemList;
 	
+	private List<NPC> npcList;
+	
 	
 	private int scrollNum;
 	
@@ -37,6 +39,7 @@ public class GameManager {
 	{//싱글톤 패턴
 		gameObjectList = new ArrayList<>();
 		itemList = new ArrayList<>();
+		npcList = new ArrayList<>();
 		playerCoin =0;
 		
 	} 
@@ -75,6 +78,20 @@ public class GameManager {
 		return gameObjectList;
 	}
 	
+	
+	public void addNPC(NPC npc)
+	{
+		npcList.add(npc);
+	}
+	public void removeNPC(NPC npc)
+	{
+		npcList.remove(npc);
+	}
+	
+	public List<NPC> getNPCList()
+	{
+		return npcList;
+	}
 
 
 	
@@ -131,7 +148,7 @@ public class GameManager {
 		return isEnBulletCrushed;
 	}
 	
-	public boolean isCollision(NPC npc, GameObject obj2)
+	public boolean isNPCCollision(NPC npc, GameObject obj2)
 	{
 		boolean isNPCMeet = false;
 		if(Math.abs((npc.posX + npc.width/2) - (obj2.posX + npc.width/2)) < (obj2.width/2 + npc.width/2) 
@@ -147,19 +164,19 @@ public class GameManager {
 	public void applyDamage(Enemy target, int damage)
 	{
 		target.hp = target.hp - damage;
-		System.out.println("공격결과 : " + target.hp);
 		if(target.hp <=0)
 		{
 			if(target.type == 3)
 			{
 				isBossNow = false;
-				System.out.println("보스전종료");
+
 			}
 			removeEnemy(target);
 			
 			
 			double randomValue = Math.random(); // 0~1.0
-			if (randomValue < 0.1) { // 10%
+			//if (randomValue < 0.1) { // 10%
+			if (randomValue < 1) { // 10%
 	            addItem(new Scroll(target.posX, target.posY));
 	        } else if (randomValue < 0.4) { // 30%
 	            addItem(new Bomb(target.posX, target.posY));

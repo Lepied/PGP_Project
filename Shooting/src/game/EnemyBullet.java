@@ -18,7 +18,6 @@ public class EnemyBullet extends GameObject {
 		this.type = type;
 		this.speed = speed;
 		pos = new Point(posX,posY);
-		//this.direction = direction;
 		this.direction = Math.toRadians(angle);
 		if(this.type == 1)
 		{
@@ -33,23 +32,11 @@ public class EnemyBullet extends GameObject {
 		pos.x += (double)(speed * Math.cos(direction));
 		pos.y += (double)(speed * Math.sin(direction));
 
-		/*
-		if(type == 1)
-		{
-			pos.y+=3;
-		}
-		else if(type == 2)
-		{
-			pos.y+=3;
-		}
-		*/
-
 	}
 	public void draw(Graphics g)
 	{
 	    Graphics2D g2d = (Graphics2D) g.create();
 
-	    // 이미지를 각도에 따라 회전
 	    g2d.rotate(direction, pos.x + width / 2, pos.y + height / 2);
 
 	    g2d.drawImage(img, pos.x, pos.y, width, height, null);
