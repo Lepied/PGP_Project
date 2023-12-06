@@ -527,7 +527,7 @@ public class GameMain extends JFrame implements Runnable {
 			en = new E_Wybern(3);
 
 		}
-		if (gameCnt > 1000 && canSpawnNPC) {
+		if (gameCnt > 200 && canSpawnNPC) {
 			npc = new NPC();
 			canSpawnNPC = false;
 		}
