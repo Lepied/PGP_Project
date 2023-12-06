@@ -29,6 +29,7 @@ public class NPCPanel extends JPanel {
     private String textToShow = "Hello,NPC!";
     private String currentText = "...";
     private int currentCharIndex = 0;
+    private int textNum=0;
     private Timer typingTimer;
 	
     public NPCPanel() {
