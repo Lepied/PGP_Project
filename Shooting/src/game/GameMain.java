@@ -462,6 +462,8 @@ public class GameMain extends JFrame implements Runnable{
 		if(player.hp == 0)
 		{
 			System.out.println("게임오버");
+			player.bomb = 0;
+			
 		}
 	}
 	public void Ability(int ability) //능력리스트
