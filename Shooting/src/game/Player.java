@@ -25,6 +25,7 @@ public class Player extends GameObject implements KeyListener {
     int playerHP = 3;
     int playerDamage;
     int attackSpeed;
+    int lazerDelay;
     int bombDelay;
     
     int bomb;
@@ -71,6 +72,7 @@ public class Player extends GameObject implements KeyListener {
         this.width = 35;
         this.height = 35;
     	this.attackSpeed = 300;
+    	this.lazerDelay = attackSpeed * 5;
     	this.lineShot = 1;
     	this.diaShot = 1;
     	this.attackType = 2;
@@ -89,6 +91,7 @@ public class Player extends GameObject implements KeyListener {
       
         this.lastAttackTime = System.currentTimeMillis();
         this.lastBombTime = System.currentTimeMillis();
+      
  
        
     }
@@ -149,7 +152,7 @@ public class Player extends GameObject implements KeyListener {
     	    		bullet =(Bullet)(Bullet_List.get(i));
     	    		if(playerDamage < 30)
     	    		{
-        	    		g.drawImage(bullet.img, bullet.pos.x -40,bullet.pos.y-830,null );
+        	    		g.drawImage(bullet.img, this.posX-30,this.posY-900,null );
     	    		}
     	    		else if(playerDamage >=30)
     	    		{
@@ -162,7 +165,7 @@ public class Player extends GameObject implements KeyListener {
     	    			{
     	    				bullet.img = tk.getImage("resourses/sprites/Lightning4.png"); 
     	    			}
-    	    			g.drawImage(bullet.img, bullet.pos.x-40, bullet.pos.y-830,null );
+    	    			g.drawImage(bullet.img,this.posX-30, this.posY-900,null );
     	    		}
     
     	   
@@ -267,116 +270,76 @@ public class Player extends GameObject implements KeyListener {
 	
 	public void BulletProcess()
 	{
-		if(isAttack && System.currentTimeMillis() - lastAttackTime > attackSpeed)
-		{
-			//직선 총알개수 * 대각 총알개수 (대각 총알은 직선 총알이 그냥 대각으로 더나가는거.)
-			switch(lineShot)
-			{
+		if (isAttack && attackType == 1 && System.currentTimeMillis() - lastAttackTime > attackSpeed) {
+			// 직선 총알개수 * 대각 총알개수 (대각 총알은 직선 총알이 그냥 대각으로 더나가는거.)
+			switch (lineShot) {
 			case 1:
-				if(attackType == 1)
-				{
-					bullet = new Bullet(posX,posY-65,5,1,angle);
-					Bullet_List.add(bullet);
-				}
-				else
-				{
-					bullet = new Bullet(posX,posY-65,5,2,angle);
-					Bullet_List.add(bullet);
-				}
-					
+				bullet = new Bullet(posX, posY - 65, 5, 1, angle);
+				Bullet_List.add(bullet);
+
 				break;
 			case 2:
-				if(attackType == 1)
-				{
-					for(int i=0; i<lineShot; ++i)
-					{
-						bullet = new Bullet(posX-10+i*20,posY-65,5,1,angle);
-						Bullet_List.add(bullet);
-					}
-				}
-				else 
-				{
-					for(int i=0; i<lineShot; ++i)
-					{
-						bullet = new Bullet(posX-10+i*20,posY-65,5,2,angle);
-						Bullet_List.add(bullet);
-					}
+
+				for (int i = 0; i < lineShot; ++i) {
+					bullet = new Bullet(posX - 10 + i * 20, posY - 65, 5, 1, angle);
+					Bullet_List.add(bullet);
 				}
 
 				break;
 			case 3:
-				if(attackType == 1)
-				{
-					for(int i=0; i<lineShot; ++i)
-					{
-						bullet = new Bullet(posX-30+i*20,posY-65,5,1,angle);
-						Bullet_List.add(bullet);
-					}
-				}
-				else
-				{
-					for(int i=0; i<lineShot; ++i)
-					{
-						bullet = new Bullet(posX-30+i*20,posY-65,5,2,angle);
-						Bullet_List.add(bullet);
-					}
+
+				for (int i = 0; i < lineShot; ++i) {
+					bullet = new Bullet(posX - 30 + i * 20, posY - 65, 5, 1, angle);
+					Bullet_List.add(bullet);
 				}
 
 				break;
 			default:
-				if(attackType ==1)
-				{
-					for(int i=0; i<lineShot; ++i)
-					{
-						bullet = new Bullet(posX-30+i*20,posY-65,5,1,angle);
-						Bullet_List.add(bullet);
-					}
+				for (int i = 0; i < lineShot; ++i) {
+					bullet = new Bullet(posX - 30 + i * 20, posY - 65, 5, 1, angle);
+					Bullet_List.add(bullet);
 				}
-				else
-				{
-					for(int i=0; i<lineShot; ++i)
-					{
-						bullet = new Bullet(posX-30+i*20,posY-65,5,2,angle);
-						Bullet_List.add(bullet);
-					}
-				}
-	
+
 				break;
 			}
 
 			lastAttackTime = System.currentTimeMillis();
 		}
-		for(int i=0; i<Bullet_List.size();++i) 
-		{
-			bullet =(Bullet)(Bullet_List.get(i));
+		if (isAttack && attackType == 2 && System.currentTimeMillis() - lastAttackTime > lazerDelay) {
+
+			bullet = new Bullet(posX, 5, 5, 2, angle);
+			Bullet_List.add(bullet);
+			
+			lastAttackTime = System.currentTimeMillis();
+		}
+
+		for (int i = 0; i < Bullet_List.size(); ++i) {
+			bullet = (Bullet) (Bullet_List.get(i));
 			bullet.move();
-			
-			
-			//화면 밖으로 나가면 제거
-			if(bullet.pos.y < 0)
-			{
+
+			// 화면 밖으로 나가면 제거
+			if (bullet.pos.y < 0) {
 				Bullet_List.remove(i);
 			}
-			if(bullet.type == 2)
-			{
-				//각 총알객체의 타이머가 0.2초지나면 제거해야됨.
-				Bullet_List.remove(i);
-			}
-			
-			
-			for(int j=0; j<GameManager.getInstance().getGameObjectList().size(); ++j)
-			{ 	
-				en = (Enemy) GameManager.getInstance().getGameObjectList().get(j);
-				
-				if(GameManager.getInstance().isBulletCollision(bullet,en))
-				{
+			if (bullet.type == 2) { // 각 총알객체의 타이머가 0.2초지나면 제거
+				if (System.currentTimeMillis() - bullet.creationTime >= 200) {
 					Bullet_List.remove(i);
-					GameManager.getInstance().applyDamage(en,playerDamage);
-					//GameManager.getInstance().getGameObjectList().remove(j);
+				}
+			}
+
+			for (int j = 0; j < GameManager.getInstance().getGameObjectList().size(); ++j) {
+				en = (Enemy) GameManager.getInstance().getGameObjectList().get(j);
+
+				if (GameManager.getInstance().isBulletCollision(bullet, en)) {
+					if (bullet.type == 1) {
+						Bullet_List.remove(i);
+					}
+					GameManager.getInstance().applyDamage(en, playerDamage);
+					// GameManager.getInstance().getGameObjectList().remove(j);
 				}
 			}
 		}
-		
+
 	}
 	
 	public void UseBomb()

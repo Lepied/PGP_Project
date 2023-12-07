@@ -12,6 +12,8 @@ public class Bullet extends GameObject {
 	
 	private double direction;
 	
+	public long creationTime;
+	
 	Bullet(int posX, int posY, int speed, int type, double direction)
 	{
 		this.type = type;
@@ -28,8 +30,9 @@ public class Bullet extends GameObject {
 		{
 			this.img = tk.getImage("resourses/sprites/Lightning1.png");
 		    this.width = 70;
-		    this.height = 600;
+		    this.height = 1000;
 		}
+		 this.creationTime = System.currentTimeMillis(); 
 	}
 	public void move()
 	{
