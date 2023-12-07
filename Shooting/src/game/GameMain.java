@@ -303,6 +303,14 @@ public class GameMain extends JFrame implements Runnable {
 				ItemProcess(); // 아이템 매커니즘
 				NPCProcess(); // NPC 매커니즘
 				VisibleBossUI(); // 보스 UI 보이기
+				
+				if(gameManager.isNPCEnd)
+				{
+					System.out.println("왜안됨???");
+					npcPanel.setVisible(false);
+					resumeGame();
+					gameManager.isNPCEnd=false;
+				}
 
 				// 게임 루프 안에서 각 패널의 상태 확인 // 더 수정해야함
 				if (scrollType == 1) {
@@ -339,7 +347,7 @@ public class GameMain extends JFrame implements Runnable {
 					resumeGame();
 					scrollType = 0; // 다시 초기화
 				}
-
+				
 				// 게임 루프 안에서 각 패널의 상태 확인
 				if (SelectPanel_1.isMouseEntered()) {
 					// SelectPanel_1에 대한 처리
@@ -604,6 +612,7 @@ public class GameMain extends JFrame implements Runnable {
 	}
 
 	public void NPCProcess() {
+
 		for (int i = 0; i < gameManager.getNPCList().size(); ++i) {
 			npc = (NPC) (gameManager.getNPCList().get(i));
 			npc.move();
@@ -611,12 +620,14 @@ public class GameMain extends JFrame implements Runnable {
 				gameManager.getNPCList().remove(i);
 			}
 			if (gameManager.isNPCCollision(npc, player)) {
+				gameManager.getNPCList().remove(i);
 				SwingUtilities.invokeLater(() -> {
 					npcPanel.setVisible(true);
 					pauseGame();
 
 				});
 			}
+			
 
 		}
 

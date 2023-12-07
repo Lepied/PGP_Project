@@ -26,11 +26,20 @@ import javax.swing.JLabel;
 public class NPCPanel extends JPanel {
 	private Font customFont;
 	private Image bgImage;
-    private String textToShow = "Hello,NPC!";
+	 private String[] textToShow = 
+		 	{"...", 
+			 "아! 그래, 누구인가 했더니", 
+			 "또 모험가구만, 질리지도 않는 것인가?",
+			 "이런곳에서 만난것도 필시 인연일터, 나 좀 도와주지 않겠나?",
+			 "이 앞에는 OOO들이 무리지어 있다네.",
+			 "그런데 이 녀석들의 부산물이 아주 괜찮단 말이지.",
+			 "처리해주면 내 사례는 섭섭지 않게 해주지. 어떤가?",
+			 "고맙네! 지켜보고 있겠네!"};
     private String currentText = "...";
     private int currentCharIndex = 0;
     private int textNum=0;
     private Timer typingTimer;
+    public boolean isNPCNow;
 	
     public NPCPanel() {
     	setBounds(340,0,600,800);
@@ -44,7 +53,7 @@ public class NPCPanel extends JPanel {
 
 		}
         bgImage = new ImageIcon("resourses/sprites/UI-Conver.png").getImage();
-        
+        isNPCNow = true;
         Timer delayTimer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,7 +70,18 @@ public class NPCPanel extends JPanel {
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("클릭됨");
+               
+                if (textNum < textToShow.length-1) {
+                	textNum++;
+                    startTypingEffect();
+                }
+                else 
+                {
+                	GameManager.getInstance().isNPCEnd=true;
+                	
+				}
+                
+    
             }
             
 
@@ -92,11 +112,11 @@ public class NPCPanel extends JPanel {
         currentCharIndex = 0;
 
         // 타이핑 효과를 위한 Timer 설정
-        typingTimer = new Timer(500, new ActionListener() {
+        typingTimer = new Timer(300, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currentCharIndex < textToShow.length()) {
-                    currentText = textToShow.substring(0, currentCharIndex + 1);
+                if (currentCharIndex < textToShow[textNum].length()) {
+                    currentText = textToShow[textNum].substring(0, currentCharIndex + 1);
                     currentCharIndex++;
                     repaint();
                 } else {
@@ -109,4 +129,5 @@ public class NPCPanel extends JPanel {
         // 타이핑 효과 Timer 시작
         typingTimer.start();
     }
+
 }

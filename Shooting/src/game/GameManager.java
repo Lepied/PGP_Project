@@ -32,6 +32,7 @@ public class GameManager {
 	
 	public boolean isBossNow = false;
 	public boolean isNPCNow = false;
+	public boolean isNPCEnd = false;
 
 	
 	
