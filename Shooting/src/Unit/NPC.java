@@ -1,6 +1,9 @@
-package game;
+package Unit;
 
 import java.awt.Graphics;
+
+import game.GameManager;
+import game.GameObject;
 
 public class NPC extends GameObject{
 	
@@ -9,7 +12,7 @@ public class NPC extends GameObject{
 		super();
 		this.posX = 200;
 		this.width = 60;
-		this.height = 60;
+		this.height = 100;
 		this.img = tk.getImage("resourses/sprites/NPC_lowQ.png");
 		GameManager.getInstance().addNPC(this);
 	}

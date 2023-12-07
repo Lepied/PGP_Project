@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 
 import Unit.Ch1Boss;
 import Unit.E_Wybern;
+import Unit.NPC;
 
 import java.awt.Color;
 import java.awt.Dimension;

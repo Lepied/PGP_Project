@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 public class NPCPanel extends JPanel {
 	private Font customFont;
 	private Image bgImage;
+	private Image npcImage;
 	 private String[] textToShow = 
 		 	{"...", 
 			 "아! 그래, 누구인가 했더니", 
@@ -55,6 +56,7 @@ public class NPCPanel extends JPanel {
 
 		}
         bgImage = new ImageIcon("resourses/sprites/UI-Conver.png").getImage();
+        npcImage = new ImageIcon("resourses/sprites/NPC_highQ.png").getImage();
         GameManager.getInstance().isNPCEnd = false;
         GameManager.getInstance().isQuest = false;
         Timer delayTimer = new Timer(2000, new ActionListener() {
@@ -99,7 +101,9 @@ public class NPCPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
+        g.drawImage(npcImage, -40, 200,this);
         g.drawImage(bgImage, 0, 580, this);
+        
 
 
         // 글씨를 그리는 위치 및 내용 설정
@@ -109,6 +113,7 @@ public class NPCPanel extends JPanel {
         g.setFont(customFont);
         g.setColor(Color.WHITE);
         g.drawString(currentText, x, y);
+        
        
     
     }
