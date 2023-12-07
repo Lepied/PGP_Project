@@ -86,7 +86,7 @@ public class GameMain extends JFrame implements Runnable {
 	SelectPanel SelectPanel_2 = new SelectPanel(555, 300, 160, 260, 2, this);
 	SelectPanel SelectPanel_3 = new SelectPanel(735, 300, 160, 260, 3, this);
 
-	NPCPanel npcPanel = new NPCPanel();
+	NPCPanel npcPanel = new NPCPanel(this);
 
 	private boolean canSpawnNPC = true;
 
@@ -304,9 +304,9 @@ public class GameMain extends JFrame implements Runnable {
 				NPCProcess(); // NPC 매커니즘
 				VisibleBossUI(); // 보스 UI 보이기
 				
+			
 				if(gameManager.isNPCEnd)
 				{
-					System.out.println("왜안됨???");
 					npcPanel.setVisible(false);
 					resumeGame();
 					gameManager.isNPCEnd=false;
@@ -528,22 +528,34 @@ public class GameMain extends JFrame implements Runnable {
 			}
 
 		}
-
-		if (canCh1BossSpawn == true && gameCnt < 3000 && gameCnt % 300 == 0) {
+		//보스전 이전 스테이지 구성
+		if (canCh1BossSpawn == true && gameCnt < 400 && gameCnt % 300 == 0) {
 			en = new E_Wybern(1);
 			en = new E_Wybern(2);
 			en = new E_Wybern(3);
 
 		}
-		if (gameCnt > 200 && canSpawnNPC) {
+		if (gameCnt > 200 && canSpawnNPC) {//엔피씨 소환
 			npc = new NPC();
 			canSpawnNPC = false;
 		}
+		if(gameCnt >400) //퀘스트 받을때 안받을떄 로직
+		{
+			if(gameManager.isQuest)
+			{
+				if(gameCnt%50==0)
+				{
+					en = new E_Wybern(1);
 
+				}
+			}
+			else {}
+		}
 		/*
 		 * if(gameCnt>200 && canCh1BossSpawn) {
 		 * 
-		 * canCh1BossSpawn = false; en = new Ch1Boss(2); gameCnt = 0; // 게임카운트 초기화해서
+		 * canCh1BossSpawn = false; en = new Ch1Boss(2); gameCnt = 0; 
+		 * // 게임카운트 초기화해서
 		 * 보스전돌입 }
 		 */
 
@@ -588,8 +600,6 @@ public class GameMain extends JFrame implements Runnable {
 						SelectPanel_3.setVisible(true);
 						scrollPanel.generateRandomImages(); // 랜덤 이미지 생성
 						//System.out.println(ScrollIndex.length);
-						
-
 					}
 
 					repaint(); // 화면 갱신
@@ -612,6 +622,7 @@ public class GameMain extends JFrame implements Runnable {
 	}
 
 	public void NPCProcess() {
+		boolean NPCGO = false;
 
 		for (int i = 0; i < gameManager.getNPCList().size(); ++i) {
 			npc = (NPC) (gameManager.getNPCList().get(i));
@@ -621,15 +632,14 @@ public class GameMain extends JFrame implements Runnable {
 			}
 			if (gameManager.isNPCCollision(npc, player)) {
 				gameManager.getNPCList().remove(i);
-				SwingUtilities.invokeLater(() -> {
-					npcPanel.setVisible(true);
-					pauseGame();
-
-				});
+				NPCGO = true;
 			}
-			
-
 		}
+		if(NPCGO)
+		{
+			pauseGame();
+			npcPanel.setVisible(true);
+		} 
 
 	}
 

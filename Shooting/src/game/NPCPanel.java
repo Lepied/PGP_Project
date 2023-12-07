@@ -39,13 +39,15 @@ public class NPCPanel extends JPanel {
     private int currentCharIndex = 0;
     private int textNum=0;
     private Timer typingTimer;
-    public boolean isNPCNow;
+  
+    private GameMain gameMain;
 	
-    public NPCPanel() {
+    public NPCPanel(GameMain gameMain) {
     	setBounds(340,0,600,800);
     	setOpaque(false);
     	setVisible(false);
     	setLayout(null);
+    	this.gameMain = gameMain;
     	try {
 			customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resourses/MapleStory Bold.ttf")).deriveFont(20f);
 		} catch (Exception e) {
@@ -53,7 +55,8 @@ public class NPCPanel extends JPanel {
 
 		}
         bgImage = new ImageIcon("resourses/sprites/UI-Conver.png").getImage();
-        isNPCNow = true;
+        GameManager.getInstance().isNPCEnd = false;
+        GameManager.getInstance().isQuest = false;
         Timer delayTimer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -63,7 +66,7 @@ public class NPCPanel extends JPanel {
         delayTimer.setRepeats(false); // 한 번만 실행되도록 설정
         delayTimer.start();
         
-        JLabel label = new JLabel("123123123123");
+        JLabel label = new JLabel("???");
         label.setFont(customFont);
         label.setForeground(Color.WHITE);
         label.setBounds(0, 530, 600, 200); 
@@ -77,8 +80,10 @@ public class NPCPanel extends JPanel {
                 }
                 else 
                 {
-                	GameManager.getInstance().isNPCEnd=true;
-                	
+                	GameManager.getInstance().isQuest=true;
+                	GameManager.getInstance().isNPCEnd = true;
+                	typingTimer.stop();
+                	gameMain.resumeGame();
 				}
                 
     
