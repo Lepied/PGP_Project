@@ -24,25 +24,28 @@ public class Bullet extends GameObject {
 		    this.width = 20;
 		    this.height = 30;
 		}
+		if(this.type == 2)
+		{
+			this.img = tk.getImage("resourses/sprites/Lightning1.png");
+		    this.width = 70;
+		    this.height = 600;
+		}
 	}
 	public void move()
 	{
 		
-		//일단 위로만 가게 냅두기. 정안되면 평소엔 위로, 
-		//특정 총알 모드일때는 마우스위치로 날아가고, 도착하면 사라지게
+		switch(this.type)
+		{
+		case 1:
+			pos.x += (double)(speed * Math.cos(direction));
+			pos.y -= (double)(speed * Math.sin(direction));
+			break;
+		case 2:
+
+			break;
+		}
 		
-		pos.x += (double)(speed * Math.cos(direction));
-		pos.y -= (double)(speed * Math.sin(direction));
-		/*
-		if(type == 1)
-		{
-			pos.y-=10;
-		}
-		else if(type == 2)
-		{
-			pos.y-=10;
-		}
-		*/
+
 
 	}
 	public void draw(Graphics g)

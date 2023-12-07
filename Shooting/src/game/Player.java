@@ -58,6 +58,7 @@ public class Player extends GameObject implements KeyListener {
 	public int lineShot;
 	public int diaShot;
 	public boolean isImmortal;
+	public int attackType; // 1 = 불(일반탄) , 2= 전기(레이저)
 
     
     public Player(int damage) {
@@ -72,7 +73,7 @@ public class Player extends GameObject implements KeyListener {
     	this.attackSpeed = 300;
     	this.lineShot = 1;
     	this.diaShot = 1;
-  
+    	this.attackType = 2;
     	this.bomb = 0;
     	this.bombDamage = 500;
     	this.bombDelay = 100;
@@ -131,13 +132,44 @@ public class Player extends GameObject implements KeyListener {
     }
     public void drawBullet(Graphics g)
     {
-    	for (int i=0; i<Bullet_List.size(); ++i)
+    	switch(attackType)
     	{
-    		bullet =(Bullet)(Bullet_List.get(i));
-    		g.drawImage(bullet.img, bullet.pos.x,bullet.pos.y+35,
-    				bullet.pos.x+35,bullet.pos.y+95,15,15,35,60,null );
-   
+    		case 1:
+    	    	for (int i=0; i<Bullet_List.size(); ++i)
+    	    	{
+    	    		bullet =(Bullet)(Bullet_List.get(i));
+    	    		g.drawImage(bullet.img, bullet.pos.x,bullet.pos.y+35,
+    	    				bullet.pos.x+35,bullet.pos.y+95,15,15,35,60,null );
+    	   
+    	    	}
+    			break;
+    		case 2:
+    	    	for (int i=0; i<Bullet_List.size(); ++i)
+    	    	{
+    	    		bullet =(Bullet)(Bullet_List.get(i));
+    	    		if(playerDamage < 30)
+    	    		{
+        	    		g.drawImage(bullet.img, bullet.pos.x -40,bullet.pos.y-830,null );
+    	    		}
+    	    		else if(playerDamage >=30)
+    	    		{
+    	    			bullet.img = tk.getImage("resourses/sprites/Lightning2.png"); 
+    	    			if(lineShot==2)
+    	    			{
+    	    				bullet.img = tk.getImage("resourses/sprites/Lightning3.png"); 
+    	    			}
+    	    			if(lineShot ==3)
+    	    			{
+    	    				bullet.img = tk.getImage("resourses/sprites/Lightning4.png"); 
+    	    			}
+    	    			g.drawImage(bullet.img, bullet.pos.x-40, bullet.pos.y-830,null );
+    	    		}
+    
+    	   
+    	    	}
+    			break;
     	}
+
     }
 
 	@Override
@@ -241,29 +273,74 @@ public class Player extends GameObject implements KeyListener {
 			switch(lineShot)
 			{
 			case 1:
-				bullet = new Bullet(posX,posY-65,5,1,angle);
-				Bullet_List.add(bullet);	
+				if(attackType == 1)
+				{
+					bullet = new Bullet(posX,posY-65,5,1,angle);
+					Bullet_List.add(bullet);
+				}
+				else
+				{
+					bullet = new Bullet(posX,posY-65,5,2,angle);
+					Bullet_List.add(bullet);
+				}
+					
 				break;
 			case 2:
-				for(int i=0; i<lineShot; ++i)
+				if(attackType == 1)
 				{
-					bullet = new Bullet(posX-10+i*20,posY-65,5,1,angle);
-					Bullet_List.add(bullet);
+					for(int i=0; i<lineShot; ++i)
+					{
+						bullet = new Bullet(posX-10+i*20,posY-65,5,1,angle);
+						Bullet_List.add(bullet);
+					}
 				}
+				else 
+				{
+					for(int i=0; i<lineShot; ++i)
+					{
+						bullet = new Bullet(posX-10+i*20,posY-65,5,2,angle);
+						Bullet_List.add(bullet);
+					}
+				}
+
 				break;
 			case 3:
-				for(int i=0; i<lineShot; ++i)
+				if(attackType == 1)
 				{
-					bullet = new Bullet(posX-30+i*20,posY-65,5,1,angle);
-					Bullet_List.add(bullet);
+					for(int i=0; i<lineShot; ++i)
+					{
+						bullet = new Bullet(posX-30+i*20,posY-65,5,1,angle);
+						Bullet_List.add(bullet);
+					}
 				}
+				else
+				{
+					for(int i=0; i<lineShot; ++i)
+					{
+						bullet = new Bullet(posX-30+i*20,posY-65,5,2,angle);
+						Bullet_List.add(bullet);
+					}
+				}
+
 				break;
 			default:
-				for(int i=0; i<lineShot; ++i)
+				if(attackType ==1)
 				{
-					bullet = new Bullet(posX-30+i*20,posY-65,5,1,angle);
-					Bullet_List.add(bullet);
+					for(int i=0; i<lineShot; ++i)
+					{
+						bullet = new Bullet(posX-30+i*20,posY-65,5,1,angle);
+						Bullet_List.add(bullet);
+					}
 				}
+				else
+				{
+					for(int i=0; i<lineShot; ++i)
+					{
+						bullet = new Bullet(posX-30+i*20,posY-65,5,2,angle);
+						Bullet_List.add(bullet);
+					}
+				}
+	
 				break;
 			}
 
@@ -278,6 +355,11 @@ public class Player extends GameObject implements KeyListener {
 			//화면 밖으로 나가면 제거
 			if(bullet.pos.y < 0)
 			{
+				Bullet_List.remove(i);
+			}
+			if(bullet.type == 2)
+			{
+				//각 총알객체의 타이머가 0.2초지나면 제거해야됨.
 				Bullet_List.remove(i);
 			}
 			
