@@ -5,6 +5,9 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 
+import javax.swing.ImageIcon;
+import javax.swing.Timer;
+
 public class Bullet extends GameObject {
 	Point pos;
 	int speed;
@@ -14,12 +17,22 @@ public class Bullet extends GameObject {
 	
 	public long creationTime;
 	
+    private Timer animationTimer;
+    private int currentFrame  = 0;
+    private int totalFrames = 2;
+    private ImageIcon[] lazerSprites ;
+	
 	Bullet(int posX, int posY, int speed, int type, double direction)
 	{
 		this.type = type;
 		this.speed = speed;
 		pos = new Point(posX,posY);
 		this.direction = direction;
+		 lazerSprites = new ImageIcon[totalFrames];
+		 for(int i = 0; i<totalFrames; i++)
+		 {
+			 lazerSprites[i] = new ImageIcon("resourses/sprites/Lightning"+(i+1)+".png");
+		 }
 		if(this.type == 1)
 		{
 			this.img = tk.getImage("resourses/sprites/EFX.png");
@@ -31,8 +44,13 @@ public class Bullet extends GameObject {
 			this.img = tk.getImage("resourses/sprites/Lightning1.png");
 		    this.width = 70;
 		    this.height = 1000;
+			animationTimer = new Timer(50,e->updateAnimation());
+		    animationTimer.start();
 		}
 		 this.creationTime = System.currentTimeMillis(); 
+
+		 
+
 	}
 	public void move()
 	{
@@ -54,6 +72,12 @@ public class Bullet extends GameObject {
 	public void draw(Graphics g)
 	{
 		g.drawImage(img, posX, posY, null);
+	}
+	
+	private void updateAnimation() {
+	  currentFrame = (currentFrame + 1) % totalFrames;
+	  this.img = lazerSprites[currentFrame].getImage();
+
 	}
 
 

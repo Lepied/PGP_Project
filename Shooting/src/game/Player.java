@@ -85,7 +85,7 @@ public class Player extends GameObject implements KeyListener {
     	{
     		playerSprites[i] = new ImageIcon("resourses/sprites/Player/PlayableCharacter-Sheet"+(i+1)+".png");
     	}
-        //this.img = tk.getImage("resourses/sprites/Player/PlayableCharacter-Sheet1.png");
+       
     	animationTimer = new Timer(100,e->updateAnimation());
     	animationTimer.start();
       
