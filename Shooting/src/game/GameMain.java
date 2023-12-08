@@ -282,6 +282,7 @@ public class GameMain extends JFrame implements Runnable {
 					}
 				}
 				repaint();
+				
 				// 플레이어 무적시간 부여하기
 				if (player.isDamaged) {
 					if (!player.isImmortal) {
@@ -297,7 +298,7 @@ public class GameMain extends JFrame implements Runnable {
 					}
 
 				}
-
+				
 				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
 				player.BulletProcess(); // 플레이어 총알
 				EnemyProcess(); // 적 매커니즘, 스폰 등
@@ -305,7 +306,7 @@ public class GameMain extends JFrame implements Runnable {
 				NPCProcess(); // NPC 매커니즘
 				VisibleBossUI(); // 보스 UI 보이기
 				
-			
+				
 				if(gameManager.isNPCEnd)
 				{
 					npcPanel.setVisible(false);
@@ -462,6 +463,10 @@ public class GameMain extends JFrame implements Runnable {
 			if (player.lineShot <4) {
 				player.lineShot = player.lineShot + 1;
 			}
+			if(player.attackType ==2)
+			{
+				player.playerDamage+=50;
+			}
 			System.out.println(player.lineShot);
 			System.out.println("플레이어 직선 공격 추가");
 			break;
@@ -519,6 +524,12 @@ public class GameMain extends JFrame implements Runnable {
 			if (en.type == 3) {
 				gameManager.isBossNow = true;
 				Ch1BossUI.updateHealth(en.hp, en.maxHealth);
+			}
+
+			if(player.isDamaged==false &&gameManager.isCollision(player,en))
+			{
+				player.isDamaged = true;
+				player.hp--;
 			}
 			en.move();
 			en.BulletProcess();
