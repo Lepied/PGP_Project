@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 
 import Unit.Ch1Boss;
 import Unit.E_Wybern;
+import Unit.E_Zaco;
 import Unit.NPC;
 
 import java.awt.Color;
@@ -541,21 +542,28 @@ public class GameMain extends JFrame implements Runnable {
 
 		}
 		//보스전 이전 스테이지 구성
-		if (canCh1BossSpawn == true && gameCnt < 400 && gameCnt % 300 == 0) {
-			en = new E_Wybern(1);
-			en = new E_Wybern(2);
-			en = new E_Wybern(3);
+		if (canCh1BossSpawn == true && gameCnt < 4000) {
+			if(gameCnt % 100 == 0 && gameCnt < 500)
+			{
+				en = new E_Zaco(3);
+				en = new E_Zaco(4);
+			}
+			else if(gameCnt % 100 == 0 && gameCnt<800)
+			{
+				en = new E_Zaco(1);
+				en = new E_Zaco(2);
+			}
 
 		}
-		if (gameCnt > 200 && canSpawnNPC) {//엔피씨 소환
+		if (gameCnt > 800 && canSpawnNPC) {//엔피씨 소환
 			npc = new NPC();
 			canSpawnNPC = false;
 		}
-		if(gameCnt >400) //퀘스트 받을때 안받을떄 로직
+		if(gameCnt >1000) //퀘스트 받을때 안받을떄 로직
 		{
 			if(gameManager.isQuest)
 			{
-				if(gameCnt%50==0)
+				if(gameCnt%200==0)
 				{
 					en = new E_Wybern(1);
 

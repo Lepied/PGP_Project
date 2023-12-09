@@ -188,7 +188,8 @@ public class Enemy extends GameObject {
     	{
     		if(System.currentTimeMillis() - lastAttackTime > attackSpeed)
     		{
-    			enBullet = new EnemyBullet(this.posX,this.posY+35,5,1,90); //각도는 90도
+    			int finalAngle = (int) Math.toDegrees(startAngle);
+    			enBullet = new EnemyBullet(this.posX,this.posY+35,5,1,finalAngle); //각도는 90도
     			Enemy_Bullet_List.add(enBullet);
     			lastAttackTime = System.currentTimeMillis();
 

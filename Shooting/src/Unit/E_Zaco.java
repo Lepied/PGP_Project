@@ -13,19 +13,22 @@ public class E_Zaco extends Enemy{
         this.hp = 30;
         this.width = 20; //충돌관리 위한 이미지 너비 높이등
         this.height = 20;
-        this.speed = 1;
-        this.img = tk.getImage("resourses/sprites/MonsterBird.jpg");
-        this.attackSpeed = 10000;
+        this.speed = 5;
+        this.img = tk.getImage("resourses/sprites/MonsterFish.png");
+        this.attackSpeed = 999999999;//공격안함
         
         if (spawnPoint == 1) {
-            this.posX = 300;
+            this.posX = 0;
             this.posY = 50;
         } else if (spawnPoint == 2) {
-            this.posX = 500;
+            this.posX = 600;
             this.posY = 50;
         } else if (spawnPoint == 3) {
-            this.posX = 100;
-            this.posY = 50;
+            this.posX = 200;
+            this.posY = 0;
+        } else if (spawnPoint == 4) {
+            this.posX = 400;
+            this.posY = 0;
         }
 	}
     public void draw(Graphics g) {
@@ -33,7 +36,43 @@ public class E_Zaco extends Enemy{
     }
     public void move()
     {
-    	super.move();
+    	switch(spawnPoint)
+    	{
+    	case 1:
+    		posY += speed;
+    		posX += (speed-2);
+    		break;
+    	
+    	case 2:
+    		posY += speed;
+    		posX -= (speed-2);
+    		break;
+    	case 3:
+    		if(posY<200)
+    		{
+    			posY += speed;
+    		}
+    		else
+    		{
+    			posY += speed;
+    			posX += speed;
+    		}
+    		break;
+    		
+    	case 4:
+    		if(posY<200)
+    		{
+    			posY += speed;
+    		}
+    		else
+    		{
+        		posY += speed;
+    			posX -= speed;
+    		}
+
+    		break;
+    	}
+    	
     }
 
 }
