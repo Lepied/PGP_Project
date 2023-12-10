@@ -97,7 +97,7 @@ public class PowerUpPanel extends JPanel{
 		 });
 		add(upgrade5);
 		
-		//test btn
+		//test button
 		JLabel test1 = new CreateBtn("money+", X-50, Y-50, 50, 50);
 		test1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -107,6 +107,7 @@ public class PowerUpPanel extends JPanel{
             }
 		 });
 		add(test1);
+		
 		JLabel test2 = new CreateBtn("money-", X-100, Y-50, 50, 50);
 		test2.addMouseListener(new MouseAdapter() {
 			@Override
