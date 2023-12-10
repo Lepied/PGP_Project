@@ -5,20 +5,20 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class MainFrame extends JFrame implements Runnable{
+public class MainFrame extends JFrame{
 	private JFrame frame;
 	private CardLayout cardLayout;
 	private JPanel cardPanel;
 	private GameMain gameMain;
-
-	Thread thread;
 	
 	public int x = 960;
 	public int y = 540;
 	
+	DataManager dm;
+	
 	public MainFrame() {
-		thread = new Thread(this);
-		thread.start();
+		dm = new DataManager();
+		dm.loadData();
 		
 		setResizable(false);
 		setTitle("REHIRE");
@@ -33,19 +33,17 @@ public class MainFrame extends JFrame implements Runnable{
 		add(cardPanel);
 		createDeck();
 		
+		//데이터 저장
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				dm.saveData();
+				System.out.println("system off");
+				System.exit(0);
+			}
+	    });
+		
 		pack();
 	}	
-	
-	@Override
-	public void run() {
-		try {
-			while(true) {
-				
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	// 카드레이아웃 덱 생성(각 패널 저장)
 	private void createDeck() {
@@ -61,9 +59,7 @@ public class MainFrame extends JFrame implements Runnable{
 		startPanel.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {}
 
-			public void keyPressed(KeyEvent e) {
-				int i = e.getKeyChar();
-				System.out.print(i);
+			public void keyPressed(KeyEvent e) {				
 				changePanel("main");
 			}
 
