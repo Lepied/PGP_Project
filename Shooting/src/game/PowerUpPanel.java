@@ -48,7 +48,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
             	main.changePanel("main");
-            }
+            }   
 		 });
 		add(back);
 		
