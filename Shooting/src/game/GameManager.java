@@ -26,6 +26,7 @@ public class GameManager {
 	private List<NPC> npcList;
 	
 	
+	
 	private int scrollNum;
 	
 	private int itemPosX;
