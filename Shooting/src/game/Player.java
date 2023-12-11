@@ -23,6 +23,7 @@ public class Player extends GameObject implements KeyListener {
     boolean isDamaged = false; //맞았을때
 
     int playerHP = 3;
+    int maxPlayerHp;
     int playerDamage;
     int attackSpeed;
     int lazerDelay;
@@ -65,6 +66,7 @@ public class Player extends GameObject implements KeyListener {
     public Player(int damage) {
 
     	this.playerDamage = damage;
+    	this.maxPlayerHp = 3;
         this.hp = playerHP;
         this.speed = 10;
         this.posX = 300;

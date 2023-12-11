@@ -450,44 +450,35 @@ public class GameMain extends JFrame implements Runnable {
 			break;
 
 		case 4:
-			System.out.println("능력 4");
-			if (player.lineShot < 4) {
-				player.lineShot = player.lineShot + 1;
+			System.out.println("생명 회복");
+			if (player.hp < player.maxPlayerHp) 
+			{
+				player.hp = player.hp + 1;
 			}
-			System.out.println(player.lineShot);
-			System.out.println("플레이어 직선 공격 추가");
+			
 			break;
 
 
 		case 5:
-			System.out.println("능력 5");
-			if (player.lineShot <4) {
-				player.lineShot = player.lineShot + 1;
-			}
-			if(player.attackType ==2)
+			System.out.println("이동속도 증가");
+			if (player.speed < 50) 
 			{
-				player.playerDamage+=50;
+				player.speed = player.speed + 5;
 			}
-			System.out.println(player.lineShot);
-			System.out.println("플레이어 직선 공격 추가");
 			break;
 	
 		case 6:
-			System.out.println("능력 6");
-			if (player.lineShot < 4) {
-				player.lineShot = player.lineShot + 1;
+			System.out.println("공격타입 : 뇌전");
+			if (player.attackType != 2) 
+			{
+				player.attackType = 2;
 			}
-			System.out.println(player.lineShot);
-			System.out.println("플레이어 직선 공격 추가");
 			break;
 
 		case 7:
-			System.out.println("능력 7");
-			if (player.lineShot < 4) {
-				player.lineShot = player.lineShot + 1;
-			}
-			System.out.println(player.lineShot);
-			System.out.println("플레이어 직선 공격 추가");
+			System.out.println("폭탄데미지 증가");
+			player.bombDamage = player.bombDamage + 50;
+
 			break;
 
 		case 8:
