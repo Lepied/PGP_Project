@@ -34,19 +34,31 @@ public class MainPanel extends JPanel implements Runnable{
 		JLabel start = new CreateBtn(startBtn, 20, Y/2 , 300, 100);
 		start.addMouseListener(new MouseAdapter() {
 			@Override
-	        public void mouseClicked(MouseEvent e) {
-	        	main.gameStart();
-	        }
-		 }); 
+			public void mouseClicked(MouseEvent e) {
+				main.gameStart();
+			}
+			public void mouseEntered(MouseEvent e) {
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+		});
 		add(start);
 		
-		JLabel powerUp = new CreateBtn(powerUpBtn, 20, Y/2 + 120 , 300, 100);
-		powerUp.addMouseListener(new MouseAdapter() {
-			@Override
-	        public void mouseClicked(MouseEvent e) {
-				main.changePanel("powerUp");
-	        }
-		 }); 
+		JLabel powerUp = new CreateBtn(powerUpBtn, 20, Y/2 + 120 , 300, 100);;
+			powerUp.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					main.changePanel("powerUp");
+				}
+				public void mouseEntered(MouseEvent e) {
+					setCursor(new Cursor(Cursor.HAND_CURSOR));
+				}
+				public void mouseExited(MouseEvent e) {
+					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				}
+			});
 		add(powerUp);
 		
 	}

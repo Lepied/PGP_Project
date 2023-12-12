@@ -35,11 +35,17 @@ public class Player extends GameObject implements KeyListener {
     private long lastBombTime; // 폭탄 지연시간
     
     private Timer animationTimer;
-    private int currentFrame  = 0;
-    private int totalFrames = 8;
+    private Timer bombAnimationTimer;
+    private int currentPlayerFrame  = 0;
+    private int totalPlayerFrames = 8;
+    private int currentBombFrame = 0;
+    private int totalBombFrames = 12;
+    private ImageIcon bombEffect; 
     private ImageIcon[] playerSprites ;
+    private ImageIcon[] BombAnimation;
     GameManager gameManager;
     
+    private boolean drawBombEffect = false;
 
     
 	 //임시 총알
@@ -82,14 +88,22 @@ public class Player extends GameObject implements KeyListener {
     	this.bombDamage = 500;
     	this.bombDelay = 100;
     	
-    	playerSprites = new ImageIcon[totalFrames];
-    	for(int i = 0; i<totalFrames; i++)
+    	
+    	bombEffect = new ImageIcon("resourses/sprites/BombEffect/BombEffect1.png");
+    	playerSprites = new ImageIcon[totalPlayerFrames];
+    	BombAnimation = new ImageIcon[totalBombFrames];
+       	for(int i = 0; i<totalBombFrames; i++)
+    	{
+       		BombAnimation[i] = new ImageIcon("resourses/sprites/BombEffect/BombEffect"+(i+1)+".png");
+    	}
+    	for(int i = 0; i<totalPlayerFrames; i++)
     	{
     		playerSprites[i] = new ImageIcon("resourses/sprites/Player/PlayableCharacter-Sheet"+(i+1)+".png");
     	}
        
-    	animationTimer = new Timer(100,e->updateAnimation());
+    	animationTimer = new Timer(100,e->updatePlayerAnimation());
     	animationTimer.start();
+    	bombAnimationTimer = new Timer(50,e->updateBombAnimation());
       
         this.lastAttackTime = System.currentTimeMillis();
         this.lastBombTime = System.currentTimeMillis();
@@ -127,7 +141,9 @@ public class Player extends GameObject implements KeyListener {
     	 {
     		 g.drawImage(img, posX, posY, null);    	
     	 }
-    	        	
+    	 if (drawBombEffect) {
+             g.drawImage(bombEffect.getImage(), 100, 0, bombEffect.getIconWidth() * 2,bombEffect.getIconHeight() * 2 , null);
+         }
       	if(isKeySlow)
     	{
       		
@@ -265,10 +281,20 @@ public class Player extends GameObject implements KeyListener {
 		}
 			
 	}
-    private void updateAnimation() {
-        currentFrame = (currentFrame + 1) % totalFrames;
-        this.img = playerSprites[currentFrame].getImage();
+    private void updatePlayerAnimation() {
+        currentPlayerFrame = (currentPlayerFrame + 1) % totalPlayerFrames;
+        this.img = playerSprites[currentPlayerFrame].getImage();
 
+    }
+    private void updateBombAnimation()
+    {
+    	currentBombFrame = (currentBombFrame + 1) % totalBombFrames;
+    	bombEffect = BombAnimation[currentBombFrame];
+    	if(currentBombFrame == 11)
+    	{
+    		 bombAnimationTimer.stop(); 
+    		 drawBombEffect = false;
+    	}
     }
 	
 	public void BulletProcess()
@@ -356,11 +382,19 @@ public class Player extends GameObject implements KeyListener {
 
 			for(int i=0; i<GameManager.getInstance().getGameObjectList().size(); ++i)
 			{ 	
-				System.out.println(GameManager.getInstance().getGameObjectList().size());
+				
 				en = (Enemy) GameManager.getInstance().getGameObjectList().get(i);
 				GameManager.getInstance().applyDamage(en,bombDamage);
 				i--;
 			}
+			if (!drawBombEffect) 
+			{
+	            drawBombEffect = true;
+	            bombAnimationTimer.start(); 
+	        }
+			
+			
+			
 			
 		}
 		if(tempBomb)

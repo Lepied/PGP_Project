@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -764,5 +766,23 @@ class ScrollPanel extends JPanel {
 		return selectedIndexes[i];
 		
 	}
+	
+	
+	//일시정지
+	private void escToPause(GameMain gameMain) {
+		gameMain.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent e) {}
 
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					gameMain.pauseGame();
+				}
+				
+			}
+
+			public void keyReleased(KeyEvent e) {}
+			
+		});
+		
+	}
 }
