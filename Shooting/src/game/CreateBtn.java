@@ -1,15 +1,20 @@
 package game;
 
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+
 public class CreateBtn extends JLabel{
+
+	private static final long serialVersionUID = 1L;
+
 	// 텍스트
 	public CreateBtn(String text, int x, int y, int width, int height) {
 		this.setText(text);
@@ -18,7 +23,7 @@ public class CreateBtn extends JLabel{
 
 		Border border = new LineBorder(Color.BLACK, 2);
 		this.setBorder(border);
- 
+
 	}
 	
 	// 이미지
@@ -32,20 +37,4 @@ public class CreateBtn extends JLabel{
  
 	}
 	
-	/* 버튼 마우스 리스너 설정
-	
-	label.addMouseListener(new MouseAdapter() {
-		@Override
-    	public void mouseEntered(MouseEvent e) {
-        }
-
-        public void mouseExited(MouseEvent e) {
-        }
-        
-        public void mouseClicked(MouseEvent e) {
-        	main.changePanel("main");
-        }
-	 }); 
-	 
-	*/
 }
