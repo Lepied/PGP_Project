@@ -18,6 +18,8 @@ public class PowerUpPanel extends JPanel{
 	
 	MainFrame main;
 	GameManager gm;
+	
+	
 
 	public PowerUpPanel(MainFrame main) {
 		this.main = main;
@@ -65,7 +67,7 @@ public class PowerUpPanel extends JPanel{
 		upgrade1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
