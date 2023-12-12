@@ -32,7 +32,7 @@ public class StartPanel extends JPanel{
 		int lX = 400;
 		int lY = 50;
 		
-		JLabel label = new JLabel("To start press any key...");
+		JLabel label = new JLabel("- To start press any key... -");
 		
 		// 폰트 설정
 		Font customFont = new Font("Harlow Solid Italic", Font.BOLD, 30);
@@ -49,8 +49,8 @@ public class StartPanel extends JPanel{
         label.setHorizontalAlignment(JLabel.CENTER);
         
         // 테두리 설정
-        Border border = new LineBorder(Color.BLACK, 2);
-        label.setBorder(border);
+       // Border border = new LineBorder(Color.BLACK, 2);
+        //label.setBorder(border);
 		add(label);
 	}
 	

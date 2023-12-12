@@ -26,6 +26,7 @@ public class GameManager {
 	private List<NPC> npcList;
 	
 	
+	
 	private int scrollNum;
 	
 	private int itemPosX;
@@ -181,7 +182,7 @@ public class GameManager {
 			
 			double randomValue = Math.random(); // 0~1.0
 			//if (randomValue < 0.1) { // 10%
-			if (randomValue < 1) { // 10%
+			if (randomValue < 0.1) { // 10%
 	            addItem(new Scroll(target.posX, target.posY));
 	        } else if (randomValue < 0.4) { // 30%
 	            addItem(new Bomb(target.posX, target.posY));
