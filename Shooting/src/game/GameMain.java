@@ -14,6 +14,7 @@ import java.util.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -30,10 +31,6 @@ import java.util.Random;
 import java.util.Set;
 
 public class GameMain extends JFrame implements Runnable {
-	private Image playerImage;
-	private Image playerBulletImage;
-	private Image enemyImage;
-	private Image enemyBulletImage;
 
 	private boolean paused = false;
 	private Player player;
@@ -60,9 +57,6 @@ public class GameMain extends JFrame implements Runnable {
 	private boolean isScrollGet = false;
 
 	private int scrollType;
-	private boolean scroll_1_onMouse = false;
-	private boolean scroll_2_onMouse = false;
-	private boolean scroll_3_onMouse = false;
 
 	private long immortalTime = 100; // 플레이어 무적
 
@@ -91,6 +85,9 @@ public class GameMain extends JFrame implements Runnable {
 	SelectPanel SelectPanel_3 = new SelectPanel(735, 300, 160, 260, 3, this);
 
 	NPCPanel npcPanel = new NPCPanel(this);
+	public JLabel followingLabel;
+	private String powerUpText = "";
+	
 
 	private boolean canSpawnNPC = true;
 
@@ -165,6 +162,17 @@ public class GameMain extends JFrame implements Runnable {
 				g.setColor(Color.WHITE);
 				g.drawString(scoreText, 10, 100);
 			}
+		};
+		JLabel followingLabel = new JLabel(powerUpText)
+		{
+			@Override
+			public void paintComponent(Graphics g)
+			{
+				setBounds(0, 0, 100, 100);
+				super.paintComponent(g);
+				setVisible(true);
+			}
+			
 		};
 
 		JPanel gamePanel = new JPanel() {
@@ -241,6 +249,7 @@ public class GameMain extends JFrame implements Runnable {
 		add(scrollPanel);
 		add(Ch1BossUI);
 		add(npcPanel);
+		add(followingLabel);
 		add(gamePanel);
 
 	}
@@ -308,6 +317,7 @@ public class GameMain extends JFrame implements Runnable {
 				ItemProcess(); // 아이템 매커니즘
 				NPCProcess(); // NPC 매커니즘
 				VisibleBossUI(); // 보스 UI 보이기
+				updateLabelPosition();//플레이어 따라가는 텍스트업데이트
 				
 				
 				if(gameManager.isNPCEnd)
@@ -429,6 +439,8 @@ public class GameMain extends JFrame implements Runnable {
 		case 0: // 플레이어데미지 강화
 			player.playerDamage = player.playerDamage + 10;
 			System.out.println("플레이어 데미지 증가");
+			powerUpText = "플레이어 데미지 증가";
+			//followingLabel.setVisible(true);
 			break;
 
 		case 1: // 플레이어 공격 속도 강화
@@ -436,6 +448,7 @@ public class GameMain extends JFrame implements Runnable {
 				player.attackSpeed = player.attackSpeed - 10;
 			}
 			System.out.println("플레이어 공격속도 업");
+			powerUpText = "플레이어 공격속도 업";
 			break;
 
 		case 2:
@@ -444,52 +457,51 @@ public class GameMain extends JFrame implements Runnable {
 			}
 			System.out.println(player.lineShot);
 			System.out.println("플레이어 직선 공격 추가");
+			powerUpText = "플레이어 직선 공격 추가";
 			break;
 
 		case 3:
 			gameManager.setCoin(gameManager.getCoin() + 10);
 			System.out.println("코인 더미");
+			powerUpText = "코인 더미";
 			break;
 
 		case 4:
-			System.out.println("능력 4");
-			if (player.lineShot < 4) {
-				player.lineShot = player.lineShot + 1;
+			System.out.println("생명 회복");
+			
+			if (player.hp < player.maxPlayerHp) 
+			{
+				player.hp = player.hp + 1;
+				
 			}
-			System.out.println(player.lineShot);
-			System.out.println("플레이어 직선 공격 추가");
+			powerUpText = "생명 회복";
+			
 			break;
 
 
 		case 5:
-			System.out.println("능력 5");
-			if (player.lineShot <4) {
-				player.lineShot = player.lineShot + 1;
-			}
-			if(player.attackType ==2)
+			System.out.println("이동속도 증가");
+			if (player.speed < 50) 
 			{
-				player.playerDamage+=50;
+				player.speed = player.speed + 5;
 			}
-			System.out.println(player.lineShot);
-			System.out.println("플레이어 직선 공격 추가");
+			powerUpText = "이동속도 증가";
 			break;
 	
 		case 6:
-			System.out.println("능력 6");
-			if (player.lineShot < 4) {
-				player.lineShot = player.lineShot + 1;
+			System.out.println("공격타입 : 뇌전");
+			if (player.attackType != 2) 
+			{
+				player.attackType = 2;
 			}
-			System.out.println(player.lineShot);
-			System.out.println("플레이어 직선 공격 추가");
+			powerUpText = "공격타입 : 뇌전";
 			break;
 
 		case 7:
-			System.out.println("능력 7");
-			if (player.lineShot < 4) {
-				player.lineShot = player.lineShot + 1;
-			}
-			System.out.println(player.lineShot);
-			System.out.println("플레이어 직선 공격 추가");
+			System.out.println("폭탄데미지 증가");
+			player.bombDamage = player.bombDamage + 50;
+			powerUpText = "폭탄데미지 증가";
+
 			break;
 
 		case 8:
@@ -520,7 +532,20 @@ public class GameMain extends JFrame implements Runnable {
 
 		player.setAngle(angle);
 	}
+    private void updateLabelPosition() {// 플레이어 위치에 따라 라벨의 위치 조절
+    	SwingUtilities.invokeLater(() -> {
+            
+            int labelX = player.x + player.width + 10;
+            int labelY = player.y - 10;
+            
+            if (followingLabel != null) {
+                followingLabel.setBounds(labelX, labelY, 100, 20);
+            }
+           
+    	});
 
+    }
+	
 	public void EnemyProcess() {
 		for (int i = 0; i < gameManager.getGameObjectList().size(); ++i) {
 			en = (Enemy) (gameManager.getGameObjectList().get(i));
@@ -582,6 +607,8 @@ public class GameMain extends JFrame implements Runnable {
 		 */
 
 	}
+	
+
 
 	public void VisibleBossUI() {
 		SwingUtilities.invokeLater(() -> {

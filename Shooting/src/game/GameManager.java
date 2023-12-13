@@ -15,7 +15,8 @@ public class GameManager {
 	private int playerCoin;
 	private int playerBomb;  // 폭탄 갯수자체는 게임이 끝나면 초기화 시켜야 함.
 	private int playerBombDamage;
-	private int playerBombType;
+
+	private int maxPlayerHp;
 	private int playerUpgradeDamage;
 	private int playerUpgradeMaxHp;
 	
@@ -253,6 +254,16 @@ public class GameManager {
 	public void setScrollNum(int scrollNum)
 	{
 		this.scrollNum = scrollNum;
+	}
+	
+	public int getPlayerBombDamage()
+	{
+		return playerBombDamage;
+	}
+	
+	public void setPlayerBombDamage(int bombDamage)
+	{
+		this.playerBombDamage = bombDamage;
 	}
 	
 
