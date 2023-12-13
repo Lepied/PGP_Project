@@ -1,6 +1,18 @@
+<<<<<<< HEAD
 20
+=======
+<<<<<<< HEAD
+99544
+0
+0
+0
+20
+=======
+0
+>>>>>>> branch 'main' of https://github.com/Lepied/PGP_Project.git
 20
 3
 0.09999999999999999
 0
 0
+>>>>>>> branch 'main' of https://github.com/Lepied/PGP_Project

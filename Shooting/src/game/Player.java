@@ -69,7 +69,7 @@ public class Player extends GameObject implements KeyListener {
 	public int attackType; // 1 = 불(일반탄) , 2= 전기(레이저)
 
     
-    public Player(int damage,int maxHP, int plusBombDamage) {
+    public Player(int damage, int maxHP, int plusBombDamage) {
 
     	this.playerDamage = damage;
     	this.maxPlayerHp = 3+maxHP;
@@ -83,7 +83,7 @@ public class Player extends GameObject implements KeyListener {
     	this.lazerDelay = attackSpeed * 5;
     	this.lineShot = 1;
     	this.diaShot = 1;
-    	this.attackType = 2;
+    	this.attackType = 1;
     	this.bomb = 0;
     	this.bombDamage = 500 + plusBombDamage;
     	this.bombDelay = 100;

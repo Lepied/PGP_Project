@@ -64,12 +64,11 @@ public class DataManager {
 			coin = Integer.parseInt(br.readLine());
 			damage = Integer.parseInt(br.readLine());
 			hp = Integer.parseInt(br.readLine());
-			luck = Double.parseDouble(br.readLine());
+			luck = Integer.parseInt(br.readLine());
 			plusCoin = Integer.parseInt(br.readLine());
 			bombDamage = Integer.parseInt(br.readLine());
 			
 
-			
 			gm.setCoin(coin);
 			gm.setPlayerDamage(damage);
 			gm.setPlayerMaxHP(hp);
