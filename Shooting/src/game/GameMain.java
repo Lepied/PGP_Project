@@ -59,6 +59,8 @@ public class GameMain extends JFrame implements Runnable {
 	private int scrollType;
 
 	private long immortalTime = 100; // 플레이어 무적
+	private long followingTextTime; // 플레이어 파워업시 뜨는 문자
+	private boolean isText =false;
 
 	private int gameCnt;
 
@@ -85,7 +87,6 @@ public class GameMain extends JFrame implements Runnable {
 	SelectPanel SelectPanel_3 = new SelectPanel(735, 300, 160, 260, 3, this);
 
 	NPCPanel npcPanel = new NPCPanel(this);
-	public JLabel followingLabel;
 	private String powerUpText = "";
 	
 
@@ -163,17 +164,7 @@ public class GameMain extends JFrame implements Runnable {
 				g.drawString(scoreText, 10, 100);
 			}
 		};
-		JLabel followingLabel = new JLabel(powerUpText)
-		{
-			@Override
-			public void paintComponent(Graphics g)
-			{
-				setBounds(0, 0, 100, 100);
-				super.paintComponent(g);
-				setVisible(true);
-			}
-			
-		};
+
 
 		JPanel gamePanel = new JPanel() {
 			@Override
@@ -249,7 +240,7 @@ public class GameMain extends JFrame implements Runnable {
 		add(scrollPanel);
 		add(Ch1BossUI);
 		add(npcPanel);
-		add(followingLabel);
+
 		add(gamePanel);
 
 	}
@@ -277,17 +268,23 @@ public class GameMain extends JFrame implements Runnable {
 
 		player.draw(buffg);
 		player.drawBullet(buffg);
-
+		if(isText)
+		{
+			FollowingVisible(buffg);
+		}
+		
+		
 		Draw_Enemy();
 		Draw_Item();
 		Draw_NPC();
+
 	}
 
 	@Override
 	public void run() {
 
-		try { // 예외옵션 설정으로 에러 방지
-			while (true) { // while 문으로 무한 루프 시키기
+		try { 
+			while (true) { 
 				synchronized (this) {
 					while (paused) {
 						wait();
@@ -306,19 +303,20 @@ public class GameMain extends JFrame implements Runnable {
 					if (currentTime - immortalTime > 1000) {
 						System.out.println("무적해제");
 						player.isDamaged = false;
-						player.isImmortal = false; // 추가된 부분: 무적 상태 해제
+						player.isImmortal = false; 
 					}
 
 				}
-				
+
+
 				player.KeyProcess(); // 키보드 입력처리를 하여 x,y 갱신
 				player.BulletProcess(); // 플레이어 총알
 				EnemyProcess(); // 적 매커니즘, 스폰 등
 				ItemProcess(); // 아이템 매커니즘
 				NPCProcess(); // NPC 매커니즘
 				VisibleBossUI(); // 보스 UI 보이기
-				updateLabelPosition();//플레이어 따라가는 텍스트업데이트
-				
+
+
 				
 				if(gameManager.isNPCEnd)
 				{
@@ -395,11 +393,15 @@ public class GameMain extends JFrame implements Runnable {
 				if (back2Y > (backImg.getHeight(null))) {
 					back2Y = backY - backImg.getHeight(null);
 				}
-				repaint(); // 갱신된 x,y값으로 이미지 새로 그리기
+				repaint();
+
 				Thread.sleep(15); // 15 milli sec 로 스레드 돌리기
 				gameCnt++;
-				// 게임 타이머 초기화 해서 게임 안터지게
-
+				
+				if(gameCnt % 500==0)
+				{
+					isText = false;
+				}
 				GameOver();
 				if (gameCnt > 999999) {
 					gameCnt = 0;
@@ -433,14 +435,14 @@ public class GameMain extends JFrame implements Runnable {
 
 	public void Ability(int ability) // 능력리스트
 	{
-
+		isText = true;
 		System.out.println("어빌리티    "+ability);
 		switch (ability) {
 		case 0: // 플레이어데미지 강화
 			player.playerDamage = player.playerDamage + 10;
 			System.out.println("플레이어 데미지 증가");
 			powerUpText = "플레이어 데미지 증가";
-			//followingLabel.setVisible(true);
+			
 			break;
 
 		case 1: // 플레이어 공격 속도 강화
@@ -449,6 +451,7 @@ public class GameMain extends JFrame implements Runnable {
 			}
 			System.out.println("플레이어 공격속도 업");
 			powerUpText = "플레이어 공격속도 업";
+			
 			break;
 
 		case 2:
@@ -458,12 +461,14 @@ public class GameMain extends JFrame implements Runnable {
 			System.out.println(player.lineShot);
 			System.out.println("플레이어 직선 공격 추가");
 			powerUpText = "플레이어 직선 공격 추가";
+			
 			break;
 
 		case 3:
 			gameManager.setCoin(gameManager.getCoin() + 10);
 			System.out.println("코인 더미");
 			powerUpText = "코인 더미";
+			
 			break;
 
 		case 4:
@@ -486,6 +491,7 @@ public class GameMain extends JFrame implements Runnable {
 				player.speed = player.speed + 5;
 			}
 			powerUpText = "이동속도 증가";
+			
 			break;
 	
 		case 6:
@@ -495,13 +501,14 @@ public class GameMain extends JFrame implements Runnable {
 				player.attackType = 2;
 			}
 			powerUpText = "공격타입 : 뇌전";
+			
 			break;
 
 		case 7:
 			System.out.println("폭탄데미지 증가");
 			player.bombDamage = player.bombDamage + 50;
 			powerUpText = "폭탄데미지 증가";
-
+		
 			break;
 
 		case 8:
@@ -511,6 +518,7 @@ public class GameMain extends JFrame implements Runnable {
 			}
 			System.out.println(player.lineShot);
 			System.out.println("플레이어 직선 공격 추가");
+			
 			break;
 
 		case 9:
@@ -520,6 +528,7 @@ public class GameMain extends JFrame implements Runnable {
 			}
 			System.out.println(player.lineShot);
 			System.out.println("플레이어 직선 공격 추가");
+			
 			break;
 
 		}
@@ -532,19 +541,25 @@ public class GameMain extends JFrame implements Runnable {
 
 		player.setAngle(angle);
 	}
-    private void updateLabelPosition() {// 플레이어 위치에 따라 라벨의 위치 조절
-    	SwingUtilities.invokeLater(() -> {
-            
-            int labelX = player.x + player.width + 10;
-            int labelY = player.y - 10;
-            
-            if (followingLabel != null) {
-                followingLabel.setBounds(labelX, labelY, 100, 20);
-            }
-           
-    	});
 
-    }
+
+	private void FollowingVisible(Graphics g) {
+
+		followingTextTime = System.currentTimeMillis();
+	    long currentTime = System.currentTimeMillis();
+    	
+
+
+	    if (currentTime - followingTextTime < 3000) {
+	        followingTextTime = System.currentTimeMillis();
+	        int labelX = player.posX + player.width / 2 - 30;
+	        int labelY = player.posY + player.height - 30;
+	        g.setFont(customFont);
+	        g.setColor(Color.WHITE);
+	        g.drawString(powerUpText, labelX, labelY);
+	    }
+
+	}
 	
 	public void EnemyProcess() {
 		for (int i = 0; i < gameManager.getGameObjectList().size(); ++i) {
@@ -773,9 +788,6 @@ class ScrollPanel extends JPanel {
 				String ability = scrollAbilities[randomIndex];
 				System.out.println("Scroll " + (i + 1) + ": " + ability);
 
-				// 이미지를 그린 순서대로 해야함
-				// 세칸짜리 변수를 만들어두고 맨왼쪽 칸에 마우스가 위치하면 1번활성화, 가운데는 2번, 오른쪽은 3번활성화 해두고
-				// 1번활성화 되어있을때는 첫번째 변수만
 
 			}
 			repaint();
