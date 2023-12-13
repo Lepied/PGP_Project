@@ -61,7 +61,7 @@ public class PowerUpPanel extends JPanel{
 		add(back);
 		
 		//업그레이드
-		JLabel upgrade1 = new CreateBtn("damage", margin, 100, 100, 100);
+		JLabel upgrade1 = new CreateBtn("damage", margin, 100, 100, 100 );
 		upgrade1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -135,6 +135,82 @@ public class PowerUpPanel extends JPanel{
 			}
 		 });
 		add(upgrade5);
+		
+		JLabel upgrade6 = new CreateBtn("damage", margin, 250, 100, 100 );
+		upgrade6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+			}
+			public void mouseEntered(MouseEvent e) {
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+		 });
+		add(upgrade6);
+		
+		JLabel upgrade7 = new CreateBtn("damage", margin+120, 250, 100, 100 );
+		upgrade7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+			}
+			public void mouseEntered(MouseEvent e) {
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+		 });
+		add(upgrade7);
+		
+		
+		JLabel upgrade8 = new CreateBtn("damage", margin+240, 250, 100, 100 );
+		upgrade8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+			}
+			public void mouseEntered(MouseEvent e) {
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+		 });
+		add(upgrade8);
+		
+		JLabel upgrade9 = new CreateBtn("damage", margin+360, 250, 100, 100 );
+		upgrade9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+			}
+			public void mouseEntered(MouseEvent e) {
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+		 });
+		add(upgrade9);
+		
+		JLabel upgrade10 = new CreateBtn("damage", margin+480, 250, 100, 100 );
+		upgrade10.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+			}
+			public void mouseEntered(MouseEvent e) {
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+		 });
+		add(upgrade10);
 		
 		//test button
 		JLabel test1 = new CreateBtn("money+", X-50, Y-50, 50, 50);
