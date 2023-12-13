@@ -30,7 +30,7 @@ public class Item extends GameObject{
 	public void getCoin()
 	{
 		tempCoin = GameManager.getInstance().getCoin();
-		GameManager.getInstance().setCoin(tempCoin+1);
+		GameManager.getInstance().setCoin(tempCoin+ GameManager.getInstance().getPlusCoin());
 	}
 	
 	

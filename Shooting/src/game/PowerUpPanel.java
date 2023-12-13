@@ -31,7 +31,7 @@ public class PowerUpPanel extends JPanel{
 		this.setBackground(Color.WHITE);
 		this.setDoubleBuffered(true);
 		
-		//코인
+		//코인 디스플레이
 		JLabel coinDisplay = new SetText("coin: ", X-150, 0, 150, 50);
 		Font coinFont = new Font("Elephant", Font.BOLD, 20);
 		coinDisplay.setFont(coinFont);
@@ -40,9 +40,27 @@ public class PowerUpPanel extends JPanel{
 
 		coinDisplay.setBorder(border);
 		
-		//스탯
-		JLabel statDisplay = new SetText("state", X - margin -280 , 100, 280, 380);
+		//스탯 디스플레이
+		JPanel statDisplay = new JPanel();
+		statDisplay.setBounds(X - margin -280 , 100, 280, 380);
+		statDisplay.setLayout(null);
 		add(statDisplay);
+		JLabel damage = new SetText("damage", 0 , 40, 150, 50);
+		damage.setText("데미지: "+Integer.toString(gm.getCoin()));
+		statDisplay.add(damage);
+		JLabel hp = new SetText("hp", 0, 100, 150, 50);
+		hp.setText("체력: "+Integer.toString(gm.getPlayerMaxHP()));
+		statDisplay.add(hp);
+		JLabel luck = new SetText("luck", 0, 160, 150, 50);
+		luck.setText("운: "+Double.toString(gm.getPlayerLuck()));
+		statDisplay.add(luck);
+		JLabel plusCoin = new SetText("plusCoin", 0, 220, 150, 50);
+		plusCoin.setText("추가코인: "+Integer.toString(gm.getPlusCoin()));
+		statDisplay.add(plusCoin);
+		JLabel bombDamage = new SetText("bombDamage", 0, 280, 150, 50);
+		bombDamage.setText("폭탄데미지: "+Integer.toString(gm.getPlayerBombDamage()));
+		statDisplay.add(bombDamage);
+		
 		
 		statDisplay.setBorder(border);
 		
@@ -67,7 +85,7 @@ public class PowerUpPanel extends JPanel{
 		upgrade1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				gm.setPlayerDamage(gm.getPlayerDamage()+5);
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -78,11 +96,11 @@ public class PowerUpPanel extends JPanel{
 		 });
 		add(upgrade1);
 		
-		JLabel upgrade2 = new CreateBtn("armor", margin+120, 100, 100, 100);
+		JLabel upgrade2 = new CreateBtn("hp", margin+120, 100, 100, 100);
 		upgrade2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				gm.setPlayerMaxHP(gm.getPlayerMaxHP()+1);
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -93,11 +111,11 @@ public class PowerUpPanel extends JPanel{
 		 });
 		add(upgrade2);
 		
-		JLabel upgrade3 = new CreateBtn("cri_per", margin+240, 100, 100, 100);
+		JLabel upgrade3 = new CreateBtn("luck", margin+240, 100, 100, 100);
 		upgrade3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				gm.setPlayerLuck(gm.getPlayerLuck()+0.01);
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -108,11 +126,11 @@ public class PowerUpPanel extends JPanel{
 		 });
 		add(upgrade3);
 		
-		JLabel upgrade4 = new CreateBtn("cri_dam", margin+360, 100, 100, 100);
+		JLabel upgrade4 = new CreateBtn("bomb_damage", margin+360, 100, 100, 100);
 		upgrade4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				gm.setPlayerBombDamage(gm.getPlayerBombDamage()+100);
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -123,11 +141,11 @@ public class PowerUpPanel extends JPanel{
 		 });
 		add(upgrade4);
 		
-		JLabel upgrade5 = new CreateBtn("health", margin+480, 100, 100, 100);
+		JLabel upgrade5 = new CreateBtn("plusCoin", margin+480, 100, 100, 100);
 		upgrade5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				gm.setPlusCoin(gm.getPlusCoin()+1);
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -138,82 +156,82 @@ public class PowerUpPanel extends JPanel{
 		 });
 		add(upgrade5);
 		
-		JLabel upgrade6 = new CreateBtn("damage", margin, 250, 100, 100 );
-		upgrade6.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-			}
-			public void mouseEntered(MouseEvent e) {
-				setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			public void mouseExited(MouseEvent e) {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-		 });
-		add(upgrade6);
-		
-		JLabel upgrade7 = new CreateBtn("damage", margin+120, 250, 100, 100 );
-		upgrade7.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-			}
-			public void mouseEntered(MouseEvent e) {
-				setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			public void mouseExited(MouseEvent e) {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-		 });
-		add(upgrade7);
-		
-		
-		JLabel upgrade8 = new CreateBtn("damage", margin+240, 250, 100, 100 );
-		upgrade8.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-			}
-			public void mouseEntered(MouseEvent e) {
-				setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			public void mouseExited(MouseEvent e) {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-		 });
-		add(upgrade8);
-		
-		JLabel upgrade9 = new CreateBtn("damage", margin+360, 250, 100, 100 );
-		upgrade9.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-			}
-			public void mouseEntered(MouseEvent e) {
-				setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			public void mouseExited(MouseEvent e) {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-		 });
-		add(upgrade9);
-		
-		JLabel upgrade10 = new CreateBtn("damage", margin+480, 250, 100, 100 );
-		upgrade10.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-			}
-			public void mouseEntered(MouseEvent e) {
-				setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			public void mouseExited(MouseEvent e) {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-		 });
-		add(upgrade10);
-		
+//		JLabel upgrade6 = new CreateBtn("damage", margin, 250, 100, 100 );
+//		upgrade6.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//
+//			}
+//			public void mouseEntered(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.HAND_CURSOR));
+//			}
+//			public void mouseExited(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+//			}
+//		 });
+//		add(upgrade6);
+//		
+//		JLabel upgrade7 = new CreateBtn("damage", margin+120, 250, 100, 100 );
+//		upgrade7.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//
+//			}
+//			public void mouseEntered(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.HAND_CURSOR));
+//			}
+//			public void mouseExited(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+//			}
+//		 });
+//		add(upgrade7);
+//		
+//		
+//		JLabel upgrade8 = new CreateBtn("damage", margin+240, 250, 100, 100 );
+//		upgrade8.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//
+//			}
+//			public void mouseEntered(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.HAND_CURSOR));
+//			}
+//			public void mouseExited(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+//			}
+//		 });
+//		add(upgrade8);
+//		
+//		JLabel upgrade9 = new CreateBtn("damage", margin+360, 250, 100, 100 );
+//		upgrade9.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//
+//			}
+//			public void mouseEntered(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.HAND_CURSOR));
+//			}
+//			public void mouseExited(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+//			}
+//		 });
+//		add(upgrade9);
+//		
+//		JLabel upgrade10 = new CreateBtn("damage", margin+480, 250, 100, 100 );
+//		upgrade10.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//
+//			}
+//			public void mouseEntered(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.HAND_CURSOR));
+//			}
+//			public void mouseExited(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+//			}
+//		 });
+//		add(upgrade10);
+//		
 		//test button
 		JLabel test1 = new CreateBtn("money+", X-50, Y-50, 50, 50);
 		test1.addMouseListener(new MouseAdapter() {
@@ -234,6 +252,20 @@ public class PowerUpPanel extends JPanel{
             }
 		 });
 		add(test2);
+		
+		JLabel test3 = new CreateBtn("display to Console", X-250, Y-50, 150, 50);
+		test3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+            	System.out.print("========"+
+            			"\ndamage: "+ gm.getPlayerDamage()+
+            			"\nmaxHP: "+gm.getPlayerMaxHP()+
+            			"\nluck: "+gm.getPlayerLuck()+
+            			"\nbombDamage: "+gm.getPlayerBombDamage()+
+            			"\nplusCoin: "+gm.getPlusCoin()+"\n");
+            }
+		 });
+		add(test3);
 
 
 	}
