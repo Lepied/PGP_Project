@@ -6,7 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class MainFrame extends JFrame{
-	private JFrame frame;
+
 	private CardLayout cardLayout;
 	private JPanel cardPanel;
 	private GameMain gameMain;
