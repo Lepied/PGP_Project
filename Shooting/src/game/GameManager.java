@@ -15,10 +15,11 @@ public class GameManager {
 	private int playerCoin;
 	private int playerBomb;  // 폭탄 갯수자체는 게임이 끝나면 초기화 시켜야 함.
 	private int playerBombDamage;
-
-	private int maxPlayerHp;
 	private int playerUpgradeDamage;
 	private int playerUpgradeMaxHp;
+	private int playerUpgradeLuck;
+	private int plusCoin;
+	
 	
 	private List<GameObject> gameObjectList;
 	
@@ -33,7 +34,7 @@ public class GameManager {
 	private int itemPosX;
 	private int itemPosY;
 	
-	private int playerDamage = 20;
+	private int playerDamage;
 	
 	public boolean isBossNow = false;
 	public boolean isNPCNow = false;
@@ -183,7 +184,7 @@ public class GameManager {
 			
 			double randomValue = Math.random(); // 0~1.0
 			//if (randomValue < 0.1) { // 10%
-			if (randomValue < 0.1) { // 10%
+			if (randomValue < 0.1+playerUpgradeLuck) { // 10% + 강화된 럭 수치
 	            addItem(new Scroll(target.posX, target.posY));
 	        } else if (randomValue < 0.4) { // 30%
 	            addItem(new Bomb(target.posX, target.posY));
@@ -265,6 +266,42 @@ public class GameManager {
 	{
 		this.playerBombDamage = bombDamage;
 	}
+	
+	
+	public int getPlayerMaxHP()
+	{
+		return playerUpgradeMaxHp;
+	}
+	
+	public void setPlayerMaxHP(int playerUpgradeMaxHp)
+	{
+		this.playerUpgradeMaxHp = playerUpgradeMaxHp;
+	}
+	
+	public int getPlayerLuck()
+	{
+		return playerUpgradeLuck;
+	}
+	
+	public void setPlayerLuck(int playerUpgradeLuck)
+	{
+		this.playerUpgradeLuck = playerUpgradeLuck;
+	}
+	
+	public int getPlusCoin()
+	{
+		return plusCoin;
+	}
+	
+	public void setPlusCoin(int plusCoin)
+	{
+		this.plusCoin = plusCoin;
+	}
+	
+	
+	
+	
+
 	
 
 	
