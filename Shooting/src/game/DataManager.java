@@ -60,15 +60,16 @@ public class DataManager {
 	
 	public void loadData() {
 		try {
+			
 			BufferedReader br = new BufferedReader(new FileReader("saveData.txt"));
 			coin = Integer.parseInt(br.readLine());
 			damage = Integer.parseInt(br.readLine());
 			hp = Integer.parseInt(br.readLine());
-			luck = Integer.parseInt(br.readLine());
+			luck = Double.parseDouble(br.readLine());
 			plusCoin = Integer.parseInt(br.readLine());
 			bombDamage = Integer.parseInt(br.readLine());
 			
-
+			
 			gm.setCoin(coin);
 			gm.setPlayerDamage(damage);
 			gm.setPlayerMaxHP(hp);
@@ -76,7 +77,7 @@ public class DataManager {
 			gm.setPlusCoin(plusCoin);
 			gm.setPlayerBombDamage(bombDamage);
 			
-			
+		
 			System.out.print("--- LOADING ---\n"+
 					"coin: " + gm.getCoin() + "\n"+ 
 					"damage: " + gm.getPlayerDamage() + "\n"+

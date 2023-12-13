@@ -44,6 +44,7 @@ public class MainPanel extends JPanel implements Runnable{
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
+		start.setBorder(null);
 		add(start);
 		
 		JLabel powerUp = new CreateBtn(powerUpBtn, 20, Y/2 + 120 , 300, 100);;
@@ -59,6 +60,7 @@ public class MainPanel extends JPanel implements Runnable{
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				}
 			});
+		powerUp.setBorder(null);
 		add(powerUp);
 		
 	}

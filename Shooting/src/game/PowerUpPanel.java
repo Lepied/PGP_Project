@@ -46,7 +46,7 @@ public class PowerUpPanel extends JPanel{
 		statDisplay.setLayout(null);
 		add(statDisplay);
 		JLabel damage = new SetText("damage", 0 , 40, 150, 50);
-		damage.setText("데미지: "+Integer.toString(gm.getCoin()));
+		damage.setText("데미지: "+Integer.toString(gm.getPlayerDamage()));
 		statDisplay.add(damage);
 		JLabel hp = new SetText("hp", 0, 100, 150, 50);
 		hp.setText("체력: "+Integer.toString(gm.getPlayerMaxHP()));
@@ -86,7 +86,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				gm.setPlayerDamage(gm.getPlayerDamage()+5);
-				damage.setText("데미지: "+Integer.toString(gm.getCoin()));
+				damage.setText("데미지: "+Integer.toString(gm.getPlayerDamage()));
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));

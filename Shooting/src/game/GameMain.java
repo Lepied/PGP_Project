@@ -99,11 +99,9 @@ public class GameMain extends JFrame implements Runnable {
 	public GameMain() {
 		gameManager = GameManager.getInstance();
 		animator = Animator.getInstance();
-<<<<<<< HEAD
+
 		player = new Player(gameManager.getPlayerDamage(), gameManager.getPlayerMaxHP(), gameManager.getPlayerBombDamage());
-=======
-		player = new Player(gameManager.getPlayerDamage(),gameManager.getPlayerMaxHP(),gameManager.getPlayerBombDamage());
->>>>>>> branch 'main' of https://github.com/Lepied/PGP_Project.git
+
 		gameManager.setPlayer(player);
 		
 
