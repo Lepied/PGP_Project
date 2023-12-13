@@ -80,7 +80,7 @@ public class DataManager {
 			
 			System.out.print("--- LOADING ---\n"+
 					"coin: " + gm.getCoin() + "\n"+ 
-					"damage: " + gm.getUpDamage() + "\n"+
+					"damage: " + gm.getPlayerDamage() + "\n"+
 					"HP: " + gm.getPlayerMaxHP() + "\n"+
 					"luck: " + gm.getPlayerLuck() + "\n"+
 					"plusCoin: " + gm.getPlayerLuck() + "\n"+

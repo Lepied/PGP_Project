@@ -94,7 +94,7 @@ public class GameMain extends JFrame implements Runnable {
 	public GameMain() {
 		gameManager = GameManager.getInstance();
 		animator = Animator.getInstance();
-		player = new Player(gameManager.getPlayerDamage());
+		player = new Player(gameManager.getPlayerDamage(), gameManager.getPlayerMaxHP(), gameManager.getPlayerBombDamage());
 		gameManager.setPlayer(player);
 
 		addKeyListener(player);

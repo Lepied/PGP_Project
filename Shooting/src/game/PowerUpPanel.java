@@ -86,6 +86,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				gm.setPlayerDamage(gm.getPlayerDamage()+5);
+				damage.setText("데미지: "+Integer.toString(gm.getCoin()));
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -101,6 +102,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				gm.setPlayerMaxHP(gm.getPlayerMaxHP()+1);
+				hp.setText("체력: "+Integer.toString(gm.getPlayerMaxHP()));
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -116,6 +118,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				gm.setPlayerLuck(gm.getPlayerLuck()+0.01);
+				luck.setText("운: "+Double.toString(gm.getPlayerLuck()));
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -131,6 +134,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				gm.setPlayerBombDamage(gm.getPlayerBombDamage()+100);
+				bombDamage.setText("폭탄데미지: "+Integer.toString(gm.getPlayerBombDamage()));
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -146,6 +150,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				gm.setPlusCoin(gm.getPlusCoin()+1);
+				plusCoin.setText("추가코인: "+Integer.toString(gm.getPlusCoin()));
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -156,82 +161,6 @@ public class PowerUpPanel extends JPanel{
 		 });
 		add(upgrade5);
 		
-//		JLabel upgrade6 = new CreateBtn("damage", margin, 250, 100, 100 );
-//		upgrade6.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//
-//			}
-//			public void mouseEntered(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.HAND_CURSOR));
-//			}
-//			public void mouseExited(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-//			}
-//		 });
-//		add(upgrade6);
-//		
-//		JLabel upgrade7 = new CreateBtn("damage", margin+120, 250, 100, 100 );
-//		upgrade7.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//
-//			}
-//			public void mouseEntered(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.HAND_CURSOR));
-//			}
-//			public void mouseExited(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-//			}
-//		 });
-//		add(upgrade7);
-//		
-//		
-//		JLabel upgrade8 = new CreateBtn("damage", margin+240, 250, 100, 100 );
-//		upgrade8.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//
-//			}
-//			public void mouseEntered(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.HAND_CURSOR));
-//			}
-//			public void mouseExited(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-//			}
-//		 });
-//		add(upgrade8);
-//		
-//		JLabel upgrade9 = new CreateBtn("damage", margin+360, 250, 100, 100 );
-//		upgrade9.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//
-//			}
-//			public void mouseEntered(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.HAND_CURSOR));
-//			}
-//			public void mouseExited(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-//			}
-//		 });
-//		add(upgrade9);
-//		
-//		JLabel upgrade10 = new CreateBtn("damage", margin+480, 250, 100, 100 );
-//		upgrade10.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//
-//			}
-//			public void mouseEntered(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.HAND_CURSOR));
-//			}
-//			public void mouseExited(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-//			}
-//		 });
-//		add(upgrade10);
-//		
 		//test button
 		JLabel test1 = new CreateBtn("money+", X-50, Y-50, 50, 50);
 		test1.addMouseListener(new MouseAdapter() {
@@ -266,28 +195,31 @@ public class PowerUpPanel extends JPanel{
             }
 		 });
 		add(test3);
+		
+		JLabel test4 = new CreateBtn("reset", X-300, Y-50, 50, 50);
+		test4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				gm.setPlayerDamage(20);
+				gm.setPlayerMaxHP(3);
+				gm.setPlayerLuck(0.0);
+				gm.setPlusCoin(0);
+				gm.setPlayerBombDamage(0);
+				damage.setText("데미지: "+Integer.toString(gm.getCoin()));
+				hp.setText("체력: "+Integer.toString(gm.getPlayerMaxHP()));
+				luck.setText("운: "+Double.toString(gm.getPlayerLuck()));
+				plusCoin.setText("추가코인: "+Integer.toString(gm.getPlusCoin()));
+				bombDamage.setText("폭탄데미지: "+Integer.toString(gm.getPlayerBombDamage()));
+				System.out.print("+reset+\n");
+            }
+		 });
+		add(test4);
 
-
+		
 	}
-	
-//	public String test() {
-//		String x = Integer.toString(gm.getCoin());
-//		System.out.print(x);
-//		return x;
-//	}
 	
 	public void createText() {
 		JLabel label = new JLabel("power");
-		label.setForeground(Color.BLACK);
-		label.setBounds(X/2 - 500/2, 50, 500, 100);
-		Font customFont = new Font("Elephant", Font.BOLD, 50);
-		label.setFont(customFont);
-        label.setHorizontalAlignment(JLabel.CENTER);
-		add(label);
-	}
-	
-	public void coinDisplay() {
-		JLabel label = new JLabel();
 		label.setForeground(Color.BLACK);
 		label.setBounds(X/2 - 500/2, 50, 500, 100);
 		Font customFont = new Font("Elephant", Font.BOLD, 50);
