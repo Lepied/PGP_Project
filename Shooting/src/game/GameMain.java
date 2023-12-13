@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -17,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import Unit.Ch1Boss;
 import Unit.E_Wybern;
@@ -36,6 +39,8 @@ public class GameMain extends JFrame implements Runnable {
 	private Player player;
 	GameManager gameManager;
 	Animator animator;
+	private SoundManager soundManager = new SoundManager();
+	MainFrame mainFrame;
 
 	boolean canCh1BossSpawn = true; // 게임타이머관리용 보스소환가능한상태?
 
@@ -97,17 +102,27 @@ public class GameMain extends JFrame implements Runnable {
 		animator = Animator.getInstance();
 		player = new Player(gameManager.getPlayerDamage(), gameManager.getPlayerMaxHP(),gameManager.getPlayerBombDamage());
 		gameManager.setPlayer(player);
+		
 
 		addKeyListener(player);
 		th = new Thread(this);
 		th.start();
 
+		
+		soundManager.setMusic("resourses/Sound/Hollow-Knight-OST-Greenpath.wav");
+		soundManager.play();
+		soundManager.setVolume(0.9f);
+		soundManager.setVFXVolume(1.0f);
+		
+		
 		try {
 			customFont = Font.createFont(Font.TRUETYPE_FONT, new File("resourses/MapleStory Bold.ttf")).deriveFont(14f);
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}
+		
+
 
 		setTitle("Shooting Game");
 		setSize(frameWidth, frameHeight);
@@ -228,6 +243,8 @@ public class GameMain extends JFrame implements Runnable {
 			}
 		});
 
+	
+
 		Ch1BossUI = new BossUI(340, -5, 600, 50, this);
 
 		gamePanel.setBounds(x, 0, panelWidth, panelHeight);
@@ -240,8 +257,9 @@ public class GameMain extends JFrame implements Runnable {
 		add(scrollPanel);
 		add(Ch1BossUI);
 		add(npcPanel);
-
 		add(gamePanel);
+		
+
 
 	}
 
@@ -429,6 +447,18 @@ public class GameMain extends JFrame implements Runnable {
 		{
 			System.out.println("게임오버");
 			player.bomb = 0;
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					th.interrupt();
+					soundManager.stop();
+					GameMain.this.dispose();
+					mainFrame = new MainFrame();
+				}
+			});
+
+
+
 		}
 	}
 
@@ -486,9 +516,9 @@ public class GameMain extends JFrame implements Runnable {
 
 		case 5:
 			System.out.println("이동속도 증가");
-			if (player.speed < 50) 
+			if (player.speed < 20) 
 			{
-				player.speed = player.speed + 5;
+				player.speed = player.speed + 1;
 			}
 			powerUpText = "이동속도 증가";
 			
@@ -663,7 +693,7 @@ public class GameMain extends JFrame implements Runnable {
 						SelectPanel_2.setVisible(true);
 						SelectPanel_3.setVisible(true);
 						scrollPanel.generateRandomImages(); // 랜덤 이미지 생성
-						//System.out.println(ScrollIndex.length);
+						
 					}
 
 					repaint(); // 화면 갱신

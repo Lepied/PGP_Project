@@ -23,15 +23,12 @@ public class DataManager {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter("saveData.txt"));
 			coin = gm.getCoin();
-			damage = gm.getUpDamage();
 			luck = gm.getPlayerLuck();
 			plusCoin = gm.getPlusCoin();
 			bombDamage = gm.getPlayerBombDamage();
 			playerDamage = gm.getPlayerDamage();
 			
 			bw.write(""+ coin);
-			bw.newLine();
-			bw.write(""+ damage);
 			bw.newLine();
 			bw.write(""+ luck);
 			bw.newLine();
@@ -60,15 +57,13 @@ public class DataManager {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader("saveData.txt"));
 			coin = Integer.parseInt(br.readLine());
-			damage = Integer.parseInt(br.readLine());
 			luck = Integer.parseInt(br.readLine());
 			plusCoin = Integer.parseInt(br.readLine());
 			bombDamage = Integer.parseInt(br.readLine());
 			playerDamage = Integer.parseInt(br.readLine());
 
 			
-			gm.setCoin(coin);
-			gm.setUpDamage(damage);
+			gm.setCoin(coin);;
 			gm.setPlayerLuck(luck);
 			gm.setPlusCoin(plusCoin);
 			gm.setPlayerBombDamage(bombDamage);
@@ -76,7 +71,6 @@ public class DataManager {
 			
 			System.out.print("--- LOADING ---\n"+
 					"coin: " + gm.getCoin() + "\n"+ 
-					"damage: " + gm.getUpDamage() + "\n"+ 
 					"Success to load the data...\n");
 			
 			br.close();
