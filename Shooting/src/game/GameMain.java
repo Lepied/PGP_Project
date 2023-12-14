@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import Unit.Ch1Boss;
+import Unit.E_Bird;
 import Unit.E_Wybern;
 import Unit.E_Zaco;
 import Unit.NPC;
@@ -38,7 +39,6 @@ public class GameMain extends JFrame implements Runnable {
 	private boolean paused = false;
 	private Player player;
 	GameManager gameManager;
-	Animator animator;
 	private SoundManager soundManager = new SoundManager();
 	MainFrame mainFrame;
 
@@ -98,8 +98,7 @@ public class GameMain extends JFrame implements Runnable {
 
 	public GameMain() {
 		gameManager = GameManager.getInstance();
-		animator = Animator.getInstance();
-
+		
 		player = new Player(gameManager.getPlayerDamage(), gameManager.getPlayerMaxHP(), gameManager.getPlayerBombDamage());
 
 		gameManager.setPlayer(player);
@@ -292,7 +291,7 @@ public class GameMain extends JFrame implements Runnable {
 
 		buffg.clearRect(0, 0, 600, frameHeight);
 
-		animator.setGraphics(buffg);
+		
 		// 게임오브젝트 그리는 부분
 		buffg.drawImage(backImg, 0, backY, this);
 		buffg.drawImage(backImg, 0, back2Y, this);
@@ -603,20 +602,36 @@ public class GameMain extends JFrame implements Runnable {
 
 		}
 		//보스전 이전 스테이지 구성
-		if (canCh1BossSpawn == true && gameCnt < 4000) {
-			if(gameCnt % 100 == 0 && gameCnt < 500)
+		if (canCh1BossSpawn == true&& gameCnt > 200 && gameCnt < 5000) {
+			if( gameCnt % 150 == 0 && gameCnt > 400 )
 			{
 				en = new E_Zaco(3);
 				en = new E_Zaco(4);
 			}
-			else if(gameCnt % 100 == 0 && gameCnt<800)
+			else if(gameCnt % 100 == 0 && gameCnt>1000)
 			{
 				en = new E_Zaco(1);
 				en = new E_Zaco(2);
 			}
+			else if(gameCnt % 100 == 0 && gameCnt>1500)
+			{
+				en = new E_Zaco(5);
+				en = new E_Zaco(6);
+			}
+			else if(gameCnt % 300 == 0 && gameCnt>2400)
+			{
+				int tmpCnt =3;
+				en = new E_Bird(2);
+				if(gameCnt % 150 ==0 && tmpCnt>0)
+				{
+					en = new E_Bird(1);
+					en = new E_Bird(3);
+					tmpCnt--;
+				}
+			}
 
 		}
-		if (gameCnt > 800 && canSpawnNPC) {//엔피씨 소환
+		if (gameCnt > 3000 && canSpawnNPC) {//엔피씨 소환
 			npc = new NPC();
 			canSpawnNPC = false;
 		}
@@ -624,16 +639,15 @@ public class GameMain extends JFrame implements Runnable {
 		{
 			if(gameManager.isQuest)
 			{
-				if(gameCnt%200==0)
+				if(gameCnt>4000)
 				{
 					en = new E_Wybern(1);
-
 				}
 			}
 			else {}
 		}
 		/*
-		 * if(gameCnt>200 && canCh1BossSpawn) {
+		 * if(gameCnt>10000 && canCh1BossSpawn) {
 		 * 
 		 * canCh1BossSpawn = false; en = new Ch1Boss(2); gameCnt = 0; 
 		 * // 게임카운트 초기화해서

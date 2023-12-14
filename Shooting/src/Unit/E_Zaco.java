@@ -29,7 +29,14 @@ public class E_Zaco extends Enemy{
         } else if (spawnPoint == 4) {
             this.posX = 400;
             this.posY = 0;
+        } else if (spawnPoint == 5){
+        	this.posX = 50;
+        	this.posY = 0;
+        } else if (spawnPoint == 6){
+        	this.posX = 550;
+        	this.posY = 0;
         }
+        		
 	}
     public void draw(Graphics g) {
        super.draw(g);
@@ -71,8 +78,14 @@ public class E_Zaco extends Enemy{
     		}
 
     		break;
-    	}
-    	
-    }
+    	case 5:
+        		posY += speed*2;
 
+    		break;
+    	case 6:
+        		posY += speed*2;
+
+    	}
+    }
+    	
 }

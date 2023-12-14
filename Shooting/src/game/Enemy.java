@@ -43,6 +43,13 @@ public class Enemy extends GameObject {
     	{
         	posY += speed;
     	}
+    	if(this.type == 2)
+    	{
+    		if(posY <100)
+    		{
+    			posY += speed;    	
+    		}
+    	}
     	if(this.type == 3)
     	{
     		if(posY <100)
@@ -88,7 +95,7 @@ public class Enemy extends GameObject {
 		double deltaX = player.posX - this.posX;
 	    double deltaY = player.posY - (this.posY + 35); // 총알 시작 위치에 대한 조정
 	    double startAngle = Math.atan2(deltaY, deltaX);
-    	if(this.bulletType ==3)  //플레이어 방향으로 산탄
+    	if(this.bulletType ==3)  
     	{
     		switch(this.Pattern)
     		{
@@ -156,7 +163,7 @@ public class Enemy extends GameObject {
 			        if(patternCnt > 3)
 			        {
 			        	patternCnt =0;
-			        	this.Pattern =0;
+			        	this.Pattern =3;
 			        }
                 }
     			break;
@@ -177,13 +184,59 @@ public class Enemy extends GameObject {
  			        if(patternCnt > 20)
  			        {
  			        	patternCnt =0;
- 			        	this.Pattern =2;
+ 			        	this.Pattern =0;
  			        }
  			    }
     		}
 
     	}
-    	
+    	else if(this.bulletType ==2)
+    	{
+    		switch(this.Pattern)
+    		{
+    		case 0:// 패턴: 부채꼴 모양으로 총알 발사
+    			if (System.currentTimeMillis() - lastAttackTime > attackSpeed) {
+
+					for (int i = 0; i < bulletCount; ++i) {
+						int angle = i * bulletAngle - (bulletCount - 1) * bulletAngle / 2;
+						int finalAngle = (int) Math.toDegrees(startAngle) + angle;
+
+						enBullet = new EnemyBullet(this.posX+100, this.posY + 35, 5, 1, finalAngle);
+						Enemy_Bullet_List.add(enBullet);
+					}
+
+					for (int i = 0; i < bulletCount; ++i) {
+						int angle = i * bulletAngle - (bulletCount - 1) * bulletAngle / 2;
+						int finalAngle = (int) Math.toDegrees(startAngle) + angle;
+
+						enBullet = new EnemyBullet(this.posX-10, this.posY + 35, 5, 1, finalAngle);
+						Enemy_Bullet_List.add(enBullet);
+					}
+					patternCnt++;
+					lastAttackTime = System.currentTimeMillis();
+			        if(patternCnt > 3)
+			        {
+			        	patternCnt =0;
+			        	this.Pattern =1;
+			        }
+                }
+    			
+    		case 1: //플레이어한테 마구마구쏘기
+    			if (System.currentTimeMillis() - lastAttackTime > 1000) {
+    				int finalAngle = (int) Math.toDegrees(startAngle);
+        			enBullet = new EnemyBullet(this.posX,this.posY+35,5,1,finalAngle); //각도는 90도
+        			Enemy_Bullet_List.add(enBullet);
+        			lastAttackTime = System.currentTimeMillis();
+        			patternCnt++;
+        			
+			        if(patternCnt > 50)
+			        {
+			        	patternCnt =0;
+			        	this.Pattern =0;
+			        }
+                }
+    		}
+    	}
     	else //아래방향으로 직진
     	{
     		if(System.currentTimeMillis() - lastAttackTime > attackSpeed)

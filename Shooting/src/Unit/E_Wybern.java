@@ -9,12 +9,12 @@ public class E_Wybern extends Enemy{
 	public E_Wybern(int spawnPoint)
 	{
 		super(spawnPoint);
-		this.type = 1; // 일반 타입
-        this.hp = 40;
-        this.width = 35; //충돌관리 위한 이미지 너비 높이등
-        this.height = 35;
+		this.type = 2; // 정예 타입
+        this.hp = 2000;
+        this.width = 200; //충돌관리 위한 이미지 너비 높이등
+        this.height = 200;
         this.speed = 1;
-        this.img = tk.getImage("resourses/sprites/f2.jpg");
+        this.img = tk.getImage("resourses/sprites/Dragonfolly.png");
         this.attackSpeed = 5000;
         
         if (spawnPoint == 1) {
