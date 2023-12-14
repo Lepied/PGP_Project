@@ -603,22 +603,22 @@ public class GameMain extends JFrame implements Runnable {
 		}
 		//보스전 이전 스테이지 구성
 		if (canCh1BossSpawn == true&& gameCnt > 200 && gameCnt < 5000) {
-			if( gameCnt % 150 == 0 && gameCnt > 400 )
+			if( gameCnt % 150 == 0 && gameCnt < 400 )
 			{
 				en = new E_Zaco(3);
 				en = new E_Zaco(4);
 			}
-			else if(gameCnt % 100 == 0 && gameCnt>1000)
+			else if(gameCnt % 100 == 0 && gameCnt<1000)
 			{
 				en = new E_Zaco(1);
 				en = new E_Zaco(2);
 			}
-			else if(gameCnt % 100 == 0 && gameCnt>1500)
+			else if(gameCnt % 100 == 0 && gameCnt<1500)
 			{
 				en = new E_Zaco(5);
 				en = new E_Zaco(6);
 			}
-			else if(gameCnt % 300 == 0 && gameCnt>2400)
+			else if(gameCnt % 300 == 0 && gameCnt<2400)
 			{
 				int tmpCnt =3;
 				en = new E_Bird(2);
@@ -639,7 +639,7 @@ public class GameMain extends JFrame implements Runnable {
 		{
 			if(gameManager.isQuest)
 			{
-				if(gameCnt>4000)
+				if(gameCnt==4000)
 				{
 					en = new E_Wybern(1);
 				}

@@ -220,21 +220,24 @@ public class Enemy extends GameObject {
 			        	this.Pattern =1;
 			        }
                 }
+    			break;
     			
     		case 1: //플레이어한테 마구마구쏘기
-    			if (System.currentTimeMillis() - lastAttackTime > 1000) {
+    			if (System.currentTimeMillis() - lastAttackTime > 50) {
     				int finalAngle = (int) Math.toDegrees(startAngle);
-        			enBullet = new EnemyBullet(this.posX,this.posY+35,5,1,finalAngle); //각도는 90도
+        			enBullet = new EnemyBullet(this.posX+100,this.posY+35,5,1,finalAngle); //각도는 90도
         			Enemy_Bullet_List.add(enBullet);
+        			
         			lastAttackTime = System.currentTimeMillis();
         			patternCnt++;
         			
-			        if(patternCnt > 50)
+			        if(patternCnt > 20)
 			        {
 			        	patternCnt =0;
 			        	this.Pattern =0;
 			        }
                 }
+    			break;
     		}
     	}
     	else //아래방향으로 직진
@@ -242,7 +245,7 @@ public class Enemy extends GameObject {
     		if(System.currentTimeMillis() - lastAttackTime > attackSpeed)
     		{
     			int finalAngle = (int) Math.toDegrees(startAngle);
-    			enBullet = new EnemyBullet(this.posX,this.posY+35,5,1,finalAngle); //각도는 90도
+    			enBullet = new EnemyBullet(this.posX+100,this.posY+35,5,1,finalAngle); //각도는 90도
     			Enemy_Bullet_List.add(enBullet);
     			lastAttackTime = System.currentTimeMillis();
 
