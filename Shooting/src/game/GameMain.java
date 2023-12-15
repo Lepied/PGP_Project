@@ -626,7 +626,16 @@ public class GameMain extends JFrame implements Runnable {
 					tmpCnt--;
 				}
 			}
+			else if(gameCnt % 500 == 0 && gameCnt<3500)
+			{
+				en = new E_Bird(1);
+				en = new E_Bird(3);
+				if(gameCnt % 200 ==0)
+				{
+					en = new E_Zaco(1);
 
+				}
+			}
 		}
 	
 		if (gameCnt > 1500 && canSpawnNPC) {//엔피씨 소환
@@ -650,7 +659,7 @@ public class GameMain extends JFrame implements Runnable {
 			else {}
 		}
 
-		if (gameCnt > 10000 && canCh1BossSpawn) {
+		if (gameCnt > 8000 && canCh1BossSpawn) {
 
 			canCh1BossSpawn = false;
 			en = new Ch1Boss(2);

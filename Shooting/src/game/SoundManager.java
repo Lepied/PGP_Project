@@ -3,6 +3,8 @@ package game;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -14,12 +16,14 @@ import javax.sound.sampled.*;
 
 public class SoundManager {
 	public Clip clip;
+	private List<Clip> effectClips;
 	private FloatControl volumeControl;
 	private FloatControl vfxControl;
+	private FloatControl effectVolumeControl;
 	
 	public SoundManager()
 	{
-
+		   effectClips = new ArrayList<>();
 	}
 	
 	public void play()
@@ -150,6 +154,47 @@ public class SoundManager {
         } else {
             return 0.0f;
         }
+    }
+    
+    public void playEffect(String filePath) {
+        try {
+            AudioInputStream audioInputStream =
+                    AudioSystem.getAudioInputStream(new File(filePath));
+            Clip effectClip = AudioSystem.getClip();
+            effectClip.open(audioInputStream);
+            effectClips.add(effectClip);
+
+            effectVolumeControl = (FloatControl) effectClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            if (effectVolumeControl != null) {
+                float minVolume = effectVolumeControl.getMinimum();
+                float maxVolume = effectVolumeControl.getMaximum();
+                float midVolume = (maxVolume - minVolume) / 2.0f + minVolume;
+                effectVolumeControl.setValue(midVolume);
+            }
+
+            effectClip.start();
+
+            // 클립이 재생을 마치면 리스트에서 제거
+            effectClip.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    effectClips.remove(effectClip);
+                }
+            });
+
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopAllEffects() {
+        for (Clip effectClip : effectClips) {
+            if (effectClip != null && effectClip.isRunning()) {
+                effectClip.stop();
+                effectClip.setFramePosition(0);
+            }
+        }
+        effectClips.clear();
     }
 	
 	public static void main(String[] args) {
