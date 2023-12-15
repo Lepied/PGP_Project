@@ -8,7 +8,7 @@ public class Bomb extends Item{
 		 this.posX = x;
 		 this.posY = y;
 		 this.type = 3;
-		 this.img = tk.getImage("resourses/sprites/rune_stone.jpg");
+		 this.img = tk.getImage("resourses/sprites/rune_stone.png");
 	}
 	public void draw(Graphics g) 
 	{

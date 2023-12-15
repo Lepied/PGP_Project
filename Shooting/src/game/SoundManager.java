@@ -16,14 +16,13 @@ import javax.sound.sampled.*;
 
 public class SoundManager {
 	public Clip clip;
-	private List<Clip> effectClips;
 	private FloatControl volumeControl;
 	private FloatControl vfxControl;
-	private FloatControl effectVolumeControl;
-	
+
+
 	public SoundManager()
 	{
-		   effectClips = new ArrayList<>();
+		  
 	}
 	
 	public void play()
@@ -115,16 +114,16 @@ public class SoundManager {
 				
 				AudioInputStream audioInputStream = 
 						AudioSystem.getAudioInputStream(new File(filePath));
-	            clip = AudioSystem.getClip(); // 새로운 클립을 생성
+	            clip = AudioSystem.getClip(); 
 	            clip.open(audioInputStream);
 	            vfxControl = (FloatControl) clip.getControl
-	            		(FloatControl.Type.MASTER_GAIN); // 볼륨 컨트롤을 업데이트합니다.
+	            		(FloatControl.Type.MASTER_GAIN); 
 	            
-	            if (vfxControl != null) { //볼륨 기초값 설정
+	            if (vfxControl != null) { 
 	                float minVolume = vfxControl.getMinimum();
 	                float maxVolume = vfxControl.getMaximum();
 	                float midVolume = (maxVolume - minVolume) / 2.0f + minVolume;
-	                vfxControl.setValue(midVolume);
+	                vfxControl.setValue(maxVolume);
 	            }
 	                
 	        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -155,47 +154,7 @@ public class SoundManager {
             return 0.0f;
         }
     }
-    
-    public void playEffect(String filePath) {
-        try {
-            AudioInputStream audioInputStream =
-                    AudioSystem.getAudioInputStream(new File(filePath));
-            Clip effectClip = AudioSystem.getClip();
-            effectClip.open(audioInputStream);
-            effectClips.add(effectClip);
-
-            effectVolumeControl = (FloatControl) effectClip.getControl(FloatControl.Type.MASTER_GAIN);
-
-            if (effectVolumeControl != null) {
-                float minVolume = effectVolumeControl.getMinimum();
-                float maxVolume = effectVolumeControl.getMaximum();
-                float midVolume = (maxVolume - minVolume) / 2.0f + minVolume;
-                effectVolumeControl.setValue(midVolume);
-            }
-
-            effectClip.start();
-
-            // 클립이 재생을 마치면 리스트에서 제거
-            effectClip.addLineListener(event -> {
-                if (event.getType() == LineEvent.Type.STOP) {
-                    effectClips.remove(effectClip);
-                }
-            });
-
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void stopAllEffects() {
-        for (Clip effectClip : effectClips) {
-            if (effectClip != null && effectClip.isRunning()) {
-                effectClip.stop();
-                effectClip.setFramePosition(0);
-            }
-        }
-        effectClips.clear();
-    }
+  
 	
 	public static void main(String[] args) {
 		SoundManager soundManager = new SoundManager();

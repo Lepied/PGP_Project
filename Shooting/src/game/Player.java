@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class Player extends GameObject implements KeyListener {
     
@@ -70,6 +71,8 @@ public class Player extends GameObject implements KeyListener {
 	public boolean isImmortal;
 	public int attackType; // 1 = 불(일반탄) , 2= 전기(레이저)
 
+	private SwingWorker<Void, Void> soundWorker;
+
     
     public Player(int damage, int maxHP, int plusBombDamage) {
 
@@ -85,11 +88,14 @@ public class Player extends GameObject implements KeyListener {
     	this.lazerDelay = attackSpeed * 5;
     	this.lineShot = 1;
     	this.diaShot = 1;
-    	this.attackType = 1;
+    	this.attackType = 2;
     	this.bomb = 0;
     	this.bombDamage = 500 + plusBombDamage;
     	this.bombDelay = 100;
     	
+
+    	soundManager = new SoundManager();
+    
     	
     	bombEffect = new ImageIcon("resourses/sprites/BombEffect/BombEffect1.png");
     	playerSprites = new ImageIcon[totalPlayerFrames];
@@ -220,6 +226,7 @@ public class Player extends GameObject implements KeyListener {
 				break;
 			case KeyEvent.VK_F :
 				isBomb = true;
+				
 				break;
 			case KeyEvent.VK_SHIFT:
 				isKeySlow = true;
@@ -300,47 +307,55 @@ public class Player extends GameObject implements KeyListener {
 	public void BulletProcess()
 	{
 		if (isAttack && attackType == 1 && System.currentTimeMillis() - lastAttackTime > attackSpeed) {
+			soundManager.setEffectSound("resourses/Sound/SE/Fire_Magic.wav");
 			// 직선 총알개수 * 대각 총알개수 (대각 총알은 직선 총알이 그냥 대각으로 더나가는거.)
 			switch (lineShot) {
 			case 1:
 				bullet = new Bullet(posX, posY - 65, 5, 1, angle);
-				soundManager.playEffect("resourses/Sound/SE/Fire Magic.wav");
 				Bullet_List.add(bullet);
 
+				soundManager.setVFXVolume(0.85f);
+				soundManager.play();
 				break;
 			case 2:
-
+				
 				for (int i = 0; i < lineShot; ++i) {
 					bullet = new Bullet(posX - 10 + i * 20, posY - 65, 5, 1, angle);
 					Bullet_List.add(bullet);
 				}
-
+				soundManager.setVFXVolume(0.85f);
+				soundManager.play();
 				break;
 			case 3:
-
+				
 				for (int i = 0; i < lineShot; ++i) {
 					bullet = new Bullet(posX - 30 + i * 20, posY - 65, 5, 1, angle);
 					Bullet_List.add(bullet);
 				}
-
+				soundManager.setVFXVolume(0.85f);
+				soundManager.play();
 				break;
 			default:
+				
 				for (int i = 0; i < lineShot; ++i) {
 					bullet = new Bullet(posX - 30 + i * 20, posY - 65, 5, 1, angle);
 					Bullet_List.add(bullet);
 				}
-
+				soundManager.setVFXVolume(0.85f);
+				soundManager.play();
 				break;
 			}
 
 			lastAttackTime = System.currentTimeMillis();
 		}
 		if (isAttack && attackType == 2 && System.currentTimeMillis() - lastAttackTime > lazerDelay) {
-
+			soundManager.setEffectSound("resourses/Sound/SE/Lightning_Magic.wav");
 			bullet = new Bullet(posX, 5, 5, 2, angle);
 			Bullet_List.add(bullet);
 			
 			lastAttackTime = System.currentTimeMillis();
+			soundManager.setVFXVolume(0.85f);
+			soundManager.play();
 		}
 
 		for (int i = 0; i < Bullet_List.size(); ++i) {
@@ -406,7 +421,6 @@ public class Player extends GameObject implements KeyListener {
 		
 	
 	}
-
 
 
 
