@@ -225,7 +225,7 @@ public class Enemy extends GameObject {
     		case 1: //플레이어한테 마구마구쏘기
     			if (System.currentTimeMillis() - lastAttackTime > 50) {
     				int finalAngle = (int) Math.toDegrees(startAngle);
-        			enBullet = new EnemyBullet(this.posX+100,this.posY+35,5,1,finalAngle); //각도는 90도
+        			enBullet = new EnemyBullet(this.posX+50,this.posY+55,5,1,finalAngle); //각도는 90도
         			Enemy_Bullet_List.add(enBullet);
         			
         			lastAttackTime = System.currentTimeMillis();

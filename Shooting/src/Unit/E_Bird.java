@@ -33,7 +33,22 @@ public class E_Bird extends Enemy{
     }
     public void move()
     {
-    	super.move();
+    	switch(spawnPoint)
+    	{
+    	case 1:
+    		posY += speed;
+    		break;
+    	
+    	case 2:
+    		if(posY<200)
+    		{
+    			posY += speed;
+    		}
+    		break;
+    	case 3:
+    		posY += speed;
+    		break;
+    		
+    	}
     }
-
 }

@@ -38,7 +38,8 @@ public class GameManager {
 	public boolean isBossNow = false;
 	public boolean isNPCNow = false;
 	public boolean isNPCEnd = false;
-	public boolean isQuest =false;
+	public boolean isQuest = false;
+	public boolean isQuestFinished = false;
 
 	
 	
@@ -162,6 +163,10 @@ public class GameManager {
 				&& Math.abs((npc.posY + npc.height / 2) - (obj2.posY + obj2.height/2)) < (obj2.height/2 + npc.height/2))
 		{
 			isNPCMeet = true;
+			if(isQuestFinished == true)
+			{
+				player.attackType = 2;
+			}
 		}
 		else isNPCMeet = false;
 		
@@ -177,6 +182,10 @@ public class GameManager {
 			{
 				isBossNow = false;
 
+			}
+			if(target.type ==2)
+			{
+				this.isQuestFinished = true;
 			}
 			removeEnemy(target);
 			

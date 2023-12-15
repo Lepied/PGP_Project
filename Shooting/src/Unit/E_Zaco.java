@@ -79,11 +79,19 @@ public class E_Zaco extends Enemy{
 
     		break;
     	case 5:
-        		posY += speed*2;
+			posY += speed * 2;
+			if(posY >400)
+			{
+				posY-=speed/2;
+			}
 
-    		break;
-    	case 6:
-        		posY += speed*2;
+			break;
+		case 6:
+			posY += speed * 2;
+			if(posY >400)
+			{
+				posY-=speed/2;
+			}
 
     	}
     }

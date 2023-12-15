@@ -159,7 +159,7 @@ public class GameMain extends JFrame implements Runnable {
 				int heartSize = 30;
 				int heartsCount = player.hp;
 				for (int i = 0; i < heartsCount; i++) {
-					Image heartImage = new ImageIcon("resourses/sprites/Fireball.png").getImage();
+					Image heartImage = new ImageIcon("resourses/sprites/hp_icon.png").getImage();
 					g.drawImage(heartImage, 100 + i * (heartSize + 5), 300, heartSize, heartSize, this);
 				}
 				String bombText = "폭탄";
@@ -169,14 +169,10 @@ public class GameMain extends JFrame implements Runnable {
 				int bombSize = 30;
 				int bombsCount = player.bomb;
 				for (int i = 0; i < bombsCount; i++) {
-					Image bombImage = new ImageIcon("resourses/sprites/Fireball.png").getImage();
+					Image bombImage = new ImageIcon("resourses/sprites/rune_stone.png").getImage();
 					g.drawImage(bombImage, 100 + i * (bombSize + 5), 400, bombSize, bombSize, this);
 				}
 
-				String scoreText = "점수: " + gameManager.getScore();
-				g.setFont(customFont);
-				g.setColor(Color.WHITE);
-				g.drawString(scoreText, 10, 100);
 			}
 		};
 		JLabel followingLabel = new JLabel(powerUpText)
@@ -602,6 +598,7 @@ public class GameMain extends JFrame implements Runnable {
 
 		}
 		//보스전 이전 스테이지 구성
+	
 		if (canCh1BossSpawn == true&& gameCnt > 200 && gameCnt < 5000) {
 			if( gameCnt % 150 == 0 && gameCnt < 400 )
 			{
@@ -631,28 +628,36 @@ public class GameMain extends JFrame implements Runnable {
 			}
 
 		}
-		if (gameCnt > 3000 && canSpawnNPC) {//엔피씨 소환
+	
+		if (gameCnt > 1500 && canSpawnNPC) {//엔피씨 소환
 			npc = new NPC();
 			canSpawnNPC = false;
 		}
-		if(gameCnt >1000) //퀘스트 받을때 안받을떄 로직
+		if(gameCnt >3000) //퀘스트 받을때 안받을떄 로직
 		{
 			if(gameManager.isQuest)
 			{
-				if(gameCnt==4000)
+				if(gameCnt==3500)
 				{
 					en = new E_Wybern(1);
 				}
+				if(gameCnt==6000)
+				{
+					canSpawnNPC =true;
+				}
+					
 			}
 			else {}
 		}
-		/*
-		 * if(gameCnt>10000 && canCh1BossSpawn) {
-		 * 
-		 * canCh1BossSpawn = false; en = new Ch1Boss(2); gameCnt = 0; 
-		 * // 게임카운트 초기화해서
-		 * 보스전돌입 }
-		 */
+
+		if (gameCnt > 10000 && canCh1BossSpawn) {
+
+			canCh1BossSpawn = false;
+			en = new Ch1Boss(2);
+			gameCnt = 0;
+
+		}
+		 
 
 	}
 	

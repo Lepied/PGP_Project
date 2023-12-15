@@ -176,12 +176,10 @@ public class Player extends GameObject implements KeyListener {
     	    		{
     	    			if(lineShot==2)
     	    			{
-    	    				System.out.println("오오옹");
     	    				bullet.img = tk.getImage("resourses/sprites/Lightning3.png"); 
     	    			}
     	    			if(lineShot >2)
     	    			{
-    	    				System.out.println("오오옹");
     	    				bullet.img = tk.getImage("resourses/sprites/Lightning4.png"); 
     	    			}
     	    			g.drawImage(bullet.img,this.posX-30, this.posY-900,null );
