@@ -1,13 +1,18 @@
 package game;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.*;
+import java.text.DecimalFormat;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 public class PowerUpPanel extends JPanel{
@@ -52,7 +57,7 @@ public class PowerUpPanel extends JPanel{
 		hp.setText("체력: "+Integer.toString(gm.getPlayerMaxHP()));
 		statDisplay.add(hp);
 		JLabel luck = new SetText("luck", 0, 160, 150, 50);
-		luck.setText("운: "+Double.toString(gm.getPlayerLuck()));
+		luck.setText("운: "+doubleToPer(gm.getPlayerLuck()));
 		statDisplay.add(luck);
 		JLabel plusCoin = new SetText("plusCoin", 0, 220, 150, 50);
 		plusCoin.setText("추가코인: "+Integer.toString(gm.getPlusCoin()));
@@ -118,7 +123,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				gm.setPlayerLuck(gm.getPlayerLuck()+0.01);
-				luck.setText("운: "+Double.toString(gm.getPlayerLuck()));
+				luck.setText("운: "+doubleToPer(gm.getPlayerLuck()));
 			}
 			public void mouseEntered(MouseEvent e) {
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -201,13 +206,13 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				gm.setPlayerDamage(20);
-				gm.setPlayerMaxHP(3);
+				gm.setPlayerMaxHP(0);
 				gm.setPlayerLuck(0.0);
 				gm.setPlusCoin(0);
 				gm.setPlayerBombDamage(0);
-				damage.setText("데미지: "+Integer.toString(gm.getCoin()));
+				damage.setText("데미지: "+Integer.toString(gm.getPlayerDamage()));
 				hp.setText("체력: "+Integer.toString(gm.getPlayerMaxHP()));
-				luck.setText("운: "+Double.toString(gm.getPlayerLuck()));
+				luck.setText("운: "+doubleToPer(gm.getPlayerLuck()));
 				plusCoin.setText("추가코인: "+Integer.toString(gm.getPlusCoin()));
 				bombDamage.setText("폭탄데미지: "+Integer.toString(gm.getPlayerBombDamage()));
 				System.out.print("+reset+\n");
@@ -226,6 +231,13 @@ public class PowerUpPanel extends JPanel{
 		label.setFont(customFont);
         label.setHorizontalAlignment(JLabel.CENTER);
 		add(label);
+	}
+	
+	public String doubleToPer(double luck) {
+		DecimalFormat format = new DecimalFormat("#0");
+		String per = format.format(luck * 100) + "%";
+		
+		return per;
 	}
 	
 	public ImageIcon scaleImage(ImageIcon img, int width, int height) {
