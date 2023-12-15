@@ -43,7 +43,9 @@ public class Player extends GameObject implements KeyListener {
     private ImageIcon bombEffect; 
     private ImageIcon[] playerSprites ;
     private ImageIcon[] BombAnimation;
+    
     GameManager gameManager;
+    SoundManager soundManager;
     
     private boolean drawBombEffect = false;
 
@@ -302,6 +304,7 @@ public class Player extends GameObject implements KeyListener {
 			switch (lineShot) {
 			case 1:
 				bullet = new Bullet(posX, posY - 65, 5, 1, angle);
+				soundManager.playEffect("resourses/Sound/SE/Fire Magic.wav");
 				Bullet_List.add(bullet);
 
 				break;
