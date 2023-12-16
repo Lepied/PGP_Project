@@ -688,7 +688,7 @@ public class GameMain extends JFrame implements Runnable {
 		for (int i = 0; i < gameManager.getItemList().size(); ++i) {
 			item = (Item) (gameManager.getItemList().get(i));
 			item.move();
-			if (item.posY > 800) {
+			if (item.posY > 830) {
 				itemsToRemove.add(item);
 			}
 			

@@ -164,7 +164,7 @@ public class NPCPanel extends JPanel {
 				}
 			}
 		});
-
+		currentCharIndex = 0;
 		typingTimer.start();
 
 	}
@@ -186,7 +186,7 @@ public class NPCPanel extends JPanel {
 				}
 			}
 		});
-
+		currentCharIndex = 0;
 		typingTimer2.start();
 
 	}

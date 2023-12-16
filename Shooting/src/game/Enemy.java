@@ -261,7 +261,7 @@ public class Enemy extends GameObject {
 			
 			
 			//화면 밖으로 나가면 제거
-			if(enBullet.pos.y < 0 || enBullet.pos.y >800 ||enBullet.pos.x <0 || enBullet.pos.x>600)
+			if(enBullet.pos.y < 0 || enBullet.pos.y >830 ||enBullet.pos.x <0 || enBullet.pos.x>630)
 			{
 				Enemy_Bullet_List.remove(i);
 			}
