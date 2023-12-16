@@ -469,7 +469,7 @@ public class GameMain extends JFrame implements Runnable {
 			player.playerDamage = player.playerDamage + 10;
 			System.out.println("플레이어 데미지 증가");
 			powerUpText = "플레이어 데미지 증가";
-			//followingLabel.setVisible(true);
+			
 			break;
 
 		case 1: // 플레이어 공격 속도 강화
@@ -534,24 +534,23 @@ public class GameMain extends JFrame implements Runnable {
 			break;
 
 		case 8:
-			System.out.println("능력 8");
-			if (player.lineShot <4) {
-				player.lineShot = player.lineShot + 1;
-			}
-			System.out.println(player.lineShot);
-			System.out.println("플레이어 직선 공격 추가");
-			break;
+			player.playerDamage = player.playerDamage + 10;
+			System.out.println("플레이어 데미지 증가");
+			powerUpText = "플레이어 데미지 증가";
+			
 
 		case 9:
-			System.out.println("능력 9");
-			if (player.lineShot < 4) {
-				player.lineShot = player.lineShot + 1;
-			}
-			System.out.println(player.lineShot);
-			System.out.println("플레이어 직선 공격 추가");
-			break;
-
+			player.playerDamage = player.playerDamage + 10;
+			System.out.println("플레이어 데미지 증가");
+			powerUpText = "플레이어 데미지 증가";
+			
+		case 10:
+			player.playerDamage = player.playerDamage + 10;
+			System.out.println("플레이어 데미지 증가");
+			powerUpText = "플레이어 데미지 증가";
 		}
+
+		
 
 	}
 
