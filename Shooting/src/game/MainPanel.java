@@ -15,10 +15,10 @@ public class MainPanel extends JPanel implements Runnable{
 	
 	MainFrame main;
 	
-	ImageIcon start = new ImageIcon("resourses/sprites/start.png");
-	ImageIcon startBtn = scaleImage(start, 300, 100);
-	ImageIcon powerUp = new ImageIcon("resourses/sprites/powerUp.png");
-	ImageIcon powerUpBtn = scaleImage(powerUp, 300, 100);
+	ImageIcon startImg = new ImageIcon("resourses/sprites/start.png");
+	ImageIcon startBtn = scaleImage(startImg, 300, 100);
+	ImageIcon powerUpImg = new ImageIcon("resourses/sprites/powerUp.png");
+	ImageIcon powerUpBtn = scaleImage(powerUpImg, 300, 100);
 	Image bg = new ImageIcon("resourses/sprites/background.jpg").getImage();
 	Image title = new ImageIcon("resourses/sprites/title.png").getImage();;
 	
@@ -29,7 +29,7 @@ public class MainPanel extends JPanel implements Runnable{
 		this.setPreferredSize(new Dimension(X, Y));
 		this.setBackground(Color.WHITE);
 		this.setDoubleBuffered(true);
-		createText();
+		createTitle();
 		
 		JLabel start = new CreateBtn(startBtn, 20, Y/2 , 300, 100);
 		start.addMouseListener(new MouseAdapter() {
@@ -38,9 +38,15 @@ public class MainPanel extends JPanel implements Runnable{
 				main.gameStart();
 			}
 			public void mouseEntered(MouseEvent e) {
+				startBtn = scaleImage(startImg, 330, 120);
+				start.setBounds(20, Y/2-10, 330, 120);
+				start.setIcon(startBtn);
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 			public void mouseExited(MouseEvent e) {
+				startBtn = scaleImage(startImg, 300, 100);
+				start.setBounds(20, Y/2, 300, 100);
+				start.setIcon(startBtn);
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
@@ -54,9 +60,15 @@ public class MainPanel extends JPanel implements Runnable{
 					main.changePanel("powerUp");
 				}
 				public void mouseEntered(MouseEvent e) {
+					powerUpBtn = scaleImage(powerUpImg, 330, 120);
+					powerUp.setBounds(20, Y/2+120 -10, 330, 120);
+					powerUp.setIcon(powerUpBtn);
 					setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}
 				public void mouseExited(MouseEvent e) {
+					powerUpBtn = scaleImage(powerUpImg, 300, 100);
+					powerUp.setBounds(20, Y/2+120, 300, 100);
+					powerUp.setIcon(powerUpBtn);
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				}
 			});
@@ -66,10 +78,10 @@ public class MainPanel extends JPanel implements Runnable{
 	}
 	
 	//타이틀 생성
-	public void createText() {
+	public void createTitle() {
 		JLabel label = new JLabel("REHIRE");
 		label.setForeground(Color.BLACK);
-		label.setBounds(X/2 - 500/2, 50, 500, 100);
+		label.setBounds(X/2 - 500/2, 60, 500, 100);
 		Font customFont = new Font("Elephant", Font.BOLD, 50);
 		label.setFont(customFont);
         label.setHorizontalAlignment(JLabel.CENTER);
