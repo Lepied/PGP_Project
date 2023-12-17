@@ -231,7 +231,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (hpCount < 10) {
-					if(getNeedCoins(hpCount) < coins) {
+					if(getNeedCoins(hpCount) <= coins) {
 						useCoin(getNeedCoins(hpCount));
 						gm.setPlayerMaxHP(gm.getPlayerMaxHP()+1);
 						refreshDisplay(hp, hpCountDisplay, needCoinDisplay_hp, HP);
@@ -283,7 +283,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (luckCount < 10) {
-					if(getNeedCoins(luckCount) < coins) {
+					if(getNeedCoins(luckCount) <= coins) {
 						useCoin(getNeedCoins(luckCount));
 						gm.setPlayerLuck(gm.getPlayerLuck()+0.01);
 						refreshDisplay(luck, luckCountDisplay, needCoinDisplay_luck, LUCK);
@@ -291,6 +291,7 @@ public class PowerUpPanel extends JPanel{
 						
 					}
 					else {
+						System.out.println(luckCount);
 						comment.setText("강화를 위한 코인이 부족합니다...");
 					}
 				}
@@ -336,7 +337,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (bombDamageCount < 10) {
-					if(getNeedCoins(bombDamageCount) < coins) {
+					if(getNeedCoins(bombDamageCount) <= coins) {
 						useCoin(getNeedCoins(bombDamageCount));
 						gm.setPlayerBombDamage(gm.getPlayerBombDamage()+100);
 						refreshDisplay(bombDamage, bombDamageCountDisplay, needCoinDisplay_bombDamage, BOMBDAMAGE);
@@ -389,7 +390,7 @@ public class PowerUpPanel extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (plusCoinCount < 10) {
-					if(getNeedCoins(plusCoinCount) < coins) {
+					if(getNeedCoins(plusCoinCount) <= coins) {
 						useCoin(getNeedCoins(plusCoinCount));
 						gm.setPlusCoin(gm.getPlusCoin()+1);
 						refreshDisplay(plusCoin, plusCoinCountDisplay, needCoinDisplay_plusCoin, PLUSCOIN);
@@ -531,7 +532,7 @@ public class PowerUpPanel extends JPanel{
 			count.setText(luckCount+" / 10");
 			state.setText("운: "+doubleToPer(gm.getPlayerLuck()));
 			
-			if (luckCount_double == 10) {
+			if (luckCount == 10) {
 				needCoin.setText("MAX");
 			}
 			else {
