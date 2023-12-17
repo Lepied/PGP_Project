@@ -20,7 +20,6 @@ public class Player extends GameObject implements KeyListener {
     boolean isAttack = false;
     boolean isBomb = false;
     boolean isKeySlow =false;
-    
     boolean isDamaged = false; //맞았을때
 
     int playerHP = 3;
@@ -66,9 +65,6 @@ public class Player extends GameObject implements KeyListener {
     private boolean drawBombEffect = false;
     private boolean drawFireBallEffect = false;
 
-
-
-    
 	 //임시 총알
 	ArrayList Bullet_List = new ArrayList();
 	 
@@ -90,9 +86,7 @@ public class Player extends GameObject implements KeyListener {
 	public int attackType; // 1 = 불(일반탄) , 2= 전기(레이저)
 
 	private SwingWorker<Void, Void> soundWorker;
-	
 
-    
     public Player(int damage, int maxHP, int plusBombDamage) {
 
     	this.playerDamage = damage;
@@ -101,8 +95,8 @@ public class Player extends GameObject implements KeyListener {
         this.speed = 10;
         this.posX = 300;
         this.posY = 600;
-        this.width = 35;
-        this.height = 35;
+        this.width = 10;
+        this.height = 10;
     	this.attackSpeed = 300;
     	this.lazerDelay = attackSpeed * 5;
     	this.lineShot = 1;
@@ -151,9 +145,7 @@ public class Player extends GameObject implements KeyListener {
     	
         this.lastAttackTime = System.currentTimeMillis();
         this.lastBombTime = System.currentTimeMillis();
-      
- 
-       
+    
     }
     
     public void setAngle(double angle)
@@ -197,7 +189,7 @@ public class Player extends GameObject implements KeyListener {
       	if(isKeySlow)
     	{
       		
-    		g.drawRoundRect(posX+width/2-5, posY+height/2-5, 10, 10, 3, 3);
+    		g.drawRoundRect(posX+width/2+5, posY+height/2+5, 10, 10, 3, 3);
     		g.setColor(Color.red);
     	}
     }
