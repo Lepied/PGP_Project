@@ -634,8 +634,22 @@ public class GameMain extends JFrame implements Runnable {
 				if(gameCnt % 200 ==0)
 				{
 					en = new E_Zaco(1);
+					en = new E_Zaco(2);
 
 				}
+			}
+			else if(gameCnt % 500 == 0 && gameCnt < 5000)
+			{
+				en = new E_Zaco(1);
+				en = new E_Zaco(2);
+			}
+			else if(gameCnt % 150 == 0 && gameCnt < 6000)
+			{
+				en = new E_Bird(4);
+			}
+			else if(gameCnt % 150 == 0 && gameCnt <7000)
+			{
+				en = new E_Bird(5);
 			}
 		}
 	
