@@ -53,7 +53,6 @@ public class GameManager {
 		gameObjectList = new ArrayList<>();
 		itemList = new ArrayList<>();
 		npcList = new ArrayList<>();
-		playerCoin =0;
     
 	} 
 	public static GameManager getInstance()

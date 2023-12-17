@@ -41,6 +41,7 @@ public class GameMain extends JFrame implements Runnable {
 	GameManager gameManager;
 	private SoundManager soundManager = new SoundManager();
 	MainFrame mainFrame;
+	DataManager dataManager = new DataManager();
 
 	boolean canCh1BossSpawn = true; // 게임타이머관리용 보스소환가능한상태?
 
@@ -449,6 +450,7 @@ public class GameMain extends JFrame implements Runnable {
 				public void run() {
 					th.interrupt();
 					soundManager.stop();
+					dataManager.saveData();
 					GameMain.this.dispose();
 					mainFrame = new MainFrame();
 				}
@@ -490,7 +492,7 @@ public class GameMain extends JFrame implements Runnable {
 			break;
 
 		case 3:
-			gameManager.setCoin(gameManager.getCoin() + 10);
+			gameManager.setCoin(gameManager.getCoin() + 9);
 			System.out.println("코인 더미");
 			powerUpText = "코인 더미";
 			break;
@@ -698,6 +700,7 @@ public class GameMain extends JFrame implements Runnable {
 				switch (item.type) {
 				case 1:
 					item.getCoin();
+					
 					break;
 				case 2:
 					isScrollGet = true;
