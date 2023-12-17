@@ -20,7 +20,7 @@ public class MainPanel extends JPanel implements Runnable{
 	ImageIcon powerUp = new ImageIcon("resourses/sprites/powerUp.png");
 	ImageIcon powerUpBtn = scaleImage(powerUp, 300, 100);
 	Image bg = new ImageIcon("resourses/sprites/background.jpg").getImage();
-	
+	Image title = new ImageIcon("resourses/sprites/title.png").getImage();;
 	
 	public MainPanel(MainFrame main) {
 		this.main = main;
@@ -90,8 +90,9 @@ public class MainPanel extends JPanel implements Runnable{
 		
 	}
 
-//	public void paintComponent(Graphics g){
-//		g.drawImage(bg, 0, 0, 960, 540, null);
-//	}
+	public void paintComponent(Graphics g){
+		g.drawImage(bg, 0, 0, 960, 540, null);
+		g.drawImage(title, X/2 - 500/2, 0, 500, 250, null);
+	}
 
 } 
