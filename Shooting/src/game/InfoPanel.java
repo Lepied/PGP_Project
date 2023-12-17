@@ -11,7 +11,7 @@ public class InfoPanel extends JPanel {
     public InfoPanel() {
     	setBounds(340,200,600,200);
     	setOpaque(false);
-    	setVisible(true);
+    	setVisible(false);
     	setLayout(null);
        
     	gameOverImage = new ImageIcon("resources/sprites/InfoBG.png");
@@ -21,8 +21,8 @@ public class InfoPanel extends JPanel {
         youDiedLabel.setForeground(Color.RED);
         youDiedLabel.setBounds(0, 0, 600, 200); 
        
-        add(youDiedLabel);
-        repaint();
+        //add(youDiedLabel);
+       
     }
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

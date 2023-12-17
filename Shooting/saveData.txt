@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-139
+188
 20
-=======
-0
-0
->>>>>>> branch 'main' of https://github.com/Lepied/PGP_Project.git
 0
 0.0
 0

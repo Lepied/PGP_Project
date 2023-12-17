@@ -22,9 +22,6 @@ public class Enemy extends GameObject {
 	private boolean isPatternNow = false;
 	private int patternCnt = 0;
 
-
-
-	
 	EnemyBullet enBullet;
 	Player player; // 임시 플레이어
 	private ArrayList<EnemyBullet> Enemy_Bullet_List = new ArrayList();
@@ -62,9 +59,7 @@ public class Enemy extends GameObject {
     public void draw(Graphics g) {
         g.drawImage(img, posX, posY, null);
     }
-    
-    
-    
+      
     public boolean Crash(GameObject obj1, GameObject obj2)
     {
     	return GameManager.getInstance().isCollision(obj1, obj2);
@@ -169,7 +164,23 @@ public class Enemy extends GameObject {
 			        }
                 }
     			break;
-    		case 3: //원형탄막에 플레이어 유도탄
+    		case 3: //플레이어한테 마구마구쏘기
+    			if (System.currentTimeMillis() - lastAttackTime > 50) {
+    				int finalAngle = (int) Math.toDegrees(startAngle);
+        			enBullet = new EnemyBullet(this.posX+50,this.posY+55,5,1,finalAngle); //각도는 90도
+        			Enemy_Bullet_List.add(enBullet);
+        			
+        			lastAttackTime = System.currentTimeMillis();
+        			patternCnt++;
+        			
+			        if(patternCnt > 20)
+			        {
+			        	patternCnt =0;
+			        	this.Pattern =4;
+			        }
+                }
+    			break;
+    		case 4: //원형탄막에 플레이어 유도탄
     			
  			   if (System.currentTimeMillis() - lastAttackTime > 100) {
  				    int tempAngle=0;
