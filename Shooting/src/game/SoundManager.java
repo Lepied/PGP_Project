@@ -3,7 +3,6 @@ package game;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -79,7 +78,7 @@ public class SoundManager {
 	}
 	
 	//사용할 음악파일 변경
-	public void setMusic(String bgm)
+	public void setMusic(String filePath)
 	{
 		try {
 			if(clip != null)
@@ -89,7 +88,7 @@ public class SoundManager {
 			}
 			
 			AudioInputStream audioInputStream = 
-					AudioSystem.getAudioInputStream(new File(bgm));
+					AudioSystem.getAudioInputStream(new File(filePath));
             clip = AudioSystem.getClip(); // 새로운 클립을 생성
             clip.open(audioInputStream);
             volumeControl = (FloatControl) clip.getControl
