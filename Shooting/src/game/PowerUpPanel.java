@@ -219,7 +219,6 @@ public class PowerUpPanel extends JPanel{
             }
 		 });
 		add(test4);
-
 		
 	}
 	
