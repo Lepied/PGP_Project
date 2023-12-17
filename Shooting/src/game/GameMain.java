@@ -654,11 +654,11 @@ public class GameMain extends JFrame implements Runnable {
 				en = new E_Zaco(1);
 				en = new E_Zaco(2);
 			}
-			else if(gameCnt % 150 == 0 && gameCnt < 6000)
+			else if(gameCnt % 150 == 0 && gameCnt<6000 && gameCnt>5000)
 			{
 				en = new E_Bird(4);
 			}
-			else if(gameCnt % 150 == 0 && gameCnt <7000)
+			else if(gameCnt % 150 == 0 && gameCnt<7000)
 			{
 				en = new E_Bird(5);
 			}
