@@ -52,7 +52,7 @@ public class Enemy extends GameObject {
     	}
     	if(this.type == 3)
     	{
-    		if(posY <100)
+    		if(posY <50)
     		{
     			posY +=speed;
     		}

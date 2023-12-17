@@ -194,9 +194,22 @@ public class GameManager {
 			}
 			removeEnemy(target);
 			drawEnDeadEffect = true;
-			
-			enDeadEffectX = target.posX;
-			enDeadEffectY = target.posY;
+			if(target.type==1)
+			{
+				enDeadEffectX = target.posX;
+				enDeadEffectY = target.posY;
+			}
+			else if(target.type==2)
+			{
+				enDeadEffectX = target.posX+90;
+				enDeadEffectY = target.posY+75;
+			}
+			else if(target.type ==3)
+			{
+				enDeadEffectX = target.posX+225;
+				enDeadEffectY = target.posY+175;
+			}
+		
 			
 			
 			double randomValue = Math.random(); // 0~1.0

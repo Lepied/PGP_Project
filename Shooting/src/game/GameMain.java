@@ -659,6 +659,7 @@ public class GameMain extends JFrame implements Runnable {
 			}
 			else {}
 		}
+		
 
 		if (gameCnt > 8000 && canCh1BossSpawn) {
 
@@ -759,7 +760,15 @@ public class GameMain extends JFrame implements Runnable {
 	public void Draw_Enemy() {
 		for (int i = 0; i < gameManager.getGameObjectList().size(); ++i) {
 			en = (Enemy) (gameManager.getGameObjectList().get(i));
-			buffg.drawImage(en.img, en.posX, en.posY, this);
+			
+			if(en.type==3)
+			{
+				buffg.drawImage(en.img, en.posX-200, en.posY, this);
+			}
+			else
+			{
+				buffg.drawImage(en.img, en.posX, en.posY, this);
+			}
 			en.Draw_EnemyBullet(buffg);
 		}
 	}
