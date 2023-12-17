@@ -63,6 +63,8 @@ public class Enemy extends GameObject {
         g.drawImage(img, posX, posY, null);
     }
     
+    
+    
     public boolean Crash(GameObject obj1, GameObject obj2)
     {
     	return GameManager.getInstance().isCollision(obj1, obj2);
@@ -278,5 +280,6 @@ public class Enemy extends GameObject {
 		}
 		
 	}
+    
     
 }

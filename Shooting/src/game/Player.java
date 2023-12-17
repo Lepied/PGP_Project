@@ -206,12 +206,14 @@ public class Player extends GameObject implements KeyListener {
     	switch(attackType)
     	{
     		case 1:
+    			 Graphics2D g2d = (Graphics2D) g.create();
     	    	for (int i=0; i<Bullet_List.size(); ++i)
     	    	{
     	    		bullet =(Bullet)(Bullet_List.get(i));
-    	    		g.drawImage(bullet.img, bullet.pos.x,bullet.pos.y+35,
-    	    				bullet.pos.x+35,bullet.pos.y+95,15,15,35,60,null );
-    	   
+    	    		g.drawImage(bullet.img, bullet.pos.x,bullet.pos.y+35,null );
+    	    		// g2d.rotate(Math.toRadians(bullet.direction), bullet.pos.x + width / 2, bullet.pos.y + height / 2);
+    	    	    //g2d.drawImage(bullet.img, bullet.pos.x, bullet.pos.y+35, null);
+    	    	  
     	    	}
     			break;
     		case 2:
@@ -439,8 +441,8 @@ public class Player extends GameObject implements KeyListener {
 				if (GameManager.getInstance().isBulletCollision(bullet, en)) {
 					if (bullet.type == 1) {
 						Bullet_List.remove(i);
-				        fireBallEffectPosX = en.posX; 
-	                    fireBallEffectPosY = en.posY; 
+				        fireBallEffectPosX = bullet.pos.x;
+	                    fireBallEffectPosY = bullet.pos.y;
 						drawFireBallEffect = true;
 				        fireballExplosionTimer.start();
 					}

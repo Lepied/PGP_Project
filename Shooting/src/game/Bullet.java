@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -13,7 +14,7 @@ public class Bullet extends GameObject {
 	int speed;
 	int type;
 	
-	private double direction;
+	public double direction;
 	
 	public long creationTime;
 	
@@ -35,7 +36,7 @@ public class Bullet extends GameObject {
 		 }
 		if(this.type == 1)
 		{
-			this.img = tk.getImage("resourses/sprites/EFX.png");
+			this.img = tk.getImage("resourses/sprites/playerAttack.png");
 		    this.width = 20;
 		    this.height = 30;
 		}
@@ -72,6 +73,7 @@ public class Bullet extends GameObject {
 	public void draw(Graphics g)
 	{
 		g.drawImage(img, posX, posY, null);
+;
 	}
 	
 	private void updateAnimation() {

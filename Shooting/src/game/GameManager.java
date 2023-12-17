@@ -194,6 +194,7 @@ public class GameManager {
 			}
 			removeEnemy(target);
 			drawEnDeadEffect = true;
+			
 			enDeadEffectX = target.posX;
 			enDeadEffectY = target.posY;
 			
