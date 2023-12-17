@@ -2,6 +2,9 @@ package game;
 
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.Timer;
+
 import Unit.NPC;
 
 import java.util.ArrayList;
@@ -26,7 +29,15 @@ public class GameManager {
 	
 	private List<NPC> npcList;
 	
-	
+	private Timer enemyDeadAniTimer;
+	private Timer fireballExplosionTimer;
+	private int currentEnDeadFrame = 0;
+	private int totalEnDeadFrames = 8;
+	private int currentExplosionFrame = 0;
+	private int totalExplosionFrames = 12;
+	private ImageIcon bombEffect;
+	private ImageIcon[] enemyDeadAnimation;
+	private ImageIcon[] fireballExplosion;
 	
 	private int scrollNum;
 	
