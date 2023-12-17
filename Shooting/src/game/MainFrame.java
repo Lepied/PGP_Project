@@ -2,7 +2,6 @@ package game;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.net.URL;
 
 import javax.swing.*;
 
@@ -17,7 +16,6 @@ public class MainFrame extends JFrame{
 	public int y = 540;
 	
 	DataManager dm;
-	URL url = this.getClass().getClassLoader().getResource("resourses/Sound/Hollow-Knight-OST-Title-Theme.wav");
 	
 	public MainFrame() {
 		dm = new DataManager();

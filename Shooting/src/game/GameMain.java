@@ -94,6 +94,7 @@ public class GameMain extends JFrame implements Runnable {
 	public JLabel followingLabel;
 	private String powerUpText = "";
 	
+	InfoPanel gameOverPanel = new InfoPanel();
 
 	private boolean canSpawnNPC = true;
 
@@ -264,7 +265,7 @@ public class GameMain extends JFrame implements Runnable {
 		add(scrollPanel);
 		add(Ch1BossUI);
 		add(npcPanel);
-
+	    add(gameOverPanel);
 		add(followingLabel);
 		add(gamePanel);
 		
@@ -443,7 +444,6 @@ public class GameMain extends JFrame implements Runnable {
 	{
 		if(player.hp == 0)
 		{
-			System.out.println("게임오버");
 			player.bomb = 0;
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -451,12 +451,23 @@ public class GameMain extends JFrame implements Runnable {
 					th.interrupt();
 					soundManager.stop();
 					dataManager.saveData();
-					GameMain.this.dispose();
-					mainFrame = new MainFrame();
+					
+	                // 5초 후에 MainFrame을 생성하는 Timer
+	                Timer timer = new Timer(1000, new ActionListener() {
+	                    @Override
+	                    public void actionPerformed(ActionEvent e) {
+	                    	GameMain.this.dispose();
+	                        MainFrame mainFrame = new MainFrame();
+	                    }
+	                });
+	                timer.setRepeats(false); // 한 번만 실행되도록 설정
+	                timer.start();
+	               
+					//mainFrame = new MainFrame();
+					
+				
 				}
 			});
-
-
 
 		}
 	}
@@ -675,7 +686,7 @@ public class GameMain extends JFrame implements Runnable {
 		}
 		
 
-		if (gameCnt > 8000 && canCh1BossSpawn) {
+		if (gameCnt > 7500 && canCh1BossSpawn) {
 
 			canCh1BossSpawn = false;
 			en = new Ch1Boss(2);
