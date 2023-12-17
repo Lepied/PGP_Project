@@ -20,9 +20,11 @@ public class CreateBtn extends JLabel{
 		this.setText(text);
 		this.setBounds(x, y, width, height);
 		this.setOpaque(false);
+		
+		this.setHorizontalAlignment(JLabel.CENTER);
 
-		Border border = new LineBorder(Color.BLACK, 2);
-		this.setBorder(border);
+//		Border border = new LineBorder(Color.BLACK, 2);
+//		this.setBorder(border);
 
 	}
 	
@@ -31,9 +33,11 @@ public class CreateBtn extends JLabel{
 		this.setIcon(img);
 		this.setBounds(x, y, width, height);
 		this.setOpaque(false);
+		
+		this.setHorizontalAlignment(JLabel.CENTER);
 
-		Border border = new LineBorder(Color.BLACK, 2);
-		this.setBorder(border);
+//		Border border = new LineBorder(Color.BLACK, 2);
+//		this.setBorder(border);
  
 	}
 	
