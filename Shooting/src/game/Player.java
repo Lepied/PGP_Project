@@ -37,18 +37,36 @@ public class Player extends GameObject implements KeyListener {
     
     private Timer animationTimer;
     private Timer bombAnimationTimer;
+	private Timer fireballExplosionTimer;
+	private Timer enDeadAniTimer;
+	
     private int currentPlayerFrame  = 0;
     private int totalPlayerFrames = 8;
     private int currentBombFrame = 0;
     private int totalBombFrames = 12;
+	private int currentExplosionFrame = 0;
+	private int totalExplosionFrames = 7;
+	private int currentEnDeadFrame = 0;
+	private int totalEnDeadFrames = 10;
+	
     private ImageIcon bombEffect; 
-    private ImageIcon[] playerSprites ;
+    private ImageIcon[] playerSprites;
     private ImageIcon[] BombAnimation;
+	private ImageIcon fireBallEffect;
+	private ImageIcon[] fireballExplosion;
+	private ImageIcon enDeadEffect;
+	private ImageIcon[] enemyDeadAnimation;
+
+	private int fireBallEffectPosX;
+	private int fireBallEffectPosY;
     
     GameManager gameManager;
     SoundManager soundManager;
     
     private boolean drawBombEffect = false;
+    private boolean drawFireBallEffect = false;
+
+
 
     
 	 //임시 총알
@@ -72,6 +90,7 @@ public class Player extends GameObject implements KeyListener {
 	public int attackType; // 1 = 불(일반탄) , 2= 전기(레이저)
 
 	private SwingWorker<Void, Void> soundWorker;
+	
 
     
     public Player(int damage, int maxHP, int plusBombDamage) {
@@ -88,7 +107,7 @@ public class Player extends GameObject implements KeyListener {
     	this.lazerDelay = attackSpeed * 5;
     	this.lineShot = 1;
     	this.diaShot = 1;
-    	this.attackType = 2;
+    	this.attackType = 1;
     	this.bomb = 0;
     	this.bombDamage = 500 + plusBombDamage;
     	this.bombDelay = 100;
@@ -98,8 +117,19 @@ public class Player extends GameObject implements KeyListener {
     
     	
     	bombEffect = new ImageIcon("resourses/sprites/BombEffect/BombEffect1.png");
+    	fireBallEffect = new ImageIcon("resourses/sprites/FireballEffect/FBExplosion1.png");
+    	enDeadEffect = new ImageIcon("resourses/sprites/enDeadEffect/EnDead1.png");
+    	
     	playerSprites = new ImageIcon[totalPlayerFrames];
     	BombAnimation = new ImageIcon[totalBombFrames];
+    	fireballExplosion = new ImageIcon[totalExplosionFrames];
+    	enemyDeadAnimation = new ImageIcon[totalEnDeadFrames];
+    	
+       	for(int i = 0; i<totalEnDeadFrames; i++)
+    	{
+       		enemyDeadAnimation[i] = new ImageIcon("resourses/sprites/enDeadEffect/EnDead"+(i+1)+".png");
+    	}
+       
        	for(int i = 0; i<totalBombFrames; i++)
     	{
        		BombAnimation[i] = new ImageIcon("resourses/sprites/BombEffect/BombEffect"+(i+1)+".png");
@@ -108,11 +138,17 @@ public class Player extends GameObject implements KeyListener {
     	{
     		playerSprites[i] = new ImageIcon("resourses/sprites/Player/PlayableCharacter-Sheet"+(i+1)+".png");
     	}
+    	for(int i = 0; i<totalExplosionFrames; i++)
+    	{
+    		fireballExplosion[i] = new ImageIcon("resourses/sprites/FireballEffect/FBExplosion"+(i+1)+".png");
+    	}
        
     	animationTimer = new Timer(100,e->updatePlayerAnimation());
     	animationTimer.start();
     	bombAnimationTimer = new Timer(50,e->updateBombAnimation());
-      
+    	fireballExplosionTimer = new Timer(50,e->updateFireballAnimation());
+    	enDeadAniTimer = new Timer(50,e->updateEnDeadAnimation());
+    	
         this.lastAttackTime = System.currentTimeMillis();
         this.lastBombTime = System.currentTimeMillis();
       
@@ -151,6 +187,12 @@ public class Player extends GameObject implements KeyListener {
     	 }
     	 if (drawBombEffect) {
              g.drawImage(bombEffect.getImage(), 100, 0, bombEffect.getIconWidth() * 2,bombEffect.getIconHeight() * 2 , null);
+         }
+    	 if (drawFireBallEffect) {
+             g.drawImage(fireBallEffect.getImage(), fireBallEffectPosX, fireBallEffectPosY, fireBallEffect.getIconWidth(),fireBallEffect.getIconHeight(), null);
+         }
+    	 if (GameManager.getInstance().drawEnDeadEffect) {
+             g.drawImage(enDeadEffect.getImage(), GameManager.getInstance().enDeadEffectX,  GameManager.getInstance().enDeadEffectY, enDeadEffect.getIconWidth(),enDeadEffect.getIconHeight(), null);
          }
       	if(isKeySlow)
     	{
@@ -303,7 +345,26 @@ public class Player extends GameObject implements KeyListener {
     		 drawBombEffect = false;
     	}
     }
-	
+    private void updateFireballAnimation()
+    {
+    	currentExplosionFrame = (currentExplosionFrame + 1) % totalExplosionFrames;
+    	fireBallEffect = fireballExplosion[currentExplosionFrame];
+    	if(currentExplosionFrame == 6)
+    	{
+    		fireballExplosionTimer.stop();
+    		drawFireBallEffect = false;
+    	}
+    }
+    private void updateEnDeadAnimation()
+    {
+    	currentEnDeadFrame = (currentEnDeadFrame + 1) % totalEnDeadFrames;
+    	enDeadEffect = enemyDeadAnimation[currentEnDeadFrame];
+    	if(currentEnDeadFrame == 6)
+    	{
+    		enDeadAniTimer.stop();
+    		GameManager.getInstance().drawEnDeadEffect = false;
+    	}
+    }
 	public void BulletProcess()
 	{
 		if (isAttack && attackType == 1 && System.currentTimeMillis() - lastAttackTime > attackSpeed) {
@@ -378,9 +439,16 @@ public class Player extends GameObject implements KeyListener {
 				if (GameManager.getInstance().isBulletCollision(bullet, en)) {
 					if (bullet.type == 1) {
 						Bullet_List.remove(i);
+				        fireBallEffectPosX = en.posX; 
+	                    fireBallEffectPosY = en.posY; 
+						drawFireBallEffect = true;
+				        fireballExplosionTimer.start();
 					}
 					GameManager.getInstance().applyDamage(en, playerDamage);
-					// GameManager.getInstance().getGameObjectList().remove(j);
+					if(GameManager.getInstance().drawEnDeadEffect)
+					{
+						enDeadAniTimer.start();
+					}
 				}
 			}
 		}

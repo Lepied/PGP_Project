@@ -29,16 +29,7 @@ public class GameManager {
 	
 	private List<NPC> npcList;
 	
-	private Timer enemyDeadAniTimer;
-	private Timer fireballExplosionTimer;
-	private int currentEnDeadFrame = 0;
-	private int totalEnDeadFrames = 8;
-	private int currentExplosionFrame = 0;
-	private int totalExplosionFrames = 12;
-	private ImageIcon bombEffect;
-	private ImageIcon[] enemyDeadAnimation;
-	private ImageIcon[] fireballExplosion;
-	
+
 	private int scrollNum;
 	
 	private int itemPosX;
@@ -51,16 +42,19 @@ public class GameManager {
 	public boolean isNPCEnd = false;
 	public boolean isQuest = false;
 	public boolean isQuestFinished = false;
+	
 
-	
-	
+	public boolean drawEnDeadEffect = false;
+	public int enDeadEffectX;
+	public int enDeadEffectY;
+	 
 	private GameManager()
 	{//싱글톤 패턴
 		gameObjectList = new ArrayList<>();
 		itemList = new ArrayList<>();
 		npcList = new ArrayList<>();
 		playerCoin =0;
-		
+    
 	} 
 	public static GameManager getInstance()
 	{
@@ -75,6 +69,7 @@ public class GameManager {
 		}
 		return instance;
 	}
+	
 	public void setPlayer(Player player)
 	{
 		this.player = player;
@@ -199,20 +194,25 @@ public class GameManager {
 				this.isQuestFinished = true;
 			}
 			removeEnemy(target);
+			drawEnDeadEffect = true;
+			enDeadEffectX = target.posX;
+			enDeadEffectY = target.posY;
 			
 			
 			double randomValue = Math.random(); // 0~1.0
 			//if (randomValue < 0.1) { // 10%
 			if (randomValue < 0.1+playerUpgradeLuck) { // 10% + 강화된 럭 수치
 	            addItem(new Scroll(target.posX, target.posY));
-	        } else if (randomValue < 0.4) { // 30%
+	        } else if (randomValue < 0.2) { // 30%
 	            addItem(new Bomb(target.posX, target.posY));
 	        } else { // 60%
 	            addItem(new Coin(target.posX, target.posY));
 	        }
 		}
 	}
+	
 
+	
 	
 	public int getScore()
 	{
