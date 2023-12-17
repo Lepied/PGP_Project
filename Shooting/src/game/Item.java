@@ -18,9 +18,7 @@ public class Item extends GameObject{
 	{
 		super();
 		this.width = 32;
-		this.height = 32;
-		
-
+		this.height = 32;	
 	}
 	public void updateAnimation()
 	{
@@ -34,8 +32,6 @@ public class Item extends GameObject{
 		System.out.println(GameManager.getInstance().getCoin());
 	}
 	
-	
-
 	
 	public void move()
 	{

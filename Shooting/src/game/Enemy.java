@@ -22,9 +22,6 @@ public class Enemy extends GameObject {
 	private boolean isPatternNow = false;
 	private int patternCnt = 0;
 
-
-
-	
 	EnemyBullet enBullet;
 	Player player; // 임시 플레이어
 	private ArrayList<EnemyBullet> Enemy_Bullet_List = new ArrayList();
@@ -62,9 +59,7 @@ public class Enemy extends GameObject {
     public void draw(Graphics g) {
         g.drawImage(img, posX, posY, null);
     }
-    
-    
-    
+      
     public boolean Crash(GameObject obj1, GameObject obj2)
     {
     	return GameManager.getInstance().isCollision(obj1, obj2);
