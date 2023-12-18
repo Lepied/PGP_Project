@@ -151,7 +151,7 @@ public class NPCPanel extends JPanel {
 	        typingTimer.stop();
 	    }
 		// 타이핑 효과를 위한 Timer 설정
-		typingTimer = new Timer(300, new ActionListener() {
+		typingTimer = new Timer(200, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (currentCharIndex < textToShow[textNum].length()) {
@@ -173,7 +173,7 @@ public class NPCPanel extends JPanel {
 		if (typingTimer2 != null && typingTimer2.isRunning()) {
 			typingTimer2.stop();
 		}
-		typingTimer2 = new Timer(300, new ActionListener() {
+		typingTimer2 = new Timer(200, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (currentCharIndex < textToShow2[textNum].length()) {

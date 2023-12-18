@@ -203,7 +203,7 @@ public class Player extends GameObject implements KeyListener {
     	    	{
     	    		bullet =(Bullet)(Bullet_List.get(i));
     	    		g.drawImage(bullet.img, bullet.pos.x,bullet.pos.y+35,null );
-    	    		// g2d.rotate(Math.toRadians(bullet.direction), bullet.pos.x + width / 2, bullet.pos.y + height / 2);
+    	    		//g2d.rotate(Math.toRadians(bullet.direction), bullet.pos.x + width / 2, bullet.pos.y + height / 2);
     	    	    //g2d.drawImage(bullet.img, bullet.pos.x, bullet.pos.y+35, null);
     	    	  
     	    	}

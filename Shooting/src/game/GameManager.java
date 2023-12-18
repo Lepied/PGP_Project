@@ -213,10 +213,9 @@ public class GameManager {
 			
 			
 			double randomValue = Math.random(); // 0~1.0
-			//if (randomValue < 0.1) { // 10%
 			if (randomValue < 0.1+playerUpgradeLuck) { // 10% + 강화된 럭 수치
 	            addItem(new Scroll(target.posX, target.posY));
-	        } else if (randomValue < 0.05) { // 5%
+	        } else if (randomValue < 0.2) { // 5%
 	            addItem(new Bomb(target.posX, target.posY));
 	        } else { // 60%
 	            addItem(new Coin(target.posX, target.posY));

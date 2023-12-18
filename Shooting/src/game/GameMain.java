@@ -91,8 +91,10 @@ public class GameMain extends JFrame implements Runnable {
 	SelectPanel SelectPanel_3 = new SelectPanel(735, 300, 160, 260, 3, this);
 
 	NPCPanel npcPanel = new NPCPanel(this);
-	public JLabel followingLabel;
+	
 	private String powerUpText = "";
+	private boolean isText =false;
+	private long followingTextTime; // 플레이어 파워업시 뜨는 문자
 	
 	InfoPanel gameOverPanel = new InfoPanel();
 
@@ -177,17 +179,7 @@ public class GameMain extends JFrame implements Runnable {
 
 			}
 		};
-		JLabel followingLabel = new JLabel(powerUpText)
-		{
-			@Override
-			public void paintComponent(Graphics g)
-			{
-				setBounds(0, 0, 100, 100);
-				super.paintComponent(g);
-				setVisible(true);
-			}
-			
-		};
+
 
 		JPanel gamePanel = new JPanel() {
 			@Override
@@ -266,7 +258,7 @@ public class GameMain extends JFrame implements Runnable {
 		add(Ch1BossUI);
 		add(npcPanel);
 	    add(gameOverPanel);
-		add(followingLabel);
+	
 		add(gamePanel);
 		
 
@@ -296,7 +288,11 @@ public class GameMain extends JFrame implements Runnable {
 
 		player.draw(buffg);
 		player.drawBullet(buffg);
-
+		if(isText)
+		{
+			FollowingVisible(buffg);
+		}
+		
 		Draw_Enemy();
 		Draw_Item();
 		Draw_NPC();
@@ -336,7 +332,7 @@ public class GameMain extends JFrame implements Runnable {
 				ItemProcess(); // 아이템 매커니즘
 				NPCProcess(); // NPC 매커니즘
 				VisibleBossUI(); // 보스 UI 보이기
-				updateLabelPosition();//플레이어 따라가는 텍스트업데이트
+		
 				
 				
 				if(gameManager.isNPCEnd)
@@ -418,7 +414,10 @@ public class GameMain extends JFrame implements Runnable {
 				Thread.sleep(15); // 15 milli sec 로 스레드 돌리기
 				gameCnt++;
 				// 게임 타이머 초기화 해서 게임 안터지게
-
+				if(gameCnt % 500==0)
+				{
+					isText = false;
+				}
 				GameOver();
 				if (gameCnt > 999999) {
 					gameCnt = 0;
@@ -475,7 +474,7 @@ public class GameMain extends JFrame implements Runnable {
 
 	public void Ability(int ability) // 능력리스트
 	{
-
+		isText = true;
 		System.out.println("어빌리티    "+ability);
 		switch (ability) {
 		case 0: // 플레이어데미지 강화
@@ -573,19 +572,24 @@ public class GameMain extends JFrame implements Runnable {
 
 		player.setAngle(angle);
 	}
-    private void updateLabelPosition() {// 플레이어 위치에 따라 라벨의 위치 조절
-    	SwingUtilities.invokeLater(() -> {
-            
-            int labelX = player.x + player.width + 10;
-            int labelY = player.y - 10;
-            
-            if (followingLabel != null) {
-                followingLabel.setBounds(labelX, labelY, 100, 20);
-            }
-           
-    	});
 
-    }
+	private void FollowingVisible(Graphics g) {
+
+		followingTextTime = System.currentTimeMillis();
+	    long currentTime = System.currentTimeMillis();
+    	
+
+
+	    if (currentTime - followingTextTime < 3000) {
+	        followingTextTime = System.currentTimeMillis();
+	        int labelX = player.posX + player.width / 2 - 30;
+	        int labelY = player.posY + player.height - 30;
+	        g.setFont(customFont);
+	        g.setColor(Color.WHITE);
+	        g.drawString(powerUpText, labelX, labelY);
+	    }
+
+	}
 	
 	public void EnemyProcess() {
 		for (int i = 0; i < gameManager.getGameObjectList().size(); ++i) {
@@ -611,7 +615,7 @@ public class GameMain extends JFrame implements Runnable {
 		}
 		//보스전 이전 스테이지 구성
 	
-		if (canCh1BossSpawn == true&& gameCnt > 200 && gameCnt < 5000) {
+		if (canCh1BossSpawn == true&& gameCnt > 200 && gameCnt < 7000) {
 			if( gameCnt % 150 == 0 && gameCnt < 400 )
 			{
 				en = new E_Zaco(3);
@@ -654,7 +658,7 @@ public class GameMain extends JFrame implements Runnable {
 				en = new E_Zaco(1);
 				en = new E_Zaco(2);
 			}
-			else if(gameCnt % 150 == 0 && gameCnt<6000 && gameCnt>5000)
+			else if(gameCnt % 150 == 0 && gameCnt<6000)
 			{
 				en = new E_Bird(4);
 			}
